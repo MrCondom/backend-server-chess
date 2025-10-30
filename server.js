@@ -1,16 +1,20 @@
-import express from "express";
-import cors from "cors";
-import bodyParser from "body-parser";
-import { readJSON, writeJSON } from "./utils/fileHandler.js";
-import { createPairings } from "./utils/pairingGenerator.js";
-
-
 const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
+const {readJSON, writeJSON} = require("./utils/fileHandler");
+const {createPairings} =require("./utils/pairingGenerator");
+const adminRoutes = require("./routes/admin");
+
+
+dotenv.config();
 const app = express();
+const PORT = process.env.PORT || 5000;
+
+
+
 app.use(cors());
 app.use(bodyParser.json());
-const PORT = 5000;
-require("dotenv").config();
 app.use(express.json());
 
 // ✅ Route 1: Root test
@@ -70,7 +74,7 @@ app.get("/pairings/current/:category", async (req, res) => {
   });
 });
 
-const adminRoutes = require ("./routes/admin.js");
+
 app.use("/admin", adminRoutes)
 
 
