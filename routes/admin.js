@@ -269,7 +269,7 @@ router.post("/delete-pairings", (req, res) => {
   res.json({ message: `✅ Pairings for '${category}' deleted successfully.` });
 });
 
-app.put("/players/bio/:username", async (req, res) => {
+router.put("/players/bio/:username", async (req, res) => {
   const { username } = req.params;
   const { bio } = req.body;
 
