@@ -1,4 +1,4 @@
-import fs from "fs-extra";
+const fs = require("fs-extra");
 const DATA_DIR = "./data";
 
 export async function readJSON(file) {

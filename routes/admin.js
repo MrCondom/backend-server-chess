@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const { calculateRatingChange } = require("../utils/ratingCalculator");
 const { calculateAccuracy } = require("../utils/accuracyCalculator");
+const {readJSON, writeJSON} = require("../utils/fileHandler")
 
 // File paths
 const dataDir = path.join(__dirname, "../data");
@@ -14,11 +15,6 @@ const playersFile = path.join(dataDir, "players.json");
 const resultsFile = path.join(dataDir, "results.json");
 const logsFile = path.join(dataDir, "admin_logs.json");
 
-//  Helpers
-const readJSON = (file) =>
-  fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8") || "{}") : {};
-const writeJSON = (file, data) =>
-  fs.writeFileSync(file, JSON.stringify(data, null, 2));
 
 //  ADMIN LOGIN
 router.post("/login", (req, res) => {
@@ -77,6 +73,8 @@ router.post("/input-scores", (req, res) => {
     const playerWhite = players[white];
     const playerBlack = players[black];
     if (!playerWhite || !playerBlack) return;
+    playerWhite.rating = playerWhite.rating || 1200;
+    playerBlack.rat = playerBlack.rating || 1200;
 
     //  Rating update using new calculator
     const { changeA, changeB } = calculateRatingChange(
@@ -249,7 +247,7 @@ router.post("/edit-player", (req, res) => {
     return res.status(404).json({ error: "Player not found" });
   }
 
-  if (newName) players[username].name = newName;
+  if (newName) players[username].name = newName.trim();
   if (newCategory) players[username].category = newCategory;
 
   writeJSON(playersFile, players);
@@ -299,14 +297,14 @@ router.post("/pairings/create", async (req, res) => {
 // Add player (admin)
 router.post("/players/add", async (req, res) => {
   const newPlayer = req.body;
-  const players = await readJSON("players.json");
+  const players = readJSON(playersFile);
 
   if (players[newPlayer.username]) {
     return res.status(400).json({ message: "Username already exists" });
   }
 
   players[newPlayer.username] = newPlayer;
-  await writeJSON("players.json", players);
+  writeJSON(playersFile, players);
   res.json({ message: "Player added successfully", newPlayer });
 });
 
