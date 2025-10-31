@@ -7,20 +7,20 @@ require("dotenv").config();
 const { calculateRatingChange } = require("../utils/ratingCalculator");
 const { calculateAccuracy } = require("../utils/accuracyCalculator");
 
-// 🗂️ File paths
+// File paths
 const dataDir = path.join(__dirname, "../data");
 const pairingsFile = path.join(dataDir, "pairings.json");
 const playersFile = path.join(dataDir, "players.json");
 const resultsFile = path.join(dataDir, "results.json");
 const logsFile = path.join(dataDir, "admin_logs.json");
 
-// 📘 Helpers
+//  Helpers
 const readJSON = (file) =>
   fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8") || "{}") : {};
 const writeJSON = (file, data) =>
   fs.writeFileSync(file, JSON.stringify(data, null, 2));
 
-// 🔐 ADMIN LOGIN
+//  ADMIN LOGIN
 router.post("/login", (req, res) => {
   const { password } = req.body;
   const validPasswords = [
@@ -34,7 +34,7 @@ router.post("/login", (req, res) => {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  // 🧾 Log admin usage
+  //  Log admin usage
   const logs = fs.existsSync(logsFile) ? readJSON(logsFile) : [];
   logs.push({
     adminId: `ADMIN_${matchIndex + 1}`,
@@ -46,7 +46,7 @@ router.post("/login", (req, res) => {
   res.json({ message: "✅ Login successful", adminId: `ADMIN_${matchIndex + 1}` });
 });
 
-// 🧮 INPUT SCORES + UPDATE RATINGS
+//  INPUT SCORES + UPDATE RATINGS
 router.post("/input-scores", (req, res) => {
   const { category, round, results } = req.body;
 
@@ -69,7 +69,7 @@ router.post("/input-scores", (req, res) => {
     return res.status(404).json({ error: "Round not found" });
   }
 
-  // ♟️ Process matches
+  //  Process matches
   results.forEach((match) => {
     const { white, black, result } = match;
     const [whiteScore, blackScore] = result.split("-").map(parseFloat);
@@ -78,7 +78,7 @@ router.post("/input-scores", (req, res) => {
     const playerBlack = players[black];
     if (!playerWhite || !playerBlack) return;
 
-    // 📊 Rating update using new calculator
+    //  Rating update using new calculator
     const { changeA, changeB } = calculateRatingChange(
       playerWhite.rating,
       playerBlack.rating,
@@ -89,6 +89,13 @@ router.post("/input-scores", (req, res) => {
     playerWhite.rating += changeA;
     playerBlack.rating += changeB;
 
+    // Track visible rating gain (for 7 days on public leaderboard)
+  playerWhite.recentGain = (playerWhite.recentGain || 0) + changeA;
+  playerWhite.lastGainDate = new Date().toISOString();
+
+  playerBlack.recentGain = (playerBlack.recentGain || 0) + changeB;
+  playerBlack.lastGainDate = new Date().toISOString();
+
     // 🏆 Points update
     playerWhite.points = (playerWhite.points || 0) + whiteScore;
     playerBlack.points = (playerBlack.points || 0) + blackScore;
@@ -97,19 +104,19 @@ router.post("/input-scores", (req, res) => {
     playerWhite.lastRound = round;
     playerBlack.lastRound = round;
 
-    // 🗃️ Record result
+    //  Record result
     if (!resultsData[category]) resultsData[category] = [];
     resultsData[category].push({ round, white, black, result });
   });
 
-  // 💾 Save all updates
+  //  Save all updates
   writeJSON(playersFile, players);
   writeJSON(resultsFile, resultsData);
 
   res.json({ message: `✅ Round ${round} results recorded successfully.` });
 });
 
-// 📊 TABLE / LEADERBOARD
+//  TABLE / LEADERBOARD
 router.get("/table/:category", (req, res) => {
   const { category } = req.params;
   const players = readJSON(playersFile);
@@ -126,12 +133,12 @@ router.get("/table/:category", (req, res) => {
 
   const totalRounds = (resultsData[category]?.length || 1);
 
-  // 🧠 Compute accuracy dynamically via utility
+  //  Compute accuracy dynamically via utility
   categoryPlayers.forEach((p) => {
     p.accuracy = calculateAccuracy(p.points || 0, totalRounds, p.rating);
   });
 
-  // 🏅 Sort leaderboard
+  // Sort leaderboard
   const sorted = categoryPlayers.sort((a, b) => b.points - a.points);
 
   const table = sorted.map((p, i) => ({
@@ -154,14 +161,14 @@ router.post("/reset", (req, res) => {
   const pairings = fs.existsSync(pairingsFile) ? readJSON(pairingsFile) : {};
 
   if (target === "all") {
-    // 🔥 Reset everything
+    //  Reset everything
     writeJSON(playersFile, {});
     writeJSON(resultsFile, {});
     writeJSON(pairingsFile, {});
     return res.json({ message: "✅ All tournament data cleared successfully." });
   }
 
-  // 🎯 Reset only one category
+  //  Reset only one category
   // Filter players and results belonging to the target category
   const filteredPlayers = Object.fromEntries(
     Object.entries(players).filter(([_, p]) => p.category !== target)
@@ -184,7 +191,7 @@ router.post("/reset", (req, res) => {
   });
 });
 
-// 📜 PLAYER MATCH HISTORY
+//  PLAYER MATCH HISTORY
 router.get("/history/:username", (req, res) => {
   const { username } = req.params;
 
@@ -195,7 +202,7 @@ router.get("/history/:username", (req, res) => {
     return res.status(404).json({ error: "Player not found" });
   }
 
-  // 🔍 Find all matches the player participated in
+  //  Find all matches the player participated in
   const allMatches = [];
   for (const category in resultsData) {
     const categoryMatches = resultsData[category].filter(
@@ -232,5 +239,34 @@ router.get("/history/:username", (req, res) => {
   });
 });
 
+//  Edit player name or move to another category
+router.post("/edit-player", (req, res) => {
+  const { username, newName, newCategory } = req.body;
+  const players = readJSON(playersFile);
+
+  if (!players[username]) {
+    return res.status(404).json({ error: "Player not found" });
+  }
+
+  if (newName) players[username].name = newName;
+  if (newCategory) players[username].category = newCategory;
+
+  writeJSON(playersFile, players);
+  res.json({ message: "✅ Player updated successfully." });
+});
+
+//  Delete category pairings only
+router.post("/delete-pairings", (req, res) => {
+  const { category } = req.body;
+  const pairings = readJSON(pairingsFile);
+
+  if (!pairings[category]) {
+    return res.status(404).json({ error: "No pairings found for this category" });
+  }
+
+  delete pairings[category];
+  writeJSON(pairingsFile, pairings);
+  res.json({ message: `✅ Pairings for '${category}' deleted successfully.` });
+});
 
 module.exports = router;

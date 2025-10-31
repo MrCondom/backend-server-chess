@@ -29,6 +29,54 @@ app.get("/leaderboard", async (req, res) => {
   res.json(sorted);
 });
 
+// ✅ Enhanced Public Leaderboard (User-Facing)
+app.get("/leaderboard/public", async (req, res) => {
+  const players = await readJSON("players.json");
+
+  // Divide into categories
+  const categories = {
+    Heavyweight: [],
+    Middleweight: [],
+    Lightweight: []
+  };
+
+  // Filter by category and compute visible rating gain
+  const now = new Date();
+  Object.values(players).forEach((p) => {
+    if (!p.category) return;
+    const lastGainDate = new Date(p.lastGainDate || 0);
+    const diffDays = (now - lastGainDate) / (1000 * 60 * 60 * 24);
+
+    let displayGain = "";
+    if (p.recentGain && diffDays < 7) {
+      displayGain = `+${p.recentGain}`;
+    } else if (p.recentGain && diffDays >= 7) {
+      // reset gain after 7 days
+      p.recentGain = 0;
+      writeJSON("players.json", players);
+    }
+
+    const entry = {
+      name: p.name,
+      username: p.username,
+      rapid: `${p.rapid}${displayGain ? displayGain : ""}`,
+      blitz: p.blitz ? `${p.blitz}${displayGain ? displayGain : ""}` : "-",
+      bullet: p.bullet ? `${p.bullet}${displayGain ? displayGain : ""}` : "-",
+    };
+
+    if (categories[p.category]) {
+      categories[p.category].push(entry);
+    }
+  });
+
+  // Sort within categories by rating
+  Object.keys(categories).forEach(cat => {
+    categories[cat].sort((a, b) => parseFloat(b.rapid) - parseFloat(a.rapid));
+  });
+
+  res.json(categories);
+});
+
 // ✅ Route 3: Add player (admin)
 app.post("/players/add", async (req, res) => {
   const newPlayer = req.body;
@@ -74,6 +122,25 @@ app.get("/pairings/current/:category", async (req, res) => {
   });
 });
 
+// ✅ Get Player Info by Username (clickable profile)
+app.get("/player/:username", async (req, res) => {
+  const { username } = req.params;
+  const players = await readJSON("players.json");
+
+  const player = players[username];
+  if (!player) return res.status(404).json({ message: "Player not found" });
+
+  res.json({
+    name: player.name,
+    username: player.username,
+    category: player.category,
+    rapid: player.rapid,
+    blitz: player.blitz,
+    bullet: player.bullet,
+    recentGain: player.recentGain || 0,
+    bio: player.bio || "This player’s profile will be updated soon.",
+  });
+});
 
 app.use("/admin", adminRoutes)
 
