@@ -34,47 +34,42 @@ app.get("/leaderboard/public", async (req, res) => {
   const players = await readJSON("players.json");
 
   // Divide into categories
-  const categories = {
-    Heavyweight: [],
-    Middleweight: [],
-    Lightweight: []
-  };
+  const categories = {};
 
-  // Filter by category and compute visible rating gain
-  const now = new Date();
-  Object.values(players).forEach((p) => {
-    if (!p.category) return;
-    const lastGainDate = new Date(p.lastGainDate || 0);
-    const diffDays = (now - lastGainDate) / (1000 * 60 * 60 * 24);
+Object.values(players).forEach((p) => {
+  if (!p.category) return;
 
-    let displayGain = "";
-    if (p.recentGain && diffDays < 7) {
-      displayGain = `+${p.recentGain}`;
-    } else if (p.recentGain && diffDays >= 7) {
-      // reset gain after 7 days
-      p.recentGain = 0;
-      writeJSON("players.json", players);
-    }
+  if (!categories[p.category]) {
+    categories[p.category] = [];
+  }
 
-    const entry = {
-      name: p.name,
-      username: p.username,
-      rapid: `${p.rapid}${displayGain ? displayGain : ""}`,
-      blitz: p.blitz ? `${p.blitz}${displayGain ? displayGain : ""}` : "-",
-      bullet: p.bullet ? `${p.bullet}${displayGain ? displayGain : ""}` : "-",
-    };
+  // same logic for visible rating gain
+  const lastGainDate = new Date(p.lastGainDate || 0);
+  const diffDays = (now - lastGainDate) / (1000 * 60 * 60 * 24);
+  let displayGain = "";
 
-    if (categories[p.category]) {
-      categories[p.category].push(entry);
-    }
+  if (p.recentGain && diffDays < 7) {
+    displayGain = `+${p.recentGain}`;
+  } else if (p.recentGain && diffDays >= 7) {
+    p.recentGain = 0;
+    writeJSON("players.json", players);
+  }
+
+  categories[p.category].push({
+    name: p.name,
+    username: p.username,
+    rapid: `${p.rapid}${displayGain}`,
+    blitz: p.blitz || "-",
+    bullet: p.bullet || "-"
   });
+});
 
-  // Sort within categories by rating
-  Object.keys(categories).forEach(cat => {
-    categories[cat].sort((a, b) => parseFloat(b.rapid) - parseFloat(a.rapid));
-  });
+// Sort within categories
+Object.keys(categories).forEach(cat => {
+  categories[cat].sort((a, b) => parseFloat(b.rapid) - parseFloat(a.rapid));
+});
 
-  res.json(categories);
+res.json(categories);
 });
 
 // ✅ Route 3: Add player (admin)
@@ -82,11 +77,11 @@ app.post("/players/add", async (req, res) => {
   const newPlayer = req.body;
   const players = await readJSON("players.json");
 
-  if (players.find(p => p.username === newPlayer.username)) {
+  if (players[newPlayer.username]) {
     return res.status(400).json({ message: "Username already exists" });
   }
 
-  players.push(newPlayer);
+  players[newPlayer.username] = newPlayer;
   await writeJSON("players.json", players);
   res.json({ message: "Player added successfully", newPlayer });
 });
@@ -142,9 +137,25 @@ app.get("/player/:username", async (req, res) => {
   });
 });
 
+app.put("/players/bio/:username", async (req, res) => {
+  const { username } = req.params;
+  const { bio } = req.body;
+
+  const players = await readJSON("players.json");
+  const player = players[username];
+
+  if (!player) return res.status(404).json({ message: "Player not found" });
+
+  player.bio = bio;
+  await writeJSON("players.json", players);
+
+  res.json({ message: "Bio updated successfully", player });
+});
+
+
 app.use("/admin", adminRoutes)
 
 
-
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+
 
