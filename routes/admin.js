@@ -69,12 +69,15 @@ router.post("/input-scores", (req, res) => {
   results.forEach((match) => {
     const { white, black, result } = match;
     const [whiteScore, blackScore] = result.split("-").map(parseFloat);
+    if (whiteScore < 0 || whiteScore > 2 || blackScore < 0 || blackScore > 2) {
+      return res.status(400).json({ error: "Invalid score value. Must be between 0 and 2"});
+    }
 
     const playerWhite = players[white];
     const playerBlack = players[black];
     if (!playerWhite || !playerBlack) return;
     playerWhite.rating = playerWhite.rating || 1200;
-    playerBlack.rat = playerBlack.rating || 1200;
+    playerBlack.rating = playerBlack.rating || 1200;
 
     //  Rating update using new calculator
     const { changeA, changeB } = calculateRatingChange(
