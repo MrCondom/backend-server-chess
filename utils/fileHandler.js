@@ -5,7 +5,7 @@ export async function readJSON(file) {
   try {
     return await fs.readJSON(`${DATA_DIR}/${file}`);
   } catch {
-    return [];
+    return {};
   }
 }
 

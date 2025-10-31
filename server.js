@@ -50,7 +50,7 @@ Object.values(players).forEach((p) => {
   let displayGain = "";
 
   if (p.recentGain && diffDays < 7) {
-    displayGain = `+${p.recentGain}`;
+    displayGain = p.recentGain > 0 ? `+${p.recentGain}` : `${p.recentGain}`;
   } else if (p.recentGain && diffDays >= 7) {
     p.recentGain = 0;
     writeJSON("players.json", players);
@@ -73,30 +73,6 @@ Object.keys(categories).forEach(cat => {
 res.json(categories);
 });
 
-// ✅ Route 3: Add player (admin)
-app.post("/players/add", async (req, res) => {
-  const newPlayer = req.body;
-  const players = await readJSON("players.json");
-
-  if (players[newPlayer.username]) {
-    return res.status(400).json({ message: "Username already exists" });
-  }
-
-  players[newPlayer.username] = newPlayer;
-  await writeJSON("players.json", players);
-  res.json({ message: "Player added successfully", newPlayer });
-});
-
-// ✅ Create new pairings (Admin only)
-app.post("/pairings/create", async (req, res) => {
-  try {
-    const { category, rounds = 5, intervalHours = 24 } = req.body;
-    const result = await createPairings(category, rounds, intervalHours);
-    res.json({ message: "Pairings created successfully", result });
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
 
 // ✅ Get current pairings (visible round)
 app.get("/pairings/current/:category", async (req, res) => {

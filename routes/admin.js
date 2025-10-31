@@ -165,6 +165,7 @@ router.post("/reset", (req, res) => {
     writeJSON(playersFile, {});
     writeJSON(resultsFile, {});
     writeJSON(pairingsFile, {});
+    writeJSON(logsFile, []);
     return res.json({ message: "✅ All tournament data cleared successfully." });
   }
 
@@ -273,15 +274,40 @@ router.put("/players/bio/:username", async (req, res) => {
   const { username } = req.params;
   const { bio } = req.body;
 
-  const players = await readJSON("players.json");
+  const players = readJSON(playersFile);
   const player = players[username];
 
   if (!player) return res.status(404).json({ message: "Player not found" });
 
   player.bio = bio;
-  await writeJSON("players.json", players);
+  writeJSON(playersFile, players);
 
   res.json({ message: "Bio updated successfully", player });
+});
+
+// Create new pairings (Admin only)
+router.post("/pairings/create", async (req, res) => {
+  try {
+    const { category, rounds = 5, intervalHours = 24 } = req.body;
+    const result = await createPairings(category, rounds, intervalHours);
+    res.json({ message: "Pairings created successfully", result });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// Add player (admin)
+router.post("/players/add", async (req, res) => {
+  const newPlayer = req.body;
+  const players = await readJSON("players.json");
+
+  if (players[newPlayer.username]) {
+    return res.status(400).json({ message: "Username already exists" });
+  }
+
+  players[newPlayer.username] = newPlayer;
+  await writeJSON("players.json", players);
+  res.json({ message: "Player added successfully", newPlayer });
 });
 
 module.exports = router;
