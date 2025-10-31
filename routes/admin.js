@@ -6,7 +6,8 @@ require("dotenv").config();
 
 const { calculateRatingChange } = require("../utils/ratingCalculator");
 const { calculateAccuracy } = require("../utils/accuracyCalculator");
-const {readJSON, writeJSON} = require("../utils/fileHandler")
+const {readJSON, writeJSON} = require("../utils/fileHandler");
+const {createPairings} = require("../utils/pairingGenerator");
 
 // File paths
 const dataDir = path.join(__dirname, "../data");
@@ -132,7 +133,7 @@ router.get("/table/:category", (req, res) => {
   if (!categoryPlayers.length)
     return res.status(404).json({ error: "No players found in this category" });
 
-  const totalRounds = (resultsData[category]?.length || 1);
+  const totalRounds = new Set((resultsData[category] || []).map(r => r.round)).size || 1;
 
   //  Compute accuracy dynamically via utility
   categoryPlayers.forEach((p) => {
