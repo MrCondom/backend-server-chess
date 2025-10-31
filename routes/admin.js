@@ -269,4 +269,19 @@ router.post("/delete-pairings", (req, res) => {
   res.json({ message: `✅ Pairings for '${category}' deleted successfully.` });
 });
 
+app.put("/players/bio/:username", async (req, res) => {
+  const { username } = req.params;
+  const { bio } = req.body;
+
+  const players = await readJSON("players.json");
+  const player = players[username];
+
+  if (!player) return res.status(404).json({ message: "Player not found" });
+
+  player.bio = bio;
+  await writeJSON("players.json", players);
+
+  res.json({ message: "Bio updated successfully", player });
+});
+
 module.exports = router;

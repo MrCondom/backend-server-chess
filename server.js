@@ -44,6 +44,7 @@ Object.values(players).forEach((p) => {
   }
 
   // same logic for visible rating gain
+  const now = new Date();
   const lastGainDate = new Date(p.lastGainDate || 0);
   const diffDays = (now - lastGainDate) / (1000 * 60 * 60 * 24);
   let displayGain = "";
@@ -135,21 +136,6 @@ app.get("/player/:username", async (req, res) => {
     recentGain: player.recentGain || 0,
     bio: player.bio || "This player’s profile will be updated soon.",
   });
-});
-
-app.put("/players/bio/:username", async (req, res) => {
-  const { username } = req.params;
-  const { bio } = req.body;
-
-  const players = await readJSON("players.json");
-  const player = players[username];
-
-  if (!player) return res.status(404).json({ message: "Player not found" });
-
-  player.bio = bio;
-  await writeJSON("players.json", players);
-
-  res.json({ message: "Bio updated successfully", player });
 });
 
 
