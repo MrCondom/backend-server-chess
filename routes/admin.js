@@ -145,4 +145,92 @@ router.get("/table/:category", (req, res) => {
   res.json({ category, totalRounds, table });
 });
 
+//  ADMIN RESET (Clear category or all data)
+router.post("/reset", (req, res) => {
+  const { target } = req.body; // "all" or a specific category
+
+  const players = readJSON(playersFile);
+  const results = fs.existsSync(resultsFile) ? readJSON(resultsFile) : {};
+  const pairings = fs.existsSync(pairingsFile) ? readJSON(pairingsFile) : {};
+
+  if (target === "all") {
+    // 🔥 Reset everything
+    writeJSON(playersFile, {});
+    writeJSON(resultsFile, {});
+    writeJSON(pairingsFile, {});
+    return res.json({ message: "✅ All tournament data cleared successfully." });
+  }
+
+  // 🎯 Reset only one category
+  // Filter players and results belonging to the target category
+  const filteredPlayers = Object.fromEntries(
+    Object.entries(players).filter(([_, p]) => p.category !== target)
+  );
+
+  const filteredResults = Object.fromEntries(
+    Object.entries(results).filter(([cat]) => cat !== target)
+  );
+
+  const filteredPairings = Object.fromEntries(
+    Object.entries(pairings).filter(([cat]) => cat !== target)
+  );
+
+  writeJSON(playersFile, filteredPlayers);
+  writeJSON(resultsFile, filteredResults);
+  writeJSON(pairingsFile, filteredPairings);
+
+  res.json({
+    message: `✅ Category '${target}' cleared successfully.`,
+  });
+});
+
+// 📜 PLAYER MATCH HISTORY
+router.get("/history/:username", (req, res) => {
+  const { username } = req.params;
+
+  const players = readJSON(playersFile);
+  const resultsData = fs.existsSync(resultsFile) ? readJSON(resultsFile) : {};
+
+  if (!players[username]) {
+    return res.status(404).json({ error: "Player not found" });
+  }
+
+  // 🔍 Find all matches the player participated in
+  const allMatches = [];
+  for (const category in resultsData) {
+    const categoryMatches = resultsData[category].filter(
+      (m) => m.white === username || m.black === username
+    );
+
+    categoryMatches.forEach((match) => {
+      const isWhite = match.white === username;
+      const opponent = isWhite ? match.black : match.white;
+      const result = isWhite
+        ? match.result
+        : match.result.split("-").reverse().join("-");
+
+      allMatches.push({
+        category,
+        round: match.round,
+        opponent,
+        result,
+      });
+    });
+  }
+
+  if (allMatches.length === 0) {
+    return res.status(404).json({ error: "No match history found for this player" });
+  }
+
+  // 🕓 Sort by round
+  const sortedHistory = allMatches.sort((a, b) => a.round - b.round);
+
+  res.json({
+    username,
+    totalMatches: sortedHistory.length,
+    history: sortedHistory,
+  });
+});
+
+
 module.exports = router;
