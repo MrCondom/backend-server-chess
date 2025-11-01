@@ -43,300 +43,176 @@ router.post("/login", (req, res) => {
   res.json({ message: "✅ Login successful", adminId: `ADMIN_${matchIndex + 1}` });
 });
 
-//  INPUT SCORES + UPDATE RATINGS
-router.post("/input-scores", (req, res) => {
-  const { category, round, results } = req.body;
+// ✅ 1. Add new player
+router.post("/add-player", async (req, res) => {
+  const { name, username } = req.body;
 
-  if (!category || !round || !results) {
-    return res.status(400).json({ error: "Missing required fields" });
-  }
+  if (!name || !username)
+    return res.status(400).json({ message: "Name and username are required" });
 
-  const players = readJSON(playersFile);
-  const pairings = readJSON(pairingsFile);
-  const resultsData = fs.existsSync(resultsFile)
-    ? readJSON(resultsFile)
-    : {};
+  const players = await readJSON("players.json");
 
-  if (!pairings[category]) {
-    return res.status(404).json({ error: "Category not found" });
-  }
+  if (players[username])
+    return res.status(400).json({ message: "Player already exists" });
 
-  const roundData = pairings[category].rounds.find((r) => r.round === round);
-  if (!roundData) {
-    return res.status(404).json({ error: "Round not found" });
-  }
+  players[username] = {
+    name,
+    username,
+    rapid: 1200,
+    blitz: 1200,
+    bullet: 1200,
+    recentGain: 0,
+    bio: "",
+    category: "",
+  };
 
-  //  Process matches
-  results.forEach((match) => {
-    const { white, black, result } = match;
-    const [whiteScore, blackScore] = result.split("-").map(parseFloat);
-    if (whiteScore < 0 || whiteScore > 2 || blackScore < 0 || blackScore > 2) {
-      return res.status(400).json({ error: "Invalid score value. Must be between 0 and 2"});
-    }
-
-    const playerWhite = players[white];
-    const playerBlack = players[black];
-    if (!playerWhite || !playerBlack) return;
-    playerWhite.rating = playerWhite.rating || 1200;
-    playerBlack.rating = playerBlack.rating || 1200;
-
-    //  Rating update using new calculator
-    const { changeA, changeB } = calculateRatingChange(
-      playerWhite.rating,
-      playerBlack.rating,
-      whiteScore,
-      blackScore
-    );
-
-    if (type === "rapid") {
-  playerWhite.rapid = (playerWhite.rapid || 1200) + changeA;
-  playerBlack.rapid = (playerBlack.rapid || 1200) + changeB;
-} else if (type === "blitz") {
-  playerWhite.blitz = (playerWhite.blitz || 1200) + changeA;
-  playerBlack.blitz = (playerBlack.blitz || 1200) + changeB;
-} else if (type === "bullet") {
-  playerWhite.bullet = (playerWhite.bullet || 1200) + changeA;
-  playerBlack.bullet = (playerBlack.bullet || 1200) + changeB;
-}
-
-    // Track visible rating gain (for 7 days on public leaderboard)
-  playerWhite.recentGain = (playerWhite.recentGain || 0) + changeA;
-  playerWhite.lastGainDate = new Date().toISOString();
-
-  playerBlack.recentGain = (playerBlack.recentGain || 0) + changeB;
-  playerBlack.lastGainDate = new Date().toISOString();
-
-    // 🏆 Points update
-    playerWhite.points = (playerWhite.points || 0) + whiteScore;
-    playerBlack.points = (playerBlack.points || 0) + blackScore;
-
-    // 🕓 Save latest round
-    playerWhite.lastRound = round;
-    playerBlack.lastRound = round;
-
-    //  Record result
-    if (!resultsData[category]) resultsData[category] = [];
-    resultsData[category].push({ round, white, black, result });
+  await writeJSON("players.json", players);
+  res.json({
+    message: "Player added successfully",
+    player: players[username],
   });
-
-  //  Save all updates
-  writeJSON(playersFile, players);
-  writeJSON(resultsFile, resultsData);
-
-  res.json({ message: `✅ Round ${round} results recorded successfully.` });
 });
 
-//  TABLE / LEADERBOARD
-router.get("/table/:category", (req, res) => {
-  const { category } = req.params;
-  const players = readJSON(playersFile);
-  const resultsData = fs.existsSync(resultsFile)
-    ? readJSON(resultsFile)
-    : {};
+// ✅ 2. Delete player
+router.delete("/delete-player/:username", async (req, res) => {
+  const username = req.params.username;
+  const players = await readJSON("players.json");
 
-  const categoryPlayers = Object.values(players).filter(
+  if (!players[username])
+    return res.status(404).json({ message: "Player not found" });
+
+  delete players[username];
+  await writeJSON("players.json", players);
+
+  res.json({ message: `${username} deleted successfully` });
+});
+
+// ✅ 3. Add player to a category
+router.post("/add-to-category", async (req, res) => {
+  const { username, category } = req.body;
+  const players = await readJSON("players.json");
+
+  if (!players[username])
+    return res.status(404).json({ message: "Player not found" });
+
+  players[username].category = category;
+  await writeJSON("players.json", players);
+
+  res.json({
+    message: `${username} added to category ${category}`,
+    player: players[username],
+  });
+});
+
+// ✅ 4. Create pairings (2-player pairing system)
+router.post("/create-pairings", async (req, res) => {
+  const { category } = req.body;
+  const players = await readJSON("players.json");
+
+  const filtered = Object.values(players).filter(
     (p) => p.category === category
   );
 
-  if (!categoryPlayers.length)
-    return res.status(404).json({ error: "No players found in this category" });
+  if (filtered.length < 2)
+    return res.status(400).json({ message: "Not enough players to pair" });
 
-  const totalRounds = new Set((resultsData[category] || []).map(r => r.round)).size || 1;
-
-  //  Compute accuracy dynamically via utility
-  categoryPlayers.forEach((p) => {
-    p.accuracy = calculateAccuracy(p.points || 0, totalRounds, p.rating);
-  });
-
-  // Sort leaderboard
-  const sorted = categoryPlayers.sort((a, b) => b.points - a.points);
-
-  const table = sorted.map((p, i) => ({
-  rank: i + 1,
-  name: p.name || "-",
-  username: p.username,
-  rapid: `${p.rating}${p.recentGain ? `+${p.recentGain}` : ""}`,
-  blitz: p.blitz ? `${p.blitz}${p.recentGainBlitz ? `+${p.recentGainBlitz}` : ""}` : "-",
-  bullet: p.bullet ? `${p.bullet}${p.recentGainBullet ? `+${p.recentGainBullet}` : ""}` : "-",
-  points: p.points || 0,
-  accuracy: p.accuracy,
-}));
-
-  res.json({ category, totalRounds, table });
-});
-
-//  ADMIN RESET (Clear category or all data)
-router.post("/reset", (req, res) => {
-  const { target } = req.body; // "all" or a specific category
-
-  const players = readJSON(playersFile);
-  const results = fs.existsSync(resultsFile) ? readJSON(resultsFile) : {};
-  const pairings = fs.existsSync(pairingsFile) ? readJSON(pairingsFile) : {};
-
-  if (target === "all") {
-    //  Reset everything
-    writeJSON(playersFile, {});
-    writeJSON(resultsFile, {});
-    writeJSON(pairingsFile, {});
-    writeJSON(logsFile, []);
-    return res.json({ message: "✅ All tournament data cleared successfully." });
-  }
-
-  //  Reset only one category
-  // Filter players and results belonging to the target category
-  const filteredPlayers = Object.fromEntries(
-    Object.entries(players).filter(([_, p]) => p.category !== target)
-  );
-
-  const filteredResults = Object.fromEntries(
-    Object.entries(results).filter(([cat]) => cat !== target)
-  );
-
-  const filteredPairings = Object.fromEntries(
-    Object.entries(pairings).filter(([cat]) => cat !== target)
-  );
-
-  writeJSON(playersFile, filteredPlayers);
-  writeJSON(resultsFile, filteredResults);
-  writeJSON(pairingsFile, filteredPairings);
-
-  res.json({
-    message: `✅ Category '${target}' cleared successfully.`,
-  });
-});
-
-//  PLAYER MATCH HISTORY
-router.get("/history/:username", (req, res) => {
-  const { username } = req.params;
-
-  const players = readJSON(playersFile);
-  const resultsData = fs.existsSync(resultsFile) ? readJSON(resultsFile) : {};
-
-  if (!players[username]) {
-    return res.status(404).json({ error: "Player not found" });
-  }
-
-  //  Find all matches the player participated in
-  const allMatches = [];
-  for (const category in resultsData) {
-    const categoryMatches = resultsData[category].filter(
-      (m) => m.white === username || m.black === username
-    );
-
-    categoryMatches.forEach((match) => {
-      const isWhite = match.white === username;
-      const opponent = isWhite ? match.black : match.white;
-      const result = isWhite
-        ? match.result
-        : match.result.split("-").reverse().join("-");
-
-      allMatches.push({
-        category,
-        round: match.round,
-        opponent,
-        result,
+  const pairings = [];
+  for (let i = 0; i < filtered.length; i += 2) {
+    if (filtered[i + 1])
+      pairings.push({
+        white: filtered[i].username,
+        black: filtered[i + 1].username,
       });
-    });
   }
 
-  if (allMatches.length === 0) {
-    return res.status(404).json({ error: "No match history found for this player" });
-  }
-
-  // 🕓 Sort by round
-  const sortedHistory = allMatches.sort((a, b) => a.round - b.round);
-
+  await writeJSON(`pairings_${category}.json`, pairings);
   res.json({
-    username,
-    totalMatches: sortedHistory.length,
-    history: sortedHistory,
+    message: `Pairings created for ${category}`,
+    pairings,
   });
 });
 
-//  Edit player name or move to another category
-router.post("/edit-player", (req, res) => {
-  const { username, newName, newCategory } = req.body;
-  const players = readJSON(playersFile);
+// ✅ 5. Update rating (Rapid, Blitz, or Bullet)
+router.post("/update-rating", async (req, res) => {
+  const { username, ratingChange, mode } = req.body; // mode: "rapid" | "blitz" | "bullet"
+  const players = await readJSON("players.json");
 
-  if (!players[username]) {
-    return res.status(404).json({ error: "Player not found" });
-  }
+  if (!players[username])
+    return res.status(404).json({ message: "Player not found" });
 
-  if (newName) players[username].name = newName.trim();
-  if (newCategory) players[username].category = newCategory;
+  const validModes = ["rapid", "blitz", "bullet"];
+  const selectedMode = validModes.includes(mode) ? mode : "rapid";
 
-  writeJSON(playersFile, players);
-  res.json({ message: "✅ Player updated successfully." });
+  // Apply rating change
+  players[username][selectedMode] += ratingChange;
+  players[username].recentGain =
+    (players[username].recentGain || 0) + ratingChange;
+
+  await writeJSON("players.json", players);
+  res.json({
+    message: `${username}'s ${selectedMode} rating updated successfully`,
+    player: players[username],
+  });
 });
 
-//  Delete category pairings only
-router.post("/delete-pairings", (req, res) => {
-  const { category } = req.body;
-  const pairings = readJSON(pairingsFile);
+// ✅ 6. Reset weekly recent gains (to clear + values)
+router.post("/reset-weekly-gains", async (req, res) => {
+  const players = await readJSON("players.json");
 
-  if (!pairings[category]) {
-    return res.status(404).json({ error: "No pairings found for this category" });
-  }
+  Object.values(players).forEach((p) => {
+    p.recentGain = 0;
+  });
 
-  delete pairings[category];
-  writeJSON(pairingsFile, pairings);
-  res.json({ message: `✅ Pairings for '${category}' deleted successfully.` });
+  await writeJSON("players.json", players);
+  res.json({
+    message: "Weekly recent gains reset successfully",
+  });
 });
 
-router.put("/players/bio/:username", async (req, res) => {
-  const { username } = req.params;
-  const { bio } = req.body;
+// ✅ 7. Update player bio
+router.post("/update-bio", async (req, res) => {
+  const { username, bio } = req.body;
+  const players = await readJSON("players.json");
 
-  const players = readJSON(playersFile);
-  const player = players[username];
+  if (!players[username])
+    return res.status(404).json({ message: "Player not found" });
 
-  if (!player) return res.status(404).json({ message: "Player not found" });
+  players[username].bio = bio.trim();
+  await writeJSON("players.json", players);
 
-  player.bio = bio;
-  writeJSON(playersFile, players);
-
-  res.json({ message: "Bio updated successfully", player });
+  res.json({
+    message: "Bio updated successfully",
+    player: players[username],
+  });
 });
 
-// Create new pairings (Admin only)
-router.post("/pairings/create", async (req, res) => {
-  try {
-    const { category, rounds = 5, intervalHours = 24 } = req.body;
-    const result = await createPairings(category, rounds, intervalHours);
-    res.json({ message: "Pairings created successfully", result });
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
+// ✅ 8. View player details (for leaderboard click)
+router.get("/player/:username", async (req, res) => {
+  const username = req.params.username;
+  const players = await readJSON("players.json");
+
+  if (!players[username])
+    return res.status(404).json({ message: "Player not found" });
+
+  res.json(players[username]);
 });
 
-// Add player (admin)
-router.post("/players/add", async (req, res) => {
-  const { name, username, category, rapid, blitz, bullet } = req.body;
-  const players = readJSON(playersFile);
+// ✅ 9. Leaderboard (sorted by Rapid rating)
+router.get("/leaderboard", async (req, res) => {
+  const players = await readJSON("players.json");
 
-  if (players[username]) {
-    return res.status(400).json({ message: "Username already exists" });
-  }
+  const leaderboard = Object.values(players)
+    .sort((a, b) => b.rapid - a.rapid)
+    .map((p, index) => ({
+      rank: index + 1,
+      name: p.name,
+      username: p.username,
+      rapid: `${p.rapid}${p.recentGain ? `+${p.recentGain}` : ""}`,
+      blitz: `${p.blitz}`,
+      bullet: `${p.bullet}`,
+    }));
 
-  // Set default ratings and values if not provided
-  const newPlayer = {
-    name: name?.trim() || username,
-    username: username.trim(),
-    category: category || "Uncategorized",
-    rapid: rapid || 1200,
-    blitz: blitz || 1200,
-    bullet: bullet || 1200,
-    recentGain: 0,
-    points: 0,
-    accuracy: 0,
-    bio: "",
-    joinedAt: new Date().toISOString(),
-  };
-
-  players[username] = newPlayer;
-  writeJSON(playersFile, players);
-
-  res.json({ message: "✅ Player added successfully", newPlayer });
+  res.json(leaderboard);
 });
 
 module.exports = router;
