@@ -155,7 +155,10 @@ router.post("/record-result", async (req, res) => {
 
   // Track recent gains & stats
   players[playerA].recentGain = (players[playerA].recentGain || 0) + changeA;
+  players[playerA].lastGainDate = new Date().toISOString();
+
   players[playerB].recentGain = (players[playerB].recentGain || 0) + changeB;
+  players[playerB].lastGainDate = new Date().toISOString();
 
   players[playerA].points = (players[playerA].points || 0) + scoreA;
   players[playerB].points = (players[playerB].points || 0) + scoreB;

@@ -1,18 +1,43 @@
 const fs = require("fs-extra");
-const DATA_DIR = "./data";
+const path = require("path");
+const DATA_DIR = path.join(__dirname, "../data");
 
-export async function readJSON(file) {
+// Ensure data dir exists
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+
+async function readJSON(file) {
+  const full = path.join(DATA_DIR, file);
   try {
-    return await fs.readJSON(`${DATA_DIR}/${file}`);
-  } catch {
+    if (!fs.existsSync(full)) {
+      // return sensible default depending on filename
+      if (file.endsWith(".json")) {
+        // heuristics: results -> [], pairings -> {}, players -> {}
+        if (file.includes("results")) return [];
+        if (file.includes("pairings")) return {};
+        if (file.includes("admin_logs")) return [];
+        return {};
+      }
+      return {};
+    }
+    return await fs.readJSON(full);
+  } catch (err) {
+    console.error("readJSON error:", full, err);
+    // fallback safe defaults
+    if (file.includes("results")) return [];
+    if (file.includes("pairings")) return {};
+    if (file.includes("admin_logs")) return [];
     return {};
   }
 }
 
-export async function writeJSON(file, data) {
+async function writeJSON(file, data) {
+  const full = path.join(DATA_DIR, file);
   try {
-    await fs.writeJSON(`${DATA_DIR}/${file}`, data, { spaces: 2 });
+    await fs.writeJSON(full, data, { spaces: 2 });
   } catch (err) {
-    console.error("Error writing file:", file, err);
+    console.error("writeJSON error:", full, err);
   }
 }
+
+module.exports = { readJSON, writeJSON };
+

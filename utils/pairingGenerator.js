@@ -1,4 +1,4 @@
-import { readJSON, writeJSON } from "./fileHandler.js";
+const { readJSON, writeJSON } = require("./fileHandler");
 
 // helper to shuffle players
 function shuffle(arr) {
@@ -6,11 +6,12 @@ function shuffle(arr) {
 }
 
 // auto-generate pairings for rounds
-export async function createPairings(category, rounds = 5, intervalHours = 24) {
-  const players = await readJSON("players.json");
+async function createPairings(category, rounds = 5, intervalHours = 24) {
+  const playersObj = await readJSON("players.json");
+  const players = Object.values(playersObj || {});
   const filtered = players.filter(p => p.category === category);
 
-  if (filtered.length < 2) {
+  if (!filtered || filtered.length < 2) {
     throw new Error("Not enough players to create pairings.");
   }
 
@@ -32,6 +33,12 @@ export async function createPairings(category, rounds = 5, intervalHours = 24) {
           white: shuffled[i].username,
           black: shuffled[i + 1].username,
         });
+      } else {
+        // odd player — you could push bye or a placeholder
+        roundPairings.push({
+          white: shuffled[i].username,
+          black: null,
+        });
       }
     }
 
@@ -44,6 +51,12 @@ export async function createPairings(category, rounds = 5, intervalHours = 24) {
     });
   }
 
-  await writeJSON("pairings.json", pairingsData);
-  return pairingsData;
+  // Merge into existing pairings.json rather than overwrite everything
+  const existing = await readJSON("pairings.json");
+  const merged = Object.assign(existing || {}, pairingsData);
+  await writeJSON("pairings.json", merged);
+  return merged;
 }
+
+module.exports = { createPairings };
+
