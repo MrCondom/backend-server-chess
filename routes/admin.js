@@ -127,26 +127,33 @@ router.post("/create-pairings", async (req, res) => {
 
 
 // ✅ 5. Update rating (auto-calculated)
-router.post("/update-rating", async (req, res) => {
-  const { playerA, playerB, scoreA, scoreB, mode } = req.body;
+router.post("/record-result", async (req, res) => {
+  const { playerA, playerB, result, mode } = req.body;
   const players = await readJSON("players.json");
 
   if (!players[playerA] || !players[playerB])
-    return res.status(404).json({ message: "Player not found" });
+    return res.status(404).json({ message: "One or both players not found" });
 
+  // Accept scores like "1:0", "0.5:0.5", "2:0", "1.5:0"
+  const [scoreA, scoreB] = result.split(":").map(Number);
+  if (isNaN(scoreA) || isNaN(scoreB))
+    return res.status(400).json({ message: "Invalid score format (e.g., 1:0 or 0.5:0.5)" });
+
+  // Validate mode
   const validModes = ["rapid", "blitz", "bullet"];
   const selectedMode = validModes.includes(mode) ? mode : "rapid";
 
   const ratingA = players[playerA][selectedMode];
   const ratingB = players[playerB][selectedMode];
 
+  // Use your rating change calculator
   const { changeA, changeB } = calculateRatingChange(ratingA, ratingB, scoreA, scoreB);
 
-  // Apply rating updates
+  // Apply changes
   players[playerA][selectedMode] += changeA;
   players[playerB][selectedMode] += changeB;
 
-  // Track recent gain and stats
+  // Track recent gains & stats
   players[playerA].recentGain = (players[playerA].recentGain || 0) + changeA;
   players[playerB].recentGain = (players[playerB].recentGain || 0) + changeB;
 
@@ -157,11 +164,20 @@ router.post("/update-rating", async (req, res) => {
   players[playerB].totalRounds = (players[playerB].totalRounds || 0) + 1;
 
   await writeJSON("players.json", players);
+
   res.json({
-    message: `✅ Ratings updated successfully for ${playerA} & ${playerB}`,
-    updates: {
-      [playerA]: players[playerA],
-      [playerB]: players[playerB],
+    message: `✅ Game recorded and ratings updated for ${playerA} vs ${playerB}`,
+    results: {
+      [playerA]: {
+        newRating: players[playerA][selectedMode],
+        gained: changeA,
+        totalPoints: players[playerA].points,
+      },
+      [playerB]: {
+        newRating: players[playerB][selectedMode],
+        gained: changeB,
+        totalPoints: players[playerB].points,
+      },
     },
   });
 });
