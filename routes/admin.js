@@ -88,8 +88,16 @@ router.post("/input-scores", (req, res) => {
       blackScore
     );
 
-    playerWhite.rating += changeA;
-    playerBlack.rating += changeB;
+    if (type === "rapid") {
+  playerWhite.rapid = (playerWhite.rapid || 1200) + changeA;
+  playerBlack.rapid = (playerBlack.rapid || 1200) + changeB;
+} else if (type === "blitz") {
+  playerWhite.blitz = (playerWhite.blitz || 1200) + changeA;
+  playerBlack.blitz = (playerBlack.blitz || 1200) + changeB;
+} else if (type === "bullet") {
+  playerWhite.bullet = (playerWhite.bullet || 1200) + changeA;
+  playerBlack.bullet = (playerBlack.bullet || 1200) + changeB;
+}
 
     // Track visible rating gain (for 7 days on public leaderboard)
   playerWhite.recentGain = (playerWhite.recentGain || 0) + changeA;
@@ -144,12 +152,15 @@ router.get("/table/:category", (req, res) => {
   const sorted = categoryPlayers.sort((a, b) => b.points - a.points);
 
   const table = sorted.map((p, i) => ({
-    rank: i + 1,
-    username: p.username,
-    points: p.points || 0,
-    rating: p.rating,
-    accuracy: p.accuracy,
-  }));
+  rank: i + 1,
+  name: p.name || "-",
+  username: p.username,
+  rapid: `${p.rating}${p.recentGain ? `+${p.recentGain}` : ""}`,
+  blitz: p.blitz ? `${p.blitz}${p.recentGainBlitz ? `+${p.recentGainBlitz}` : ""}` : "-",
+  bullet: p.bullet ? `${p.bullet}${p.recentGainBullet ? `+${p.recentGainBullet}` : ""}` : "-",
+  points: p.points || 0,
+  accuracy: p.accuracy,
+}));
 
   res.json({ category, totalRounds, table });
 });
@@ -300,16 +311,32 @@ router.post("/pairings/create", async (req, res) => {
 
 // Add player (admin)
 router.post("/players/add", async (req, res) => {
-  const newPlayer = req.body;
+  const { name, username, category, rapid, blitz, bullet } = req.body;
   const players = readJSON(playersFile);
 
-  if (players[newPlayer.username]) {
+  if (players[username]) {
     return res.status(400).json({ message: "Username already exists" });
   }
 
-  players[newPlayer.username] = newPlayer;
+  // Set default ratings and values if not provided
+  const newPlayer = {
+    name: name?.trim() || username,
+    username: username.trim(),
+    category: category || "Uncategorized",
+    rapid: rapid || 1200,
+    blitz: blitz || 1200,
+    bullet: bullet || 1200,
+    recentGain: 0,
+    points: 0,
+    accuracy: 0,
+    bio: "",
+    joinedAt: new Date().toISOString(),
+  };
+
+  players[username] = newPlayer;
   writeJSON(playersFile, players);
-  res.json({ message: "Player added successfully", newPlayer });
+
+  res.json({ message: "✅ Player added successfully", newPlayer });
 });
 
 module.exports = router;
