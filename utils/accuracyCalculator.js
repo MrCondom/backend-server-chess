@@ -12,7 +12,7 @@ function calculateAccuracy(points, totalRounds, rating) {
 
   const totalGames = totalRounds * 2;
 
-  const winRate = points / totalGames;     // consistency per round
+  const winRate = Math.min(1, points / totalGames);     // consistency per round
   const ratingFactor = rating / 2000;       // scaled to elite level baseline
 
   const accuracy = (winRate * ratingFactor * 100).toFixed(1);

@@ -9,6 +9,9 @@ function calculateRatingChange(ratingA, ratingB, scoreA, scoreB) {
   const rule = rules.baseRules.find(
     (r) => diff >= r.range[0] && diff <= r.range[1]
   );
+  if (!rule) {
+    return {changeA: 0, changeB: 0};
+  }
 
   // 🧠 Apply base gain/loss for the result
   if (scoreA > scoreB) {
