@@ -130,6 +130,7 @@ router.post("/create-pairings", async (req, res) => {
 router.post("/record-result", async (req, res) => {
   const { playerA, playerB, result, mode } = req.body;
   const players = await readJSON("players.json");
+  const results = await readJSON("results.json");
 
   if (!players[playerA] || !players[playerB])
     return res.status(404).json({ message: "One or both players not found" });
@@ -166,7 +167,19 @@ router.post("/record-result", async (req, res) => {
   players[playerA].totalRounds = (players[playerA].totalRounds || 0) + 1;
   players[playerB].totalRounds = (players[playerB].totalRounds || 0) + 1;
 
+  //Log match in result.json
+  results.push({
+    playerA,
+    playerB,
+    result,
+    mode: selectedMode,
+    changeA,
+    changeB,
+    date: new Date().toISOString(),
+  });
+
   await writeJSON("players.json", players);
+  await writeJSON("results.json", results);
 
   res.json({
     message: `✅ Game recorded and ratings updated for ${playerA} vs ${playerB}`,

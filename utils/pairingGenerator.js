@@ -15,6 +15,9 @@ async function createPairings(category, rounds = 5, intervalHours = 24) {
     throw new Error("Not enough players to create pairings.");
   }
 
+  //Automatically determine the number of rounds if not provided
+  if (!rounds) rounds = filtered.length - 1;
+
   const now = Date.now();
   const pairingsData = {
     [category]: {
