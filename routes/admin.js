@@ -155,11 +155,13 @@ router.post("/record-result", async (req, res) => {
   players[playerB][selectedMode] += changeB;
 
   // Track recent gains & stats
-  players[playerA].recentGain = (players[playerA].recentGain || 0) + changeA;
-  players[playerA].lastGainDate = new Date().toISOString();
+  const now = new Date().toISOString();
 
-  players[playerB].recentGain = (players[playerB].recentGain || 0) + changeB;
-  players[playerB].lastGainDate = new Date().toISOString();
+players[playerA].recentGain = (players[playerA].recentGain || 0) + changeA;
+players[playerA].lastGainDate = now;
+
+players[playerB].recentGain = (players[playerB].recentGain || 0) + changeB;
+players[playerB].lastGainDate = now;
 
   players[playerA].points = (players[playerA].points || 0) + scoreA;
   players[playerB].points = (players[playerB].points || 0) + scoreB;
@@ -212,7 +214,35 @@ router.post("/reset-weekly-gains", async (req, res) => {
     message: "🔄 Weekly recent gains reset successfully",
   });
 });
+// ✅ 6B. Apply and clear gains older than 7 days
+router.post("/apply-rating-gains", async (req, res) => {
+  const players = await readJSON("players.json");
+  const now = new Date();
 
+  let updatedCount = 0;
+
+  Object.values(players).forEach((p) => {
+    if (!p.lastGainDate || !p.recentGain) return;
+
+    const lastGainDate = new Date(p.lastGainDate);
+    const diffDays = (now - lastGainDate) / (1000 * 60 * 60 * 24);
+
+    // Apply after 7 days
+    if (diffDays >= 7 && p.recentGain !== 0) {
+      // Add to rapid rating
+      p.rapid += p.recentGain;
+      p.recentGain = 0;
+      p.lastGainDate = now.toISOString();
+      updatedCount++;
+    }
+  });
+
+  await writeJSON("players.json", players);
+
+  res.json({
+    message: `✅ ${updatedCount} player(s) had rating gains applied and cleared.`,
+  });
+});
 
 // ✅ 7. Update player bio
 router.post("/update-bio", async (req, res) => {
@@ -282,6 +312,28 @@ router.post("/edit-player", async (req, res) => {
 
   res.json({
     message: "✏️ Player updated successfully",
+    player: players[username],
+  });
+});
+
+// ✅ 11. Manually edit player gain (for score corrections or testing)
+router.post("/edit-gain", async (req, res) => {
+  const { username, recentGain } = req.body;
+  const players = await readJSON("players.json");
+
+  if (!players[username])
+    return res.status(404).json({ message: "Player not found" });
+
+  if (typeof recentGain !== "number")
+    return res.status(400).json({ message: "recentGain must be a number" });
+
+  players[username].recentGain = recentGain;
+  players[username].lastGainDate = new Date().toISOString();
+
+  await writeJSON("players.json", players);
+
+  res.json({
+    message: `✏️ Recent gain for ${username} updated to ${recentGain}`,
     player: players[username],
   });
 });
