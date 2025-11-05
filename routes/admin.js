@@ -43,39 +43,50 @@ router.post("/login", async (req, res) => {
   });
 });
 
+//1. Add Player
+ router.post("/add-player", async (req, res) => {
+  try {
+    const { fullName, username, bio, category, rapid, blitz, bullet } = req.body;
 
-// ✅ 1. Add new player
-router.post("/add-player", async (req, res) => {
-  const { name, username } = req.body;
+    // ✅ Check all required fields
+    if (!fullName || !username || !bio || !category || !rapid || !blitz || !bullet) {
+      return res.status(400).json({ success: false, message: "All fields are required." });
+    }
 
-  if (!name || !username)
-    return res.status(400).json({ message: "Name and username are required" });
+    // ✅ Read existing players
+    const players = await readJSON(playersPath);
 
-  const players = await readJSON("players.json");
+    // ✅ Check if username already exists
+    const existing = players.find((p) => p.username.toLowerCase() === username.toLowerCase());
+    if (existing) {
+      return res.status(400).json({ success: false, message: "Username already exists." });
+    }
 
-  if (players[username])
-    return res.status(400).json({ message: "Player already exists" });
+    // ✅ Create player object
+    const newPlayer = {
+      id: Date.now(),
+      fullName,
+      username,
+      bio,
+      category,
+      ratings: {
+        rapid: Number(rapid),
+        blitz: Number(blitz),
+        bullet: Number(bullet),
+      },
+      createdAt: new Date().toISOString(),
+    };
 
-  players[username] = {
-    name,
-    username,
-    rapid: 1200,
-    blitz: 1200,
-    bullet: 1200,
-    recentGain: 0,
-    bio: "",
-    category: "",
-    points: 0,
-    totalRounds: 0,
-  };
+    // ✅ Add to players list
+    players.push(newPlayer);
+    await writeJSON(playersPath, players);
 
-  await writeJSON("players.json", players);
-  res.json({
-    message: "✅ Player added successfully",
-    player: players[username],
-  });
+    res.json({ success: true, message: "Player added successfully.", player: newPlayer });
+  } catch (err) {
+    console.error("Error adding player:", err);
+    res.status(500).json({ success: false, message: "Server error." });
+  }
 });
-
 
 // ✅ 2. Delete player
 router.delete("/delete-player/:username", async (req, res) => {
