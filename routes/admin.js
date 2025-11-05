@@ -43,7 +43,10 @@ router.post("/login", async (req, res) => {
   });
 });
 
+<<<<<<< HEAD
 //1. Add Player
+=======
+>>>>>>> 835aaa697650b314336679e699755cc61a3f1ea1
  router.post("/add-player", async (req, res) => {
   try {
     const { fullName, username, bio, category, rapid, blitz, bullet } = req.body;
