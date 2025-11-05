@@ -12,6 +12,7 @@ const { calculateRatingChange } = require("../utils/ratingCalculator");
 // File paths
 const dataDir = path.join(__dirname, "../data");
 const logsFile = path.join(dataDir, "admin_logs.json");
+const playersPath = path.join(dataDir, "players.json");
 
 
 // 🛡️ ADMIN LOGIN
@@ -43,8 +44,8 @@ router.post("/login", async (req, res) => {
   });
 });
 
-  //✅ 1. Add Player
- router.post("/add-player", async (req, res) => {
+  // 1. ✅ Add Player (object-based)
+router.post("/add-player", async (req, res) => {
   try {
     const { fullName, username, bio, category, rapid, blitz, bullet } = req.body;
 
@@ -53,16 +54,18 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ success: false, message: "All fields are required." });
     }
 
-    // ✅ Read existing players
+    // ✅ Read existing players (object)
     const players = await readJSON(playersPath);
 
+    // Ensure players is an object
+    const playerData = typeof players === "object" && players !== null ? players : {};
+
     // ✅ Check if username already exists
-    const existing = players.find((p) => p.username.toLowerCase() === username.toLowerCase());
-    if (existing) {
+    if (playerData[username.toLowerCase()]) {
       return res.status(400).json({ success: false, message: "Username already exists." });
     }
 
-    // ✅ Create player object
+    // ✅ Create new player object
     const newPlayer = {
       id: Date.now(),
       fullName,
@@ -75,11 +78,15 @@ router.post("/login", async (req, res) => {
         bullet: Number(bullet),
       },
       createdAt: new Date().toISOString(),
+      recentGain: 0,       // optional
+      lastGainDate: null,  // optional
     };
 
-    // ✅ Add to players list
-    players.push(newPlayer);
-    await writeJSON(playersPath, players);
+    // ✅ Add to players object keyed by lowercase username
+    playerData[username.toLowerCase()] = newPlayer;
+
+    // ✅ Save back to JSON
+    await writeJSON(playersPath, playerData);
 
     res.json({ success: true, message: "Player added successfully.", player: newPlayer });
   } catch (err) {

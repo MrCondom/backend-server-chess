@@ -33,6 +33,7 @@ async function readJSON(file) {
 async function writeJSON(file, data) {
   const full = path.join(DATA_DIR, file);
   try {
+    await fs.ensureDir(path.dirname(full));
     await fs.writeJSON(full, data, { spaces: 2 });
   } catch (err) {
     console.error("writeJSON error:", full, err);
