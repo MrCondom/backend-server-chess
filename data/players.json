@@ -1,1 +1,32 @@
-{}
+{
+  "emmagency": {
+    "id": 1762378670812,
+    "fullName": "Emmanuel Akomas",
+    "username": "Emmagency",
+    "bio": "fight or die",
+    "category": "Heavyweight",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-05T21:37:50.812Z",
+    "recentGain": 0,
+    "lastGainDate": null
+  },
+  "pamboy27 ": {
+    "id": 1762378741422,
+    "fullName": "Pamela Ezeh",
+    "username": "Pamboy27 ",
+    "bio": "My mamas boy",
+    "category": "Middleweight",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-05T21:39:01.422Z",
+    "recentGain": 0,
+    "lastGainDate": null
+  }
+}

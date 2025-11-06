@@ -1,1 +1,49 @@
-{}
+{
+  "Middleweight": {
+    "countdown": 86400,
+    "rounds": [
+      {
+        "round": 1,
+        "pairings": [
+          {
+            "white": "Jaxman",
+            "black": "Richie Prime"
+          },
+          {
+            "white": "Emmagency",
+            "black": "Pamboy27 "
+          }
+        ],
+        "availableAt": "2025-11-05T21:57:16.356Z"
+      },
+      {
+        "round": 2,
+        "pairings": [
+          {
+            "white": "Jaxman",
+            "black": "Pamboy27 "
+          },
+          {
+            "white": "Richie Prime",
+            "black": "Emmagency"
+          }
+        ],
+        "availableAt": "2025-11-06T21:57:16.356Z"
+      },
+      {
+        "round": 3,
+        "pairings": [
+          {
+            "white": "Jaxman",
+            "black": "Emmagency"
+          },
+          {
+            "white": "Pamboy27 ",
+            "black": "Richie Prime"
+          }
+        ],
+        "availableAt": "2025-11-07T21:57:16.356Z"
+      }
+    ]
+  }
+}

@@ -11,8 +11,8 @@ const { calculateRatingChange } = require("../utils/ratingCalculator");
 
 // File paths
 const dataDir = path.join(__dirname, "../data");
-const logsFile = path.join(dataDir, "admin_logs.json");
-const playersPath = path.join(dataDir, "players.json");
+//const logsFile = path.join(dataDir, "admin_logs.json");
+//const playersPath = path.join(dataDir, "players.json");
 
 
 // 🛡️ ADMIN LOGIN
@@ -55,7 +55,7 @@ router.post("/add-player", async (req, res) => {
     }
 
     // ✅ Read existing players (object)
-    const players = await readJSON(playersPath);
+    const players = await readJSON("players.json");
 
     // Ensure players is an object
     const playerData = typeof players === "object" && players !== null ? players : {};
@@ -86,7 +86,7 @@ router.post("/add-player", async (req, res) => {
     playerData[username.toLowerCase()] = newPlayer;
 
     // ✅ Save back to JSON
-    await writeJSON(playersPath, playerData);
+    await writeJSON("players.json", playerData);
 
     res.json({ success: true, message: "Player added successfully.", player: newPlayer });
   } catch (err) {
@@ -268,7 +268,7 @@ router.post("/update-bio", async (req, res) => {
   const players = await readJSON("players.json");
 
   if (!players[username])
-    return res.status(404).json({ message: "Player not found" });
+    return res.status(404).json("Player Not found");
 
   players[username].bio = bio.trim();
   await writeJSON("players.json", players);
