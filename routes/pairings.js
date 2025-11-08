@@ -11,10 +11,13 @@ function getVisibleRounds(allRounds) {
   const visibleRounds = [];
   let nextRoundAt = null;
 
-  allRounds.forEach((round) => {
+  allRounds.forEach((round, i) => {
     const available = new Date(round.availableAt).getTime();
-    if (available <= now || i === 0) {
+    if (available <= now ) {
       visibleRounds.push(round);
+    } else if (visibleRounds.length === 0) {
+        visibleRounds.push(round);
+        nextRoundAt = round.availableAt;
     } else if (!nextRoundAt) {
       nextRoundAt = round.availableAt; // first future round
     }
