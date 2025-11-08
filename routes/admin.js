@@ -142,6 +142,33 @@ router.post("/create-pairings", async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
+//Get Pairings
+router.get("/pairings", async (req, res) => {
+  try {
+    const data = await readJSON("pairings.json");
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to read pairings", error: err.message });
+  }
+});
+
+// ✅ DELETE pairings by category
+router.delete("/pairings/:category", async (req, res) => {
+  const category = req.params.category;
+  try {
+    const data = await readJSON("pairings.json");
+
+    if (!data[category]) {
+      return res.status(404).json({ message: `No pairings found for ${category}` });
+    }
+
+    delete data[category];
+    await writeJSON("pairings.json", data);
+    res.json({ message: `❌ Pairings deleted for ${category}` });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 
 // ✅ 5. Update rating (auto-calculated)

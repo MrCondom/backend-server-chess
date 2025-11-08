@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const {readJSON, writeJSON} = require("./utils/fileHandler");
 const {createPairings} =require("./utils/pairingGenerator");
 const adminRoutes = require("./routes/admin");
+const pairingsRoutes = require("./routes/pairings")
 
 
 dotenv.config();
@@ -73,27 +74,6 @@ Object.keys(categories).forEach(cat => {
 res.json(categories);
 });
 
-
-// ✅ Get current pairings (visible round)
-app.get("/pairings/current/:category", async (req, res) => {
-  const { category } = req.params;
-  const data = await readJSON("pairings.json");
-  const now = new Date();
-
-  if (!data[category]) {
-    return res.status(404).json({ message: "No pairings yet for this category." });
-  }
-
-  const visibleRounds = data[category].rounds.filter(
-    (r) => new Date(r.availableAt) <= now
-  );
-
-  res.json({
-    countdown: data[category].countdown,
-    visibleRounds,
-  });
-});
-
 // ✅ Get Player Info by Username (clickable profile)
 app.get("/player/:username", async (req, res) => {
   const { username } = req.params;
@@ -115,7 +95,8 @@ app.get("/player/:username", async (req, res) => {
 });
 
 
-app.use("/admin", adminRoutes)
+app.use("/admin", adminRoutes);
+app.use("/pairings", pairingsRoutes);
 
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

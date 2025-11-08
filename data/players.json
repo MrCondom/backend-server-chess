@@ -4,7 +4,7 @@
     "fullName": "Emmanuel Akomas",
     "username": "Emmagency",
     "bio": "fight or die",
-    "category": "Heavyweight",
+    "category": "Middleweight",
     "ratings": {
       "rapid": 2000,
       "blitz": 2000,
@@ -26,6 +26,66 @@
       "bullet": 2000
     },
     "createdAt": "2025-11-05T21:39:01.422Z",
+    "recentGain": 0,
+    "lastGainDate": null
+  },
+  "emerald ": {
+    "id": 1762474886488,
+    "fullName": "Emperor okwu",
+    "username": "Emerald ",
+    "bio": "Silent killar",
+    "category": "Middleweight",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-07T00:21:26.488Z",
+    "recentGain": 0,
+    "lastGainDate": null
+  },
+  "richie prime": {
+    "id": 1762480575529,
+    "fullName": "Richard Pepple ",
+    "username": "Richie Prime",
+    "bio": "I am deadly ",
+    "category": "Middleweight",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-07T01:56:15.529Z",
+    "recentGain": 0,
+    "lastGainDate": null
+  },
+  "tom sheriff ": {
+    "id": 1762481079298,
+    "fullName": "Tom Officer",
+    "username": "Tom Sheriff ",
+    "bio": "Police boss",
+    "category": "Heavyweight",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-07T02:04:39.298Z",
+    "recentGain": 0,
+    "lastGainDate": null
+  },
+  "don pedro ": {
+    "id": 1762481111398,
+    "fullName": "Don T",
+    "username": "Don Pedro ",
+    "bio": "House officer",
+    "category": "Heavyweight",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-07T02:05:11.398Z",
     "recentGain": 0,
     "lastGainDate": null
   }
