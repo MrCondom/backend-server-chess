@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "round": "1",
+    "mode": "rapid",
+    "playerA": "onengs",
+    "playerB": "emmagency",
+    "scoreA": 0,
+    "scoreB": 2,
+    "changeA": -2,
+    "changeB": 1,
+    "date": "2025-11-09T21:06:58.933Z",
+    "category": "Heavyweight"
+  }
+]

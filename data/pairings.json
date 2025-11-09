@@ -6,58 +6,11 @@
         "round": 1,
         "pairings": [
           {
-            "white": "Tom Sheriff ",
-            "black": "Don Pedro "
+            "white": "onengs",
+            "black": "emmagency"
           }
         ],
-        "availableAt": "2025-11-07T02:05:36.619Z"
-      }
-    ]
-  },
-  "Middleweight": {
-    "countdown": 86400,
-    "rounds": [
-      {
-        "round": 1,
-        "pairings": [
-          {
-            "white": "Emmagency",
-            "black": "Richie Prime"
-          },
-          {
-            "white": "Pamboy27 ",
-            "black": "Emerald "
-          }
-        ],
-        "availableAt": "2025-11-08T02:42:33.831Z"
-      },
-      {
-        "round": 2,
-        "pairings": [
-          {
-            "white": "Emmagency",
-            "black": "Emerald "
-          },
-          {
-            "white": "Richie Prime",
-            "black": "Pamboy27 "
-          }
-        ],
-        "availableAt": "2025-11-09T02:42:33.831Z"
-      },
-      {
-        "round": 3,
-        "pairings": [
-          {
-            "white": "Emmagency",
-            "black": "Pamboy27 "
-          },
-          {
-            "white": "Emerald ",
-            "black": "Richie Prime"
-          }
-        ],
-        "availableAt": "2025-11-10T02:42:33.831Z"
+        "availableAt": "2025-11-09T21:05:35.077Z"
       }
     ]
   }

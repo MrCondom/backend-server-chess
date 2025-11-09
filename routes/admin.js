@@ -45,35 +45,50 @@ router.post("/login", async (req, res) => {
 });
 
   // 1. ✅ Add Player (object-based)
-router.post("/add-player", async (req, res) => {
+  router.post("/add-player", async (req, res) => {
   try {
-    const { fullName, username, rapid, blitz, bullet } = req.body;
+    const { fullName, username, rapid, blitz, bullet, category, bio } = req.body;
 
-    // ✂️ Trim spaces for all string inputs
-    const cleanFullName = fullName.trim();
-    const cleanUsername = username.trim().toLowerCase(); // for key consistency
+    // ✂️ Trim and clean all string inputs
+    const cleanFullName = fullName?.trim();
+    const cleanUsername = username?.trim().toLowerCase(); // Key consistency
+    const cleanCategory = category?.trim() || "Uncategorized";
+    const cleanBio = bio?.trim() || "";
+
     const cleanRapid = Number(rapid);
     const cleanBlitz = Number(blitz);
     const cleanBullet = Number(bullet);
 
+    // ✅ Validate required fields
     if (!cleanFullName || !cleanUsername || !cleanRapid || !cleanBlitz || !cleanBullet) {
-      return res.status(400).json({ success: false, message: "Full name, username and ratings are required." });
+      return res.status(400).json({
+        success: false,
+        message: "Full name, username, and all ratings are required.",
+      });
     }
 
+    // ✅ Load existing players
     const players = await readJSON("players.json");
     const playerData = typeof players === "object" && players !== null ? players : {};
 
+    // ✅ Prevent duplicate username
     const exists = Object.keys(playerData).some(
       (key) => key.toLowerCase() === cleanUsername
     );
     if (exists) {
-      return res.status(400).json({ success: false, message: "Username already exists." });
+      return res.status(400).json({
+        success: false,
+        message: "Username already exists.",
+      });
     }
 
+    // ✅ Construct new player object
     const newPlayer = {
       id: Date.now(),
       fullName: cleanFullName,
       username: cleanUsername,
+      category: cleanCategory,
+      bio: cleanBio,
       ratings: {
         rapid: cleanRapid,
         blitz: cleanBlitz,
@@ -82,13 +97,19 @@ router.post("/add-player", async (req, res) => {
       createdAt: new Date().toISOString(),
       recentGain: 0,
       lastGainDate: null,
+      points: 0,
+      totalRounds: 0,
     };
 
-    // ✂️ Use trimmed lowercase key
+    // ✅ Save new player
     playerData[cleanUsername] = newPlayer;
     await writeJSON("players.json", playerData);
 
-    res.json({ success: true, message: "Player added successfully.", player: newPlayer });
+    res.json({
+      success: true,
+      message: "Player added successfully.",
+      player: newPlayer,
+    });
   } catch (err) {
     console.error("Error adding player:", err);
     res.status(500).json({ success: false, message: "Server error." });

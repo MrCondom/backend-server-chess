@@ -1,55 +1,36 @@
 {
-  "pamboy27": {
-    "id": 1762719776137,
-    "fullName": "Pamela Ezeh",
-    "username": "pamboy27",
+  "onengs": {
+    "id": 1762721146351,
+    "fullName": "Jack souless",
+    "username": "onengs",
+    "category": "Heavyweight",
+    "bio": "Killa",
     "ratings": {
-      "rapid": 2000,
+      "rapid": 1998,
       "blitz": 1800,
-      "bullet": 1800
+      "bullet": 2000
     },
-    "createdAt": "2025-11-09T20:22:56.137Z",
-    "recentGain": 0,
-    "lastGainDate": null
+    "createdAt": "2025-11-09T20:45:46.351Z",
+    "recentGain": -2,
+    "lastGainDate": "2025-11-09T21:06:58.933Z",
+    "points": 0,
+    "totalRounds": 1
   },
-  "jaxman": {
-    "id": 1762719811755,
-    "fullName": "Jackson Chinedu",
-    "username": "jaxman",
+  "emmagency": {
+    "id": 1762722222136,
+    "fullName": "Emmanuel Akomas",
+    "username": "emmagency",
+    "category": "Heavyweight",
+    "bio": "Wickedness is natural",
     "ratings": {
-      "rapid": 2000,
+      "rapid": 2001,
       "blitz": 2000,
       "bullet": 2000
     },
-    "createdAt": "2025-11-09T20:23:31.755Z",
-    "recentGain": 0,
-    "lastGainDate": null
-  },
-  "richie prime": {
-    "id": 1762719844888,
-    "fullName": "Richard Pepple",
-    "username": "richie prime",
-    "ratings": {
-      "rapid": 2000,
-      "blitz": 2000,
-      "bullet": 2000
-    },
-    "createdAt": "2025-11-09T20:24:04.888Z",
-    "recentGain": 0,
-    "lastGainDate": null
-  },
-  "taliban": {
-    "id": 1762719735455,
-    "fullName": "Thomas Jack",
-    "username": "Taliban",
-    "ratings": {
-      "rapid": 2000,
-      "blitz": 2000,
-      "bullet": 2000
-    },
-    "createdAt": "2025-11-09T20:22:15.455Z",
-    "recentGain": 0,
-    "lastGainDate": null,
-    "bio": "I'm deadly"
+    "createdAt": "2025-11-09T21:03:42.136Z",
+    "recentGain": 1,
+    "lastGainDate": "2025-11-09T21:06:58.933Z",
+    "points": 2,
+    "totalRounds": 1
   }
 }
