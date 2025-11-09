@@ -1,120 +1,55 @@
 {
-  "pamboy27 ": {
-    "id": 1762378741422,
+  "pamboy27": {
+    "id": 1762719776137,
     "fullName": "Pamela Ezeh",
-    "username": "Pamboy27 ",
-    "bio": "My mamas boy",
-    "category": "Middleweight",
+    "username": "pamboy27",
     "ratings": {
       "rapid": 2000,
-      "blitz": 2000,
-      "bullet": 2000
+      "blitz": 1800,
+      "bullet": 1800
     },
-    "createdAt": "2025-11-05T21:39:01.422Z",
+    "createdAt": "2025-11-09T20:22:56.137Z",
     "recentGain": 0,
     "lastGainDate": null
   },
-  "emerald ": {
-    "id": 1762474886488,
-    "fullName": "Emperor okwu",
-    "username": "Emerald ",
-    "bio": "Silent killar",
-    "category": "Middleweight",
+  "jaxman": {
+    "id": 1762719811755,
+    "fullName": "Jackson Chinedu",
+    "username": "jaxman",
     "ratings": {
       "rapid": 2000,
       "blitz": 2000,
       "bullet": 2000
     },
-    "createdAt": "2025-11-07T00:21:26.488Z",
+    "createdAt": "2025-11-09T20:23:31.755Z",
     "recentGain": 0,
     "lastGainDate": null
   },
   "richie prime": {
-    "id": 1762480575529,
-    "fullName": "Richard Pepple ",
-    "username": "Richie Prime",
-    "bio": "I am deadly ",
-    "category": "Middleweight",
+    "id": 1762719844888,
+    "fullName": "Richard Pepple",
+    "username": "richie prime",
     "ratings": {
       "rapid": 2000,
       "blitz": 2000,
       "bullet": 2000
     },
-    "createdAt": "2025-11-07T01:56:15.529Z",
-    "recentGain": 0,
-    "lastGainDate": null
-  },
-  "tom sheriff ": {
-    "id": 1762481079298,
-    "fullName": "Tom Officer",
-    "username": "Tom Sheriff ",
-    "bio": "Police boss",
-    "category": "Heavyweight",
-    "ratings": {
-      "rapid": 2000,
-      "blitz": 2000,
-      "bullet": 2000
-    },
-    "createdAt": "2025-11-07T02:04:39.298Z",
-    "recentGain": 0,
-    "lastGainDate": null
-  },
-  "don pedro ": {
-    "id": 1762481111398,
-    "fullName": "Don T",
-    "username": "Don Pedro ",
-    "bio": "House officer",
-    "category": "Heavyweight",
-    "ratings": {
-      "rapid": 2000,
-      "blitz": 2000,
-      "bullet": 2000
-    },
-    "createdAt": "2025-11-07T02:05:11.398Z",
-    "recentGain": 0,
-    "lastGainDate": null
-  },
-  "Gboy4life ": {
-    "id": 1762694963455,
-    "fullName": "Godswill Edion",
-    "username": "Gboy4life ",
-    "bio": "Wicked",
-    "category": "Middleweight",
-    "ratings": {
-      "rapid": 2000,
-      "blitz": 2000,
-      "bullet": 2008
-    },
-    "createdAt": "2025-11-09T13:29:23.455Z",
+    "createdAt": "2025-11-09T20:24:04.888Z",
     "recentGain": 0,
     "lastGainDate": null
   },
   "taliban": {
-    "id": 1762694259544,
-    "fullName": "Emmanuel Akomas ",
+    "id": 1762719735455,
+    "fullName": "Thomas Jack",
     "username": "Taliban",
-    "bio": "Killa",
-    "category": "Middleweight ",
     "ratings": {
       "rapid": 2000,
       "blitz": 2000,
       "bullet": 2000
     },
-    "createdAt": "2025-11-09T13:17:39.544Z",
+    "createdAt": "2025-11-09T20:22:15.455Z",
     "recentGain": 0,
-    "lastGainDate": null
-  },
-  "mr9iceguy": {
-    "id": 1762698242142,
-    "fullName": "Ralphel Boma",
-    "username": "Mr9iceguy ",
-    "ratings": {
-      "rapid": 2008,
-      "blitz": 2000,
-      "bullet": 2000
-    },
-    "createdAt": "2025-11-09T14:24:02.142Z",
-    "recentGain": 0,
-    "lastGainDate": null
+    "lastGainDate": null,
+    "bio": "I'm deadly"
   }
 }

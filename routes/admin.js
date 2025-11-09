@@ -49,39 +49,43 @@ router.post("/add-player", async (req, res) => {
   try {
     const { fullName, username, rapid, blitz, bullet } = req.body;
 
-    // Required fields
-    if (!fullName || !username || !rapid || !blitz || !bullet) {
+    // ✂️ Trim spaces for all string inputs
+    const cleanFullName = fullName.trim();
+    const cleanUsername = username.trim().toLowerCase(); // for key consistency
+    const cleanRapid = Number(rapid);
+    const cleanBlitz = Number(blitz);
+    const cleanBullet = Number(bullet);
+
+    if (!cleanFullName || !cleanUsername || !cleanRapid || !cleanBlitz || !cleanBullet) {
       return res.status(400).json({ success: false, message: "Full name, username and ratings are required." });
     }
 
     const players = await readJSON("players.json");
     const playerData = typeof players === "object" && players !== null ? players : {};
 
-    // Check if username exists (case-insensitive)
     const exists = Object.keys(playerData).some(
-      (key) => key.toLowerCase() === username.toLowerCase()
+      (key) => key.toLowerCase() === cleanUsername
     );
     if (exists) {
       return res.status(400).json({ success: false, message: "Username already exists." });
     }
 
-    // Create new player
     const newPlayer = {
       id: Date.now(),
-      fullName,
-      username, // keep casing here
+      fullName: cleanFullName,
+      username: cleanUsername,
       ratings: {
-        rapid: Number(rapid),
-        blitz: Number(blitz),
-        bullet: Number(bullet)
+        rapid: cleanRapid,
+        blitz: cleanBlitz,
+        bullet: cleanBullet,
       },
       createdAt: new Date().toISOString(),
       recentGain: 0,
-      lastGainDate: null
+      lastGainDate: null,
     };
 
-    // Save with lowercase key
-    playerData[username.trim().toLowerCase()] = newPlayer;
+    // ✂️ Use trimmed lowercase key
+    playerData[cleanUsername] = newPlayer;
     await writeJSON("players.json", playerData);
 
     res.json({ success: true, message: "Player added successfully.", player: newPlayer });
@@ -108,7 +112,8 @@ router.delete("/delete-player/:username", async (req, res) => {
 
 // ✅ 3. Add player to a category
 router.post("/add-to-category", async (req, res) => {
-  const { username, category } = req.body;
+  const username = req.body.username.trim().toLowerCase(); // ✂️ trim username
+  const category = req.body.category.trim(); // ✂️ trim category
   const players = await readJSON("players.json");
 
   if (!players[username])
@@ -122,7 +127,6 @@ router.post("/add-to-category", async (req, res) => {
     player: players[username],
   });
 });
-
 
 // ✅ 4. Create pairings (automatic)
 router.post("/create-pairings", async (req, res) => {
@@ -169,76 +173,242 @@ router.delete("/pairings/:category", async (req, res) => {
 
 // ✅ 5. Update rating (auto-calculated)
 router.post("/record-result", async (req, res) => {
-  const { white: playerA, black: playerB, result, ratings: mode, round } = req.body;
-  const players = await readJSON("players.json");
+  try {
+    const { white, black, result, ratings: mode, round } = req.body;
+
+    // Helper to normalize names
+    const normalize = (str) => str?.trim().toLowerCase();
+
+    // Load data
+    const players = await readJSON("players.json");
+    const pairings = await readJSON("pairings.json");
+    const results = await readJSON("results.json");
+
+    // Trim and normalize
+    const whiteName = normalize(white);
+    const blackName = normalize(black);
+    const category = Object.values(players).find(
+      (p) => normalize(p.username) === whiteName || normalize(p.username) === blackName
+    )?.category;
+
+    if (!category || !pairings[category]) {
+      return res.status(404).json({ message: "No valid category found for this match." });
+    }
+
+    // 🧩 1️⃣ Verify that the match exists in pairings.json
+    const currentRound = pairings[category].rounds.find(
+      (r) =>
+        r.round == round &&
+        r.pairings.some(
+          (p) =>
+            normalize(p.white) === whiteName && normalize(p.black) === blackName
+        )
+    );
+
+    if (!currentRound) {
+      return res.status(400).json({
+        message: `❌ No such pairing found for Round ${round}.`,
+      });
+    }
+
+    // 🧩 2️⃣ Prevent duplicate or reversed entry
+    const duplicate = results.some(
+      (r) =>
+        normalize(r.playerA) === whiteName &&
+        normalize(r.playerB) === blackName &&
+        r.round == round
+    );
+
+    const reversed = results.some(
+      (r) =>
+        normalize(r.playerA) === blackName &&
+        normalize(r.playerB) === whiteName &&
+        r.round == round
+    );
+
+    if (duplicate || reversed) {
+      return res.status(400).json({
+        message: "❌ This match (or its reverse) has already been recorded.",
+      });
+    }
+
+    // 🧩 3️⃣ Locate player objects safely
+    const playerAKey = Object.keys(players).find(
+      (k) => normalize(k) === whiteName
+    );
+    const playerBKey = Object.keys(players).find(
+      (k) => normalize(k) === blackName
+    );
+
+    if (!playerAKey || !playerBKey)
+      return res.status(404).json({ message: "One or both players not found." });
+
+    const playerA = players[playerAKey];
+    const playerB = players[playerBKey];
+
+    // 🧩 4️⃣ Validate and parse result
+    const [scoreA, scoreB] = result.split(":").map(Number);
+    if (isNaN(scoreA) || isNaN(scoreB))
+      return res
+        .status(400)
+        .json({ message: "Invalid score format (e.g., 1:0 or 0.5:0.5)" });
+
+    // 🧩 5️⃣ Validate mode
+    const validModes = ["rapid", "blitz", "bullet"];
+    const selectedMode = validModes.includes(mode) ? mode : "rapid";
+
+    // 🧩 6️⃣ Calculate rating changes
+    const ratingA = playerA.ratings[selectedMode];
+    const ratingB = playerB.ratings[selectedMode];
+    const { changeA, changeB } = calculateRatingChange(ratingA, ratingB, scoreA, scoreB);
+
+    // Apply rating updates
+    playerA.ratings[selectedMode] += changeA;
+    playerB.ratings[selectedMode] += changeB;
+
+    // Update stats
+    const now = new Date().toISOString();
+    playerA.recentGain = (playerA.recentGain || 0) + changeA;
+    playerB.recentGain = (playerB.recentGain || 0) + changeB;
+    playerA.lastGainDate = playerB.lastGainDate = now;
+
+    playerA.points = (playerA.points || 0) + scoreA;
+    playerB.points = (playerB.points || 0) + scoreB;
+    playerA.totalRounds = (playerA.totalRounds || 0) + 1;
+    playerB.totalRounds = (playerB.totalRounds || 0) + 1;
+
+    // 🧩 7️⃣ Record in results.json
+    results.push({
+      round,
+      mode: selectedMode,
+      playerA: playerA.username.trim(),
+      playerB: playerB.username.trim(),
+      scoreA,
+      scoreB,
+      changeA,
+      changeB,
+      date: now,
+      category,
+    });
+
+    // Save files
+    await writeJSON("players.json", players);
+    await writeJSON("results.json", results);
+
+    res.json({
+      message: `✅ Round ${round} result recorded: ${playerA.username} vs ${playerB.username}`,
+      changes: {
+        [playerA.username]: { newRating: playerA.ratings[selectedMode], gained: changeA },
+        [playerB.username]: { newRating: playerB.ratings[selectedMode], gained: changeB },
+      },
+    });
+  } catch (error) {
+    console.error("Error recording result:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.put("/edit-result/:index", async (req, res) => {
+  try {
+    const { index } = req.params;
+    const { white, black, result, ratings: mode, round } = req.body;
+
+    const results = await readJSON("results.json");
+    const players = await readJSON("players.json");
+
+    const i = Number(index);
+    if (isNaN(i) || i < 0 || i >= results.length) {
+      return res.status(400).json({ message: "Invalid result index" });
+    }
+
+    const oldResult = results[i];
+    const normalize = (s) => s?.trim().toLowerCase();
+
+    // rollback old rating changes
+    const playerAKey = Object.keys(players).find(k => normalize(k) === normalize(oldResult.playerA));
+    const playerBKey = Object.keys(players).find(k => normalize(k) === normalize(oldResult.playerB));
+    if (playerAKey && playerBKey) {
+      const mode = oldResult.mode;
+      players[playerAKey].ratings[mode] -= oldResult.changeA;
+      players[playerBKey].ratings[mode] -= oldResult.changeB;
+      players[playerAKey].points -= oldResult.scoreA;
+      players[playerBKey].points -= oldResult.scoreB;
+    }
+
+    // compute new score and changes
+    const [scoreA, scoreB] = result.split(":").map(Number);
+    if (isNaN(scoreA) || isNaN(scoreB))
+      return res.status(400).json({ message: "Invalid score format (use 1:0, 0:1, 0.5:0.5)" });
+
+    const validModes = ["rapid", "blitz", "bullet"];
+    const selectedMode = validModes.includes(mode) ? mode : "rapid";
+
+    const playerA = players[playerAKey];
+    const playerB = players[playerBKey];
+    const { changeA, changeB } = calculateRatingChange(
+      playerA.ratings[selectedMode],
+      playerB.ratings[selectedMode],
+      scoreA,
+      scoreB
+    );
+
+    // apply new changes
+    playerA.ratings[selectedMode] += changeA;
+    playerB.ratings[selectedMode] += changeB;
+    playerA.points += scoreA;
+    playerB.points += scoreB;
+
+    const now = new Date().toISOString();
+
+    // update result entry
+    results[i] = {
+      ...oldResult,
+      playerA: playerA.username,
+      playerB: playerB.username,
+      scoreA,
+      scoreB,
+      changeA,
+      changeB,
+      mode: selectedMode,
+      round,
+      date: now,
+    };
+
+    await writeJSON("players.json", players);
+    await writeJSON("results.json", results);
+
+    res.json({
+      message: `✅ Result updated successfully for ${playerA.username} vs ${playerB.username}`,
+      updated: results[i],
+    });
+  } catch (err) {
+    console.error("Error editing result:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.get("/results", async (req, res) => {
   const results = await readJSON("results.json");
+  res.json(results);
+});
 
-  if (!players[playerA] || !players[playerB])
-    return res.status(404).json({ message: "One or both players not found" });
+router.delete("/delete-result", async (req, res) => {
+  const { round, white, black } = req.body;
+  const normalize = (s) => s.trim().toLowerCase();
 
-  // Accept scores like "1:0", "0.5:0.5", "2:0", "1.5:0"
-  const [scoreA, scoreB] = result.split(":").map(Number);
-  if (isNaN(scoreA) || isNaN(scoreB))
-    return res.status(400).json({ message: "Invalid score format (e.g., 1:0 or 0.5:0.5)" });
+  const results = await readJSON("results.json");
+  const newResults = results.filter(
+    (r) =>
+      !(
+        r.round == round &&
+        normalize(r.playerA) === normalize(white) &&
+        normalize(r.playerB) === normalize(black)
+      )
+  );
 
-  // Validate mode
-  const validModes = ["rapid", "blitz", "bullet"];
-  const selectedMode = validModes.includes(mode) ? mode : "rapid";
+  await writeJSON("results.json", newResults);
 
-  const ratingA = players[playerA][selectedMode];
-  const ratingB = players[playerB][selectedMode];
-
-  // Use your rating change calculator
-  const { changeA, changeB } = calculateRatingChange(ratingA, ratingB, scoreA, scoreB);
-
-  // Apply changes
-  players[playerA][selectedMode] += changeA;
-  players[playerB][selectedMode] += changeB;
-
-  // Track recent gains & stats
-  const now = new Date().toISOString();
-
-players[playerA].recentGain = (players[playerA].recentGain || 0) + changeA;
-players[playerA].lastGainDate = now;
-
-players[playerB].recentGain = (players[playerB].recentGain || 0) + changeB;
-players[playerB].lastGainDate = now;
-
-  players[playerA].points = (players[playerA].points || 0) + scoreA;
-  players[playerB].points = (players[playerB].points || 0) + scoreB;
-
-  players[playerA].totalRounds = (players[playerA].totalRounds || 0) + 1;
-  players[playerB].totalRounds = (players[playerB].totalRounds || 0) + 1;
-
-  //Log match in result.json
-  results.push({
-    playerA,
-    playerB,
-    result,
-    mode: selectedMode,
-    changeA,
-    changeB,
-    date: new Date().toISOString(),
-  });
-
-  await writeJSON("players.json", players);
-  await writeJSON("results.json", results);
-
-  res.json({
-    message: `✅ Game recorded and ratings updated for ${playerA} vs ${playerB}`,
-    results: {
-      [playerA]: {
-        newRating: players[playerA][selectedMode],
-        gained: changeA,
-        totalPoints: players[playerA].points,
-      },
-      [playerB]: {
-        newRating: players[playerB][selectedMode],
-        gained: changeB,
-        totalPoints: players[playerB].points,
-      },
-    },
-  });
+  res.json({ message: `🗑️ Result for ${white} vs ${black} (Round ${round}) deleted.` });
 });
 
 
@@ -287,13 +457,14 @@ router.post("/apply-rating-gains", async (req, res) => {
 
 // ✅ 7. Update player bio
 router.post("/update-bio", async (req, res) => {
-  const { username, bio } = req.body;
+  const username = req.body.username.trim().toLowerCase(); // ✂️ trim username
+  const bio = req.body.bio.trim(); // ✂️ trim bio
   const players = await readJSON("players.json");
 
   if (!players[username])
     return res.status(404).json("Player Not found");
 
-  players[username].bio = bio.trim();
+  players[username].bio = bio;
   await writeJSON("players.json", players);
 
   res.json({
@@ -301,7 +472,6 @@ router.post("/update-bio", async (req, res) => {
     player: players[username],
   });
 });
-
 
 // ✅ 8. View player details (with accuracy)
 router.get("/player/:username", async (req, res) => {
@@ -345,7 +515,7 @@ router.post("/edit-player", async (req, res) => {
   const { username, updates } = req.body;
   const players = await readJSON("players.json");
 
-  // Find key case-insensitively
+  // Find key case-insensitively and trim spaces
   const key = Object.keys(players).find(
     (k) => k.trim().toLowerCase() === username.trim().toLowerCase()
   );
@@ -363,16 +533,24 @@ router.post("/edit-player", async (req, res) => {
     });
   }
 
-  // Merge ratings if present
+  // Trim fullName and username if present
+  if (updates.fullName) updates.fullName = updates.fullName.trim();
+  if (updates.username) updates.username = updates.username.trim();
+
+  // Merge ratings if present and trim numeric values
   if (updates.ratings) {
-    player.ratings = { ...player.ratings, ...updates.ratings };
+    player.ratings = {
+      rapid: updates.ratings.rapid !== undefined ? Number(updates.ratings.rapid) : player.ratings.rapid,
+      blitz: updates.ratings.blitz !== undefined ? Number(updates.ratings.blitz) : player.ratings.blitz,
+      bullet: updates.ratings.bullet !== undefined ? Number(updates.ratings.bullet) : player.ratings.bullet,
+    };
     delete updates.ratings;
   }
 
-  // Merge username / fullName
+  // Merge remaining fields
   Object.assign(player, updates);
 
-  // Handle username change → always lowercase key
+  // Handle username change → always lowercase key, trimmed
   const newKey = player.username.trim().toLowerCase();
   if (newKey !== key) {
     players[newKey] = player;
@@ -390,9 +568,11 @@ router.post("/edit-player", async (req, res) => {
   });
 });
 
+
 // ✅ 11. Manually edit player gain (for score corrections or testing)
 router.post("/edit-gain", async (req, res) => {
-  const { username, recentGain } = req.body;
+  const username = req.body.username.trim().toLowerCase(); // ✂️ trim username
+  const { recentGain } = req.body;
   const players = await readJSON("players.json");
 
   if (!players[username])
