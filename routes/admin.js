@@ -11,7 +11,7 @@ const { calculateRatingChange } = require("../utils/ratingCalculator");
 
 // File paths
 const dataDir = path.join(__dirname, "../data");
-//const logsFile = path.join(dataDir, "admin_logs.json");
+const logsFile = path.join(dataDir, "admin_logs.json");
 //const playersPath = path.join(dataDir, "players.json");
 
 
@@ -61,7 +61,10 @@ router.post("/add-player", async (req, res) => {
     const playerData = typeof players === "object" && players !== null ? players : {};
 
     // ✅ Check if username already exists
-    if (playerData[username.toLowerCase()]) {
+    const exists = Object.keys(playerData).some(
+      (key) => key.toLowerCase() === username.toLowerCase()
+    );
+    if (exists) {
       return res.status(400).json({ success: false, message: "Username already exists." });
     }
 
@@ -83,7 +86,7 @@ router.post("/add-player", async (req, res) => {
     };
 
     // ✅ Add to players object keyed by lowercase username
-    playerData[username.toLowerCase()] = newPlayer;
+    playerData[username] = newPlayer;
 
     // ✅ Save back to JSON
     await writeJSON("players.json", playerData);
@@ -349,15 +352,37 @@ router.post("/edit-player", async (req, res) => {
   const { username, updates } = req.body;
   const players = await readJSON("players.json");
 
-  if (!players[username])
-    return res.status(404).json({ message: "Player not found" });
+  const key = Object.keys(players).find(
+    (k) => k.trim().toLowerCase() === username.trim().toLowerCase()
+  );
+  if (!key) return res.status(404).json({ message: "Player not found" });
 
-  Object.assign(players[username], updates);
+  const player = players[key];
+
+  // Prevent editing bio directly
+  if (updates.bio) delete updates.bio;
+
+  // Merge ratings properly
+  if (updates.ratings) {
+    player.ratings = { ...player.ratings, ...updates.ratings };
+    delete updates.ratings;
+  }
+
+  Object.assign(player, updates);
+
+  // Handle username change (update key)
+  if (updates.username && updates.username !== key) {
+    players[updates.username] = player;
+    delete players[key];
+  } else {
+    players[key] = player;
+  }
+
   await writeJSON("players.json", players);
 
   res.json({
     message: "✏️ Player updated successfully",
-    player: players[username],
+    player,
   });
 });
 

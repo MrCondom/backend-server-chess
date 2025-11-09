@@ -1,19 +1,4 @@
 {
-  "emmagency": {
-    "id": 1762378670812,
-    "fullName": "Emmanuel Akomas",
-    "username": "Emmagency",
-    "bio": "fight or die",
-    "category": "Middleweight",
-    "ratings": {
-      "rapid": 2000,
-      "blitz": 2000,
-      "bullet": 2000
-    },
-    "createdAt": "2025-11-05T21:37:50.812Z",
-    "recentGain": 0,
-    "lastGainDate": null
-  },
   "pamboy27 ": {
     "id": 1762378741422,
     "fullName": "Pamela Ezeh",
@@ -86,6 +71,36 @@
       "bullet": 2000
     },
     "createdAt": "2025-11-07T02:05:11.398Z",
+    "recentGain": 0,
+    "lastGainDate": null
+  },
+  "Emmagency": {
+    "id": 1762694259544,
+    "fullName": "Emmanuel Akomas ",
+    "username": "Emmagency",
+    "bio": "Killa",
+    "category": "Middleweight ",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-09T13:17:39.544Z",
+    "recentGain": 0,
+    "lastGainDate": null
+  },
+  "Gboy4life ": {
+    "id": 1762694963455,
+    "fullName": "Godswill Edion",
+    "username": "Gboy4life ",
+    "bio": "Wicked",
+    "category": "Middleweight",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2008
+    },
+    "createdAt": "2025-11-09T13:29:23.455Z",
     "recentGain": 0,
     "lastGainDate": null
   }
