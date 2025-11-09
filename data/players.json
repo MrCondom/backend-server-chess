@@ -74,21 +74,6 @@
     "recentGain": 0,
     "lastGainDate": null
   },
-  "Emmagency": {
-    "id": 1762694259544,
-    "fullName": "Emmanuel Akomas ",
-    "username": "Emmagency",
-    "bio": "Killa",
-    "category": "Middleweight ",
-    "ratings": {
-      "rapid": 2000,
-      "blitz": 2000,
-      "bullet": 2000
-    },
-    "createdAt": "2025-11-09T13:17:39.544Z",
-    "recentGain": 0,
-    "lastGainDate": null
-  },
   "Gboy4life ": {
     "id": 1762694963455,
     "fullName": "Godswill Edion",
@@ -101,6 +86,34 @@
       "bullet": 2008
     },
     "createdAt": "2025-11-09T13:29:23.455Z",
+    "recentGain": 0,
+    "lastGainDate": null
+  },
+  "taliban": {
+    "id": 1762694259544,
+    "fullName": "Emmanuel Akomas ",
+    "username": "Taliban",
+    "bio": "Killa",
+    "category": "Middleweight ",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-09T13:17:39.544Z",
+    "recentGain": 0,
+    "lastGainDate": null
+  },
+  "mr9iceguy": {
+    "id": 1762698242142,
+    "fullName": "Ralphel Boma",
+    "username": "Mr9iceguy ",
+    "ratings": {
+      "rapid": 2008,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-09T14:24:02.142Z",
     "recentGain": 0,
     "lastGainDate": null
   }

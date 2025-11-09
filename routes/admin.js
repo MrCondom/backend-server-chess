@@ -47,20 +47,17 @@ router.post("/login", async (req, res) => {
   // 1. ✅ Add Player (object-based)
 router.post("/add-player", async (req, res) => {
   try {
-    const { fullName, username, bio, category, rapid, blitz, bullet } = req.body;
+    const { fullName, username, rapid, blitz, bullet } = req.body;
 
-    // ✅ Check all required fields
-    if (!fullName || !username || !bio || !category || !rapid || !blitz || !bullet) {
-      return res.status(400).json({ success: false, message: "All fields are required." });
+    // Required fields
+    if (!fullName || !username || !rapid || !blitz || !bullet) {
+      return res.status(400).json({ success: false, message: "Full name, username and ratings are required." });
     }
 
-    // ✅ Read existing players (object)
     const players = await readJSON("players.json");
-
-    // Ensure players is an object
     const playerData = typeof players === "object" && players !== null ? players : {};
 
-    // ✅ Check if username already exists
+    // Check if username exists (case-insensitive)
     const exists = Object.keys(playerData).some(
       (key) => key.toLowerCase() === username.toLowerCase()
     );
@@ -68,27 +65,23 @@ router.post("/add-player", async (req, res) => {
       return res.status(400).json({ success: false, message: "Username already exists." });
     }
 
-    // ✅ Create new player object
+    // Create new player
     const newPlayer = {
       id: Date.now(),
       fullName,
-      username,
-      bio,
-      category,
+      username, // keep casing here
       ratings: {
         rapid: Number(rapid),
         blitz: Number(blitz),
-        bullet: Number(bullet),
+        bullet: Number(bullet)
       },
       createdAt: new Date().toISOString(),
-      recentGain: 0,       // optional
-      lastGainDate: null,  // optional
+      recentGain: 0,
+      lastGainDate: null
     };
 
-    // ✅ Add to players object keyed by lowercase username
-    playerData[username] = newPlayer;
-
-    // ✅ Save back to JSON
+    // Save with lowercase key
+    playerData[username.trim().toLowerCase()] = newPlayer;
     await writeJSON("players.json", playerData);
 
     res.json({ success: true, message: "Player added successfully.", player: newPlayer });
@@ -176,7 +169,7 @@ router.delete("/pairings/:category", async (req, res) => {
 
 // ✅ 5. Update rating (auto-calculated)
 router.post("/record-result", async (req, res) => {
-  const { playerA, playerB, result, mode } = req.body;
+  const { white: playerA, black: playerB, result, ratings: mode, round } = req.body;
   const players = await readJSON("players.json");
   const results = await readJSON("results.json");
 
@@ -352,6 +345,7 @@ router.post("/edit-player", async (req, res) => {
   const { username, updates } = req.body;
   const players = await readJSON("players.json");
 
+  // Find key case-insensitively
   const key = Object.keys(players).find(
     (k) => k.trim().toLowerCase() === username.trim().toLowerCase()
   );
@@ -359,20 +353,29 @@ router.post("/edit-player", async (req, res) => {
 
   const player = players[key];
 
-  // Prevent editing bio directly
-  if (updates.bio) delete updates.bio;
+  // Only allow username, fullName, ratings
+  const allowedFields = ["username", "fullName", "ratings"];
+  const invalidFields = Object.keys(updates).filter(f => !allowedFields.includes(f));
+  if (invalidFields.length > 0) {
+    return res.status(400).json({
+      success: false,
+      message: `Invalid fields: ${invalidFields.join(", ")}. Only username, fullName, and ratings can be updated.`
+    });
+  }
 
-  // Merge ratings properly
+  // Merge ratings if present
   if (updates.ratings) {
     player.ratings = { ...player.ratings, ...updates.ratings };
     delete updates.ratings;
   }
 
+  // Merge username / fullName
   Object.assign(player, updates);
 
-  // Handle username change (update key)
-  if (updates.username && updates.username !== key) {
-    players[updates.username] = player;
+  // Handle username change → always lowercase key
+  const newKey = player.username.trim().toLowerCase();
+  if (newKey !== key) {
+    players[newKey] = player;
     delete players[key];
   } else {
     players[key] = player;
@@ -381,7 +384,8 @@ router.post("/edit-player", async (req, res) => {
   await writeJSON("players.json", players);
 
   res.json({
-    message: "✏️ Player updated successfully",
+    success: true,
+    message: "Player updated successfully",
     player,
   });
 });
