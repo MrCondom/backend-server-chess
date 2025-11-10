@@ -151,16 +151,19 @@ router.post("/add-to-category", async (req, res) => {
 
 // ✅ 4. Create pairings (automatic)
 router.post("/create-pairings", async (req, res) => {
-  let { category, rounds = 5, intervalHours = 2 } = req.body;
+  let { category, rounds, intervalHours = 2 } = req.body; // DO NOT default rounds to 5
   category = category.trim().toLowerCase();
 
   try {
-    // ✅ Call generator with rounds & intervalHours
-    const result = await createPairings(category, rounds, intervalHours);
+    // Only pass rounds if user provided a number
+    const roundsNum = typeof rounds === "number" ? rounds : undefined;
 
-    // ✅ Save tracking info for countdown & current round
+    // Call generator with optional rounds
+    const result = await createPairings(category, roundsNum, intervalHours);
+
+    // Save tracking info for countdown & current round
     const data = await readJSON("pairings.json");
-    const catData = result[category]; // from generator
+    const catData = result[category];
 
     const nextRoundAt = catData.rounds.length
       ? catData.rounds[0].availableAt
@@ -171,7 +174,7 @@ router.post("/create-pairings", async (req, res) => {
       currentRound: 1,
       intervalHours,
       nextRoundAt,
-      countdown: intervalHours * 3600, // seconds
+      countdown: intervalHours * 3600,
       completed: false,
     };
 

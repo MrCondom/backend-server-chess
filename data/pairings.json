@@ -1,1 +1,53 @@
-{}
+{
+  "heavyweight": {
+    "rounds": [
+      {
+        "round": 1,
+        "pairings": [
+          {
+            "white": "onengs",
+            "black": "pamboy27"
+          },
+          {
+            "white": "jaxman",
+            "black": "emmagency"
+          }
+        ],
+        "availableAt": "2025-11-10T22:21:17.680Z"
+      },
+      {
+        "round": 2,
+        "pairings": [
+          {
+            "white": "onengs",
+            "black": "emmagency"
+          },
+          {
+            "white": "pamboy27",
+            "black": "jaxman"
+          }
+        ],
+        "availableAt": "2025-11-10T23:21:17.680Z"
+      },
+      {
+        "round": 3,
+        "pairings": [
+          {
+            "white": "onengs",
+            "black": "jaxman"
+          },
+          {
+            "white": "emmagency",
+            "black": "pamboy27"
+          }
+        ],
+        "availableAt": "2025-11-11T00:21:17.680Z"
+      }
+    ],
+    "currentRound": 2,
+    "intervalHours": 1,
+    "nextRoundAt": "2025-11-10T23:21:18.063Z",
+    "countdown": 3600,
+    "completed": false
+  }
+}
