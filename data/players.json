@@ -1,70 +1,70 @@
 {
-  "jaxman": {
-    "id": 1762765920904,
-    "fullName": "Jackson Chinedu",
-    "username": "jaxman",
-    "category": "Middleweight",
-    "bio": "Deadpool",
-    "ratings": {
-      "rapid": 1998,
-      "blitz": 2000,
-      "bullet": 2000
-    },
-    "createdAt": "2025-11-10T09:12:00.904Z",
-    "recentGain": 2,
-    "lastGainDate": "2025-11-10T09:21:16.754Z",
-    "points": 0,
-    "totalRounds": 0
-  },
-  "emmagency": {
-    "id": 1762765970908,
-    "fullName": "Emmanuel Akomas",
-    "username": "emmagency",
-    "category": "Heavyweight",
-    "bio": "Heavyweight dealer",
-    "ratings": {
-      "rapid": 2001,
-      "blitz": 2000,
-      "bullet": 2000
-    },
-    "createdAt": "2025-11-10T09:12:50.908Z",
-    "recentGain": -1,
-    "lastGainDate": "2025-11-10T09:21:16.754Z",
-    "points": 0,
-    "totalRounds": 0
-  },
-  "emerald": {
-    "id": 1762771410045,
-    "fullName": "Emperor okwu",
-    "username": "emerald",
-    "category": "Middleweight",
-    "bio": "Fight to the world",
-    "ratings": {
-      "rapid": 1800,
-      "blitz": 1900,
-      "bullet": 1800
-    },
-    "createdAt": "2025-11-10T10:43:30.045Z",
-    "recentGain": 0,
-    "lastGainDate": null,
-    "points": 0,
-    "totalRounds": 0
-  },
   "onengs": {
     "id": 1762771448742,
     "fullName": "Jack the souless",
     "username": "onengs",
-    "category": "Middleweight",
+    "category": "heavyweight",
     "bio": "My baby",
     "ratings": {
-      "rapid": 1900,
+      "rapid": 1898,
       "blitz": 2000,
       "bullet": 2000
     },
     "createdAt": "2025-11-10T10:44:08.742Z",
     "recentGain": 0,
-    "lastGainDate": null,
+    "lastGainDate": "2025-11-10T18:50:37.009Z",
     "points": 0,
-    "totalRounds": 0
+    "totalRounds": 1
+  },
+  "jaxman": {
+    "id": 1762800389704,
+    "fullName": "Jackson Chinedu",
+    "username": "jaxman",
+    "category": "heavyweight",
+    "bio": "Guner",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 1500,
+      "bullet": 1600
+    },
+    "createdAt": "2025-11-10T18:46:29.704Z",
+    "recentGain": -1,
+    "lastGainDate": "2025-11-10T18:51:16.153Z",
+    "points": 1,
+    "totalRounds": 1
+  },
+  "emmagency": {
+    "id": 1762800438908,
+    "fullName": "Emmanuel Akomas",
+    "username": "emmagency",
+    "category": "heavyweight",
+    "bio": "Silent Hill",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-10T18:47:18.908Z",
+    "recentGain": 0,
+    "lastGainDate": "2025-11-10T18:51:16.153Z",
+    "points": 1,
+    "totalRounds": 1
+  },
+  "pamboy27": {
+    "id": 1762800473389,
+    "fullName": "Pamela Ezeh",
+    "username": "pamboy27",
+    "category": "heavyweight",
+    "bio": "My mumu",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-10T18:47:53.389Z",
+    "recentGain": 1,
+    "lastGainDate": "2025-11-10T18:50:37.009Z",
+    "points": 2,
+    "totalRounds": 1
   }
 }

@@ -1,1 +1,31 @@
-{}
+{
+  "category": "Heavyweight",
+  "mode": "rapid",
+  "generatedAt": "2025-11-10T19:03:42.982Z",
+  "table": [
+    {
+      "username": "onengs",
+      "totalRounds": 1,
+      "totalPoints": 0,
+      "accuracy": "0.0%"
+    },
+    {
+      "username": "jaxman",
+      "totalRounds": 1,
+      "totalPoints": 1,
+      "accuracy": "50.0%"
+    },
+    {
+      "username": "emmagency",
+      "totalRounds": 1,
+      "totalPoints": 1,
+      "accuracy": "50.0%"
+    },
+    {
+      "username": "pamboy27",
+      "totalRounds": 1,
+      "totalPoints": 2,
+      "accuracy": "100.0%"
+    }
+  ]
+}

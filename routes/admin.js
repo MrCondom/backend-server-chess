@@ -52,7 +52,7 @@ router.post("/login", async (req, res) => {
     // ✂️ Trim and clean all string inputs
     const cleanFullName = fullName?.trim();
     const cleanUsername = username?.trim().toLowerCase(); // Key consistency
-    const cleanCategory = category?.trim() || "Uncategorized";
+    const cleanCategory = (category?.trim() || "Uncategorized").toLowerCase();
     const cleanBio = bio?.trim() || "";
 
     const cleanRapid = Number(rapid);
@@ -134,7 +134,7 @@ router.delete("/delete-player/:username", async (req, res) => {
 // ✅ 3. Add player to a category
 router.post("/add-to-category", async (req, res) => {
   const username = req.body.username.trim().toLowerCase(); // ✂️ trim username
-  const category = req.body.category.trim(); // ✂️ trim category
+  const category = req.body.category.trim().toLowerCase(); // ✂️ trim category
   const players = await readJSON("players.json");
 
   if (!players[username])
@@ -155,16 +155,19 @@ router.post("/create-pairings", async (req, res) => {
   category = category.trim().toLowerCase();
 
   try {
+    // ✅ Call generator with rounds & intervalHours
+    const result = await createPairings(category, rounds, intervalHours);
+
+    // ✅ Save tracking info for countdown & current round
     const data = await readJSON("pairings.json");
+    const catData = result[category]; // from generator
 
-    // Create new pairings list
-    const result = await createPairings(category);
+    const nextRoundAt = catData.rounds.length
+      ? catData.rounds[0].availableAt
+      : new Date(Date.now() + intervalHours * 3600 * 1000).toISOString();
 
-    const nextRoundAt = new Date(Date.now() + intervalHours * 3600 * 1000).toISOString();
-
-    // Store data for tracking rounds and countdowns
     data[category] = {
-      rounds: result.rounds || [],
+      rounds: catData.rounds,
       currentRound: 1,
       intervalHours,
       nextRoundAt,
@@ -188,17 +191,17 @@ router.get("/pairings", async (req, res) => {
   try {
     const data = await readJSON("pairings.json");
     const now = Date.now();
-
     const result = {};
 
     for (const [category, info] of Object.entries(data)) {
       const { rounds, currentRound, intervalHours, nextRoundAt, completed } = info;
-      const next = new Date(nextRoundAt).getTime();
 
-      let countdown = Math.max(0, Math.floor((next - now) / 1000));
+      let countdown = nextRoundAt
+        ? Math.max(0, Math.floor((new Date(nextRoundAt).getTime() - now) / 1000))
+        : 0;
 
+      // ✅ Advance rounds automatically if countdown is zero
       if (countdown === 0 && !completed) {
-        // Advance to next round if available
         if (currentRound < rounds.length) {
           info.currentRound += 1;
           info.nextRoundAt = new Date(now + intervalHours * 3600 * 1000).toISOString();
@@ -233,6 +236,7 @@ router.get("/pairings", async (req, res) => {
 // ✅ Delete Pairings
 router.delete("/pairings/:category", async (req, res) => {
   const category = req.params.category.trim().toLowerCase();
+
   try {
     const data = await readJSON("pairings.json");
 
@@ -675,23 +679,66 @@ router.get("/player/:username", async (req, res) => {
 });
 
 
-// ✅ 9. Leaderboard (sorted by Rapid)
-router.get("/leaderboard", async (req, res) => {
+// ✅ 9. Leaderboard Table
+router.post("/generateTable", async (req, res) => {
+  const { category, mode } = req.body;
+  if (!category || !mode) {
+    return res.status(400).json({ error: "Category and mode are required" });
+  }
+
   const players = await readJSON("players.json");
 
-  const leaderboard = Object.values(players)
-    .sort((a, b) => b.rapid - a.rapid)
-    .map((p, index) => ({
-      rank: index + 1,
-      name: p.name,
-      username: p.username,
-      rapid: `${p.rapid}${p.recentGain > 0 ? `+${p.recentGain}` : p.recentGain < 0 ? `${p.recentGain}` : ""}`,
-      blitz: `${p.blitz}`,
-      bullet: `${p.bullet}`,
-      accuracy: calculateAccuracy(p.points || 0, p.totalRounds || 0, p.rapid),
-    }));
+  // Filter players by category
+  const filteredPlayers = Object.values(players).filter(
+    (p) => p.category.toLowerCase() === category.toLowerCase()
+  );
 
-  res.json(leaderboard);
+  if (filteredPlayers.length === 0) {
+    return res.status(404).json({ error: `No players found in ${category}` });
+  }
+
+  // Generate leaderboard table
+  const table = filteredPlayers.map((p) => ({
+    username: p.username,
+    totalRounds: p.totalRounds || 0,
+    totalPoints: p.points || 0,
+    accuracy: calculateAccuracy(
+      p.points || 0,
+      p.totalRounds || 0,
+      p.ratings[mode] || 0
+    ),
+  }));
+
+  // Save to table.json
+  await writeJSON("table.json", { category, mode, generatedAt: new Date(), table });
+
+  res.json({ message: "Table generated successfully", table });
+});
+
+router.get("/table", async (req, res) => {
+  try {
+    const data = await readJSON("table.json");
+    res.json(data);
+  } catch (err) {
+    res.status(404).json({ error: "No table found. Generate one first." });
+  }
+});
+
+router.delete("/deleteTable", async (req, res) => {
+  try {
+    const fs = require("fs");
+    const filePath = path.join(__dirname, "../data/table.json");
+
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+      return res.json({ message: "Table deleted successfully" });
+    } else {
+      return res.status(404).json({ error: "No table file found" });
+    }
+  } catch (err) {
+    console.error("deleteTable error:", err);
+    res.status(500).json({ error: "Failed to delete table" });
+  }
 });
 
 // ✅ 10. Edit player details
@@ -749,30 +796,6 @@ router.post("/edit-player", async (req, res) => {
     success: true,
     message: "Player updated successfully",
     player,
-  });
-});
-
-
-// ✅ 11. Manually edit player gain (for score corrections or testing)
-router.post("/edit-gain", async (req, res) => {
-  const username = req.body.username.trim().toLowerCase(); // ✂️ trim username
-  const { recentGain } = req.body;
-  const players = await readJSON("players.json");
-
-  if (!players[username])
-    return res.status(404).json({ message: "Player not found" });
-
-  if (typeof recentGain !== "number")
-    return res.status(400).json({ message: "recentGain must be a number" });
-
-  players[username].recentGain = recentGain;
-  players[username].lastGainDate = new Date().toISOString();
-
-  await writeJSON("players.json", players);
-
-  res.json({
-    message: `✏️ Recent gain for ${username} updated to ${recentGain}`,
-    player: players[username],
   });
 });
 
