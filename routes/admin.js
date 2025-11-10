@@ -662,21 +662,38 @@ router.post("/update-bio", async (req, res) => {
 });
 
 // ✅ 8. View player details (with accuracy)
-router.get("/player/:username", async (req, res) => {
-  const username = req.params.username;
+router.get("/players/all", async (req, res) => {
   const players = await readJSON("players.json");
 
-  if (!players[username])
-    return res.status(404).json({ message: "Player not found" });
+  // Group by category
+  const grouped = {};
 
-  const p = players[username];
-  const accuracy = calculateAccuracy(p.points || 0, p.totalRounds || 0, p.rapid);
-
-  res.json({
-    ...p,
-    accuracy,
+  Object.values(players).forEach((p) => {
+    const category = p.category || "Unassigned";
+    if (!grouped[category]) grouped[category] = [];
+    grouped[category].push(p);
   });
+
+  // Sort players inside each category
+  Object.keys(grouped).forEach((cat) => {
+    grouped[cat].sort((a, b) => {
+      // ✅ Compare Rapid
+      if ((b.ratings?.rapid || 0) !== (a.ratings?.rapid || 0))
+        return (b.ratings?.rapid || 0) - (a.ratings?.rapid || 0);
+      // ✅ Compare Blitz
+      if ((b.ratings?.blitz || 0) !== (a.ratings?.blitz || 0))
+        return (b.ratings?.blitz || 0) - (a.ratings?.blitz || 0);
+      // ✅ Compare Bullet
+      if ((b.ratings?.bullet || 0) !== (a.ratings?.bullet || 0))
+        return (b.ratings?.bullet || 0) - (a.ratings?.bullet || 0);
+      // ✅ Alphabetical Name
+      return (a.name || "").localeCompare(b.name || "");
+    });
+  });
+
+  res.json(grouped);
 });
+
 
 
 // ✅ 9. Leaderboard Table
@@ -698,19 +715,36 @@ router.post("/generateTable", async (req, res) => {
   }
 
   // Generate leaderboard table
-  const table = filteredPlayers.map((p) => ({
-    username: p.username,
-    totalRounds: p.totalRounds || 0,
-    totalPoints: p.points || 0,
-    accuracy: calculateAccuracy(
-      p.points || 0,
-      p.totalRounds || 0,
-      p.ratings[mode] || 0
-    ),
-  }));
+  const table = filteredPlayers.map((p) => {
+    const totalPoints = p.points || 0;
+    const totalRounds = p.totalRounds || 0;
+    const accuracyValue = calculateAccuracy(totalPoints, totalRounds, p.ratings[mode] || 0);
+    const numericAccuracy = parseFloat(accuracyValue.replace("%", ""));
 
-  // Save to table.json
-  await writeJSON("table.json", { category, mode, generatedAt: new Date(), table });
+    return {
+      username: p.username,
+      totalRounds,
+      totalPoints,
+      accuracy: accuracyValue,
+      numericAccuracy, // for sorting
+    };
+  });
+
+  // ✅ Sort by totalPoints DESC, then accuracy DESC
+  table.sort((a, b) => {
+    if (b.totalPoints === a.totalPoints) {
+      return b.numericAccuracy - a.numericAccuracy;
+    }
+    return b.totalPoints - a.totalPoints;
+  });
+
+  // Save clean table
+  await writeJSON("table.json", {
+    category,
+    mode,
+    generatedAt: new Date(),
+    table: table.map(({ numericAccuracy, ...rest }) => rest),
+  });
 
   res.json({ message: "Table generated successfully", table });
 });

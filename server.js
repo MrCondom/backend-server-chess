@@ -31,69 +31,53 @@ app.get("/leaderboard", async (req, res) => {
 });
 
 // ✅ Enhanced Public Leaderboard (User-Facing)
-app.get("/leaderboard/public", async (req, res) => {
+app.get("/players/all", async (req, res) => {
   const players = await readJSON("players.json");
 
-  // Divide into categories
-  const categories = {};
-
-Object.values(players).forEach((p) => {
-  if (!p.category) return;
-
-  if (!categories[p.category]) {
-    categories[p.category] = [];
-  }
-
-  // same logic for visible rating gain
+  const grouped = {};
   const now = new Date();
-  const lastGainDate = new Date(p.lastGainDate || 0);
-  const diffDays = (now - lastGainDate) / (1000 * 60 * 60 * 24);
-  let displayGain = "";
 
-  if (p.recentGain && diffDays < 7) {
-    displayGain = p.recentGain > 0 ? `+${p.recentGain}` : `${p.recentGain}`;
-  } else if (p.recentGain && diffDays >= 7) {
-    p.recentGain = 0;
-    writeJSON("players.json", players);
-  }
+  Object.values(players).forEach((p) => {
+    const category = p.category || "Unassigned";
+    if (!grouped[category]) grouped[category] = [];
 
-  categories[p.category].push({
-    name: p.name,
-    username: p.username,
-    rapid: `${p.rapid}${displayGain}`,
-    blitz: p.blitz || "-",
-    bullet: p.bullet || "-"
+    // ✅ Determine gain visibility and status
+    let gainStatus = "none";
+    let gainValue = 0;
+
+    if (p.recentGain !== undefined && p.lastGainDate) {
+      const lastGainDate = new Date(p.lastGainDate);
+      const diffDays = (now - lastGainDate) / (1000 * 60 * 60 * 24);
+
+      if (diffDays <= 3) {
+        gainValue = p.recentGain;
+        if (p.recentGain > 0) gainStatus = "up";
+        else if (p.recentGain < 0) gainStatus = "down";
+      }
+    }
+
+    grouped[category].push({
+      ...p,
+      gainStatus,
+      gainValue,
+    });
   });
-});
 
-// Sort within categories
-Object.keys(categories).forEach(cat => {
-  categories[cat].sort((a, b) => parseFloat(b.rapid) - parseFloat(a.rapid));
-});
-
-res.json(categories);
-});
-
-// ✅ Get Player Info by Username (clickable profile)
-app.get("/player/:username", async (req, res) => {
-  const { username } = req.params;
-  const players = await readJSON("players.json");
-
-  const player = players[username];
-  if (!player) return res.status(404).json({ message: "Player not found" });
-
-  res.json({
-    name: player.name,
-    username: player.username,
-    category: player.category,
-    rapid: player.rapid,
-    blitz: player.blitz,
-    bullet: player.bullet,
-    recentGain: player.recentGain || 0,
-    bio: player.bio || "This player’s profile will be updated soon.",
+  // ✅ Sort inside each category
+  Object.keys(grouped).forEach((cat) => {
+    grouped[cat].sort((a, b) => {
+      if ((b.ratings?.rapid || 0) !== (a.ratings?.rapid || 0))
+        return (b.ratings?.rapid || 0) - (a.ratings?.rapid || 0);
+      if ((b.ratings?.blitz || 0) !== (a.ratings?.blitz || 0))
+        return (b.ratings?.blitz || 0) - (a.ratings?.blitz || 0);
+      if ((b.ratings?.bullet || 0) !== (a.ratings?.bullet || 0))
+        return (b.ratings?.bullet || 0) - (a.ratings?.bullet || 0);
+      return (a.fullName || "").localeCompare(b.fullName || "");
+    });
   });
-});
 
+  res.json(grouped);
+});
 
 app.use("/admin", adminRoutes);
 app.use("/pairings", pairingsRoutes);
