@@ -1,17 +1,1 @@
-{
-  "Heavyweight": {
-    "countdown": 86400,
-    "rounds": [
-      {
-        "round": 1,
-        "pairings": [
-          {
-            "white": "onengs",
-            "black": "emmagency"
-          }
-        ],
-        "availableAt": "2025-11-09T21:05:35.077Z"
-      }
-    ]
-  }
-}
+{}

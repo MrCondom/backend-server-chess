@@ -151,31 +151,88 @@ router.post("/add-to-category", async (req, res) => {
 
 // ✅ 4. Create pairings (automatic)
 router.post("/create-pairings", async (req, res) => {
-  const { category } = req.body;
+  let { category, rounds = 5, intervalHours = 2 } = req.body;
+  category = category.trim().toLowerCase();
 
   try {
+    const data = await readJSON("pairings.json");
+
+    // Create new pairings list
     const result = await createPairings(category);
+
+    const nextRoundAt = new Date(Date.now() + intervalHours * 3600 * 1000).toISOString();
+
+    // Store data for tracking rounds and countdowns
+    data[category] = {
+      rounds: result.rounds || [],
+      currentRound: 1,
+      intervalHours,
+      nextRoundAt,
+      countdown: intervalHours * 3600, // seconds
+      completed: false,
+    };
+
+    await writeJSON("pairings.json", data);
+
     res.json({
       message: `✅ Pairings created for ${category}`,
-      result,
+      result: data[category],
     });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
-//Get Pairings
+
+// ✅ Get Pairings (auto-progressing rounds)
 router.get("/pairings", async (req, res) => {
   try {
     const data = await readJSON("pairings.json");
-    res.json(data);
+    const now = Date.now();
+
+    const result = {};
+
+    for (const [category, info] of Object.entries(data)) {
+      const { rounds, currentRound, intervalHours, nextRoundAt, completed } = info;
+      const next = new Date(nextRoundAt).getTime();
+
+      let countdown = Math.max(0, Math.floor((next - now) / 1000));
+
+      if (countdown === 0 && !completed) {
+        // Advance to next round if available
+        if (currentRound < rounds.length) {
+          info.currentRound += 1;
+          info.nextRoundAt = new Date(now + intervalHours * 3600 * 1000).toISOString();
+          info.countdown = intervalHours * 3600;
+        } else {
+          info.completed = true;
+          info.nextRoundAt = null;
+          info.countdown = 0;
+        }
+
+        await writeJSON("pairings.json", data);
+      }
+
+      const visibleRounds = rounds.slice(0, info.currentRound);
+      const activeRound = rounds[Math.min(info.currentRound - 1, rounds.length - 1)];
+
+      result[category] = {
+        visibleRounds,
+        activeRound,
+        nextRoundAt: info.nextRoundAt,
+        countdown: info.countdown,
+        completed: info.completed,
+      };
+    }
+
+    res.json(result);
   } catch (err) {
     res.status(500).json({ message: "Failed to read pairings", error: err.message });
   }
 });
 
-// ✅ DELETE pairings by category
+// ✅ Delete Pairings
 router.delete("/pairings/:category", async (req, res) => {
-  const category = req.params.category;
+  const category = req.params.category.trim().toLowerCase();
   try {
     const data = await readJSON("pairings.json");
 
@@ -185,120 +242,119 @@ router.delete("/pairings/:category", async (req, res) => {
 
     delete data[category];
     await writeJSON("pairings.json", data);
+
     res.json({ message: `❌ Pairings deleted for ${category}` });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-
 // ✅ 5. Update rating (auto-calculated)
+// helper normalize
+const normalize = (s) => (s ? s.trim().toLowerCase() : "");
+
+/**
+ * Helper: find player key by username (case-insensitive)
+ */
+function findPlayerKeyByName(players, name) {
+  const n = normalize(name);
+  return Object.keys(players).find((k) => normalize(players[k].username) === n || normalize(k) === n);
+}
+
+/**
+ * Helper: check if a pairing exists (strict order white vs black) in a category and round
+ */
+function pairingExists(pairings, category, round, whiteName, blackName) {
+  if (!pairings[category]) return false;
+  const r = pairings[category].rounds.find((rr) => Number(rr.round) == Number(round));
+  if (!r) return false;
+  return r.pairings.some(
+    (p) => normalize(p.white) === normalize(whiteName) && normalize(p.black) === normalize(blackName)
+  );
+}
+
 router.post("/record-result", async (req, res) => {
   try {
-    const { white, black, result, ratings: mode, round } = req.body;
+    const { white, black, result, ratings: mode = "rapid", round } = req.body;
 
-    // Helper to normalize names
-    const normalize = (str) => str?.trim().toLowerCase();
+    if (!white || !black || !result || !round) {
+      return res.status(400).json({ message: "white, black, result and round are required." });
+    }
 
-    // Load data
     const players = await readJSON("players.json");
     const pairings = await readJSON("pairings.json");
-    const results = await readJSON("results.json");
+    const results = (await readJSON("results.json")) || [];
 
-    // Trim and normalize
-    const whiteName = normalize(white);
-    const blackName = normalize(black);
-    const category = Object.values(players).find(
-      (p) => normalize(p.username) === whiteName || normalize(p.username) === blackName
+    // find category (try to locate player's category)
+    const playerCat = Object.values(players).find(
+      (p) => normalize(p.username) === normalize(white) || normalize(p.username) === normalize(black)
     )?.category;
 
-    if (!category || !pairings[category]) {
+    if (!playerCat || !pairings[playerCat]) {
       return res.status(404).json({ message: "No valid category found for this match." });
     }
 
-    // 🧩 1️⃣ Verify that the match exists in pairings.json
-    const currentRound = pairings[category].rounds.find(
-      (r) =>
-        r.round == round &&
-        r.pairings.some(
-          (p) =>
-            normalize(p.white) === whiteName && normalize(p.black) === blackName
-        )
-    );
-
-    if (!currentRound) {
-      return res.status(400).json({
-        message: `❌ No such pairing found for Round ${round}.`,
-      });
+    // verify pairing exists (white vs black in that round)
+    if (!pairingExists(pairings, playerCat, round, white, black)) {
+      return res.status(400).json({ message: `No such pairing found for Round ${round} in category ${playerCat}.` });
     }
 
-    // 🧩 2️⃣ Prevent duplicate or reversed entry
+    // prevent duplicate or reversed entry for same round
     const duplicate = results.some(
       (r) =>
-        normalize(r.playerA) === whiteName &&
-        normalize(r.playerB) === blackName &&
-        r.round == round
+        normalize(r.playerA) === normalize(white) &&
+        normalize(r.playerB) === normalize(black) &&
+        Number(r.round) === Number(round)
     );
-
     const reversed = results.some(
       (r) =>
-        normalize(r.playerA) === blackName &&
-        normalize(r.playerB) === whiteName &&
-        r.round == round
+        normalize(r.playerA) === normalize(black) &&
+        normalize(r.playerB) === normalize(white) &&
+        Number(r.round) === Number(round)
     );
-
     if (duplicate || reversed) {
-      return res.status(400).json({
-        message: "❌ This match (or its reverse) has already been recorded.",
-      });
+      return res.status(400).json({ message: "This match (or its reverse) has already been recorded." });
     }
 
-    // 🧩 3️⃣ Locate player objects safely
-    const playerAKey = Object.keys(players).find(
-      (k) => normalize(k) === whiteName
-    );
-    const playerBKey = Object.keys(players).find(
-      (k) => normalize(k) === blackName
-    );
-
-    if (!playerAKey || !playerBKey)
-      return res.status(404).json({ message: "One or both players not found." });
+    // find player keys
+    const playerAKey = findPlayerKeyByName(players, white);
+    const playerBKey = findPlayerKeyByName(players, black);
+    if (!playerAKey || !playerBKey) return res.status(404).json({ message: "One or both players not found." });
 
     const playerA = players[playerAKey];
     const playerB = players[playerBKey];
 
-    // 🧩 4️⃣ Validate and parse result
-    const [scoreA, scoreB] = result.split(":").map(Number);
-    if (isNaN(scoreA) || isNaN(scoreB))
-      return res
-        .status(400)
-        .json({ message: "Invalid score format (e.g., 1:0 or 0.5:0.5)" });
+    // parse result
+    const [scoreA_raw, scoreB_raw] = result.split(":").map((n) => n === "" ? NaN : Number(n));
+    if (isNaN(scoreA_raw) || isNaN(scoreB_raw)) {
+      return res.status(400).json({ message: "Invalid score format (e.g., 1:0 or 0.5:0.5)" });
+    }
+    const scoreA = scoreA_raw;
+    const scoreB = scoreB_raw;
 
-    // 🧩 5️⃣ Validate mode
+    // validate mode
     const validModes = ["rapid", "blitz", "bullet"];
     const selectedMode = validModes.includes(mode) ? mode : "rapid";
 
-    // 🧩 6️⃣ Calculate rating changes
-    const ratingA = playerA.ratings[selectedMode];
-    const ratingB = playerB.ratings[selectedMode];
+    // calculate rating change but DO NOT mutate real rating
+    const ratingA = playerA.ratings?.[selectedMode] ?? 0;
+    const ratingB = playerB.ratings?.[selectedMode] ?? 0;
     const { changeA, changeB } = calculateRatingChange(ratingA, ratingB, scoreA, scoreB);
 
-    // Apply rating updates
-    playerA.ratings[selectedMode] += changeA;
-    playerB.ratings[selectedMode] += changeB;
-
-    // Update stats
-    const now = new Date().toISOString();
+    // apply to recentGain only
     playerA.recentGain = (playerA.recentGain || 0) + changeA;
     playerB.recentGain = (playerB.recentGain || 0) + changeB;
-    playerA.lastGainDate = playerB.lastGainDate = now;
 
+    // update points/rounds (these exist to build table)
     playerA.points = (playerA.points || 0) + scoreA;
     playerB.points = (playerB.points || 0) + scoreB;
     playerA.totalRounds = (playerA.totalRounds || 0) + 1;
     playerB.totalRounds = (playerB.totalRounds || 0) + 1;
 
-    // 🧩 7️⃣ Record in results.json
+    const now = new Date().toISOString();
+    playerA.lastGainDate = playerB.lastGainDate = now;
+
+    // push result record (store scoreA / scoreB and the change)
     results.push({
       round,
       mode: selectedMode,
@@ -309,171 +365,278 @@ router.post("/record-result", async (req, res) => {
       changeA,
       changeB,
       date: now,
-      category,
+      category: playerCat,
     });
 
-    // Save files
+    // save players + results
+    players[playerAKey] = playerA;
+    players[playerBKey] = playerB;
+
     await writeJSON("players.json", players);
     await writeJSON("results.json", results);
 
     res.json({
       message: `✅ Round ${round} result recorded: ${playerA.username} vs ${playerB.username}`,
-      changes: {
-        [playerA.username]: { newRating: playerA.ratings[selectedMode], gained: changeA },
-        [playerB.username]: { newRating: playerB.ratings[selectedMode], gained: changeB },
-      },
+      result: results[results.length - 1],
     });
   } catch (error) {
-    console.error("Error recording result:", error);
+    console.error("record-result error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
 router.put("/edit-result/:index", async (req, res) => {
   try {
-    const { index } = req.params;
-    const { white, black, result, ratings: mode, round } = req.body;
+    const idx = Number(req.params.index);
+    const { white, black, result, ratings: mode = "rapid", round } = req.body;
 
-    const results = await readJSON("results.json");
     const players = await readJSON("players.json");
+    const pairings = await readJSON("pairings.json");
+    const results = (await readJSON("results.json")) || [];
 
-    const i = Number(index);
-    if (isNaN(i) || i < 0 || i >= results.length) {
+    if (isNaN(idx) || idx < 0 || idx >= results.length) {
       return res.status(400).json({ message: "Invalid result index" });
     }
 
-    const oldResult = results[i];
-    const normalize = (s) => s?.trim().toLowerCase();
+    const old = results[idx];
+    const normalizeOldA = normalize(old.playerA);
+    const normalizeOldB = normalize(old.playerB);
 
-    // rollback old rating changes
-    const playerAKey = Object.keys(players).find(k => normalize(k) === normalize(oldResult.playerA));
-    const playerBKey = Object.keys(players).find(k => normalize(k) === normalize(oldResult.playerB));
-    if (playerAKey && playerBKey) {
-      const mode = oldResult.mode;
-      players[playerAKey].ratings[mode] -= oldResult.changeA;
-      players[playerBKey].ratings[mode] -= oldResult.changeB;
-      players[playerAKey].points -= oldResult.scoreA;
-      players[playerBKey].points -= oldResult.scoreB;
+    // find keys for old players
+    const oldAKey = findPlayerKeyByName(players, old.playerA);
+    const oldBKey = findPlayerKeyByName(players, old.playerB);
+
+    // rollback old recentGain/points/rounds (if players still exist)
+    if (oldAKey && oldBKey) {
+      players[oldAKey].recentGain = (players[oldAKey].recentGain || 0) - (old.changeA || 0);
+      players[oldBKey].recentGain = (players[oldBKey].recentGain || 0) - (old.changeB || 0);
+      players[oldAKey].points = (players[oldAKey].points || 0) - (old.scoreA || 0);
+      players[oldBKey].points = (players[oldBKey].points || 0) - (old.scoreB || 0);
+      players[oldAKey].totalRounds = Math.max(0, (players[oldAKey].totalRounds || 0) - 1);
+      players[oldBKey].totalRounds = Math.max(0, (players[oldBKey].totalRounds || 0) - 1);
     }
 
-    // compute new score and changes
+    // now validate the new pairing exists in pairings.json (use category discovery)
+    const playerCat = Object.values(players).find(
+      (p) => normalize(p.username) === normalize(white) || normalize(p.username) === normalize(black)
+    )?.category;
+
+    if (!playerCat || !pairings[playerCat]) {
+      return res.status(404).json({ message: "No valid category found for this new match." });
+    }
+    if (!pairingExists(pairings, playerCat, round, white, black)) {
+      return res.status(400).json({ message: `No such pairing found for Round ${round}.` });
+    }
+
+    // prevent duplicate (other than this index)
+    const duplicate = results.some((r, i) => i !== idx &&
+      normalize(r.playerA) === normalize(white) && normalize(r.playerB) === normalize(black) && Number(r.round) === Number(round)
+    );
+    const reversed = results.some((r, i) => i !== idx &&
+      normalize(r.playerA) === normalize(black) && normalize(r.playerB) === normalize(white) && Number(r.round) === Number(round)
+    );
+    if (duplicate || reversed) return res.status(400).json({ message: "This match (or its reverse) is already recorded elsewhere." });
+
+    // find new keys
+    const playerAKey = findPlayerKeyByName(players, white);
+    const playerBKey = findPlayerKeyByName(players, black);
+    if (!playerAKey || !playerBKey) return res.status(404).json({ message: "One or both players not found for new result." });
+
+    const playerA = players[playerAKey];
+    const playerB = players[playerBKey];
+
+    // parse new result
     const [scoreA, scoreB] = result.split(":").map(Number);
-    if (isNaN(scoreA) || isNaN(scoreB))
-      return res.status(400).json({ message: "Invalid score format (use 1:0, 0:1, 0.5:0.5)" });
+    if (isNaN(scoreA) || isNaN(scoreB)) return res.status(400).json({ message: "Invalid score format." });
 
     const validModes = ["rapid", "blitz", "bullet"];
     const selectedMode = validModes.includes(mode) ? mode : "rapid";
 
-    const playerA = players[playerAKey];
-    const playerB = players[playerBKey];
-    const { changeA, changeB } = calculateRatingChange(
-      playerA.ratings[selectedMode],
-      playerB.ratings[selectedMode],
-      scoreA,
-      scoreB
-    );
+    // recalc based on current ratings (ratings unchanged by results in this design)
+    const ratingA = playerA.ratings?.[selectedMode] ?? 0;
+    const ratingB = playerB.ratings?.[selectedMode] ?? 0;
+    const { changeA, changeB } = calculateRatingChange(ratingA, ratingB, scoreA, scoreB);
 
-    // apply new changes
-    playerA.ratings[selectedMode] += changeA;
-    playerB.ratings[selectedMode] += changeB;
-    playerA.points += scoreA;
-    playerB.points += scoreB;
+    // apply new recentGain/points/rounds
+    playerA.recentGain = (playerA.recentGain || 0) + changeA;
+    playerB.recentGain = (playerB.recentGain || 0) + changeB;
+    playerA.points = (playerA.points || 0) + scoreA;
+    playerB.points = (playerB.points || 0) + scoreB;
+    playerA.totalRounds = (playerA.totalRounds || 0) + 1;
+    playerB.totalRounds = (playerB.totalRounds || 0) + 1;
 
     const now = new Date().toISOString();
+    playerA.lastGainDate = playerB.lastGainDate = now;
 
-    // update result entry
-    results[i] = {
-      ...oldResult,
-      playerA: playerA.username,
-      playerB: playerB.username,
+    // update results entry
+    results[idx] = {
+      ...results[idx],
+      round,
+      mode: selectedMode,
+      playerA: playerA.username.trim(),
+      playerB: playerB.username.trim(),
       scoreA,
       scoreB,
       changeA,
       changeB,
-      mode: selectedMode,
-      round,
       date: now,
+      category: playerCat,
     };
+
+    // save
+    players[playerAKey] = playerA;
+    players[playerBKey] = playerB;
 
     await writeJSON("players.json", players);
     await writeJSON("results.json", results);
 
-    res.json({
-      message: `✅ Result updated successfully for ${playerA.username} vs ${playerB.username}`,
-      updated: results[i],
-    });
+    res.json({ message: "Result updated.", updated: results[idx] });
   } catch (err) {
-    console.error("Error editing result:", err);
+    console.error("edit-result error:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
+/**
+ * DELETE /admin/delete-result/:index
+ * Rollback the result at index and remove it.
+ */
+router.delete("/delete-result/:index", async (req, res) => {
+  try {
+    const idx = Number(req.params.index);
+    const results = (await readJSON("results.json")) || [];
+    const players = await readJSON("players.json");
+
+    if (isNaN(idx) || idx < 0 || idx >= results.length) {
+      return res.status(400).json({ message: "Invalid result index" });
+    }
+
+    const old = results[idx];
+    const aKey = findPlayerKeyByName(players, old.playerA);
+    const bKey = findPlayerKeyByName(players, old.playerB);
+
+    // rollback effects if players exist
+    if (aKey && bKey) {
+      players[aKey].recentGain = (players[aKey].recentGain || 0) - (old.changeA || 0);
+      players[bKey].recentGain = (players[bKey].recentGain || 0) - (old.changeB || 0);
+
+      players[aKey].points = Math.max(0, (players[aKey].points || 0) - (old.scoreA || 0));
+      players[bKey].points = Math.max(0, (players[bKey].points || 0) - (old.scoreB || 0));
+
+      players[aKey].totalRounds = Math.max(0, (players[aKey].totalRounds || 0) - 1);
+      players[bKey].totalRounds = Math.max(0, (players[bKey].totalRounds || 0) - 1);
+    }
+
+    // remove result
+    results.splice(idx, 1);
+
+    await writeJSON("players.json", players);
+    await writeJSON("results.json", results);
+
+    res.json({ message: "Result deleted and changes rolled back." });
+  } catch (err) {
+    console.error("delete-result error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+/**
+ * GET /admin/results
+ */
 router.get("/results", async (req, res) => {
-  const results = await readJSON("results.json");
+  const results = (await readJSON("results.json")) || [];
   res.json(results);
 });
 
-router.delete("/delete-result", async (req, res) => {
-  const { round, white, black } = req.body;
-  const normalize = (s) => s.trim().toLowerCase();
-
-  const results = await readJSON("results.json");
-  const newResults = results.filter(
-    (r) =>
-      !(
-        r.round == round &&
-        normalize(r.playerA) === normalize(white) &&
-        normalize(r.playerB) === normalize(black)
-      )
-  );
-
-  await writeJSON("results.json", newResults);
-
-  res.json({ message: `🗑️ Result for ${white} vs ${black} (Round ${round}) deleted.` });
-});
-
-
-// ✅ 6. Reset weekly recent gains
-router.post("/reset-weekly-gains", async (req, res) => {
-  const players = await readJSON("players.json");
-
-  Object.values(players).forEach((p) => {
-    p.recentGain = 0;
-  });
-
-  await writeJSON("players.json", players);
-  res.json({
-    message: "🔄 Weekly recent gains reset successfully",
-  });
-});
-// ✅ 6B. Apply and clear gains older than 7 days
+/**
+ * POST /admin/apply-rating-gains
+ * Body: { category?: string, force?: boolean }
+ * Applies recentGain to actual ratings if all pairings for category are recorded OR force=true
+ */
 router.post("/apply-rating-gains", async (req, res) => {
-  const players = await readJSON("players.json");
-  const now = new Date();
+  try {
+    const { category, force = false } = req.body || {};
+    const players = await readJSON("players.json");
+    const pairings = await readJSON("pairings.json");
+    const results = (await readJSON("results.json")) || [];
 
-  let updatedCount = 0;
+    // If category provided, limit to that category; else apply to all
+    const categories = category ? [category] : Object.keys(pairings);
 
-  Object.values(players).forEach((p) => {
-    if (!p.lastGainDate || !p.recentGain) return;
+    // verify that for each category either force OR all pairings recorded
+    for (const cat of categories) {
+      if (!pairings[cat]) continue;
+      if (force) continue;
 
-    const lastGainDate = new Date(p.lastGainDate);
-    const diffDays = (now - lastGainDate) / (1000 * 60 * 60 * 24);
+      // Build set of expected matches (white:black:round)
+      const expected = new Set();
+      pairings[cat].rounds.forEach((r) => {
+        r.pairings.forEach((p) => expected.add(`${normalize(p.white)}::${normalize(p.black)}::${r.round}`));
+      });
 
-    // Apply after 7 days
-    if (diffDays >= 7 && p.recentGain !== 0) {
-      // Add to rapid rating
-      p.rapid += p.recentGain;
-      p.recentGain = 0;
-      p.lastGainDate = now.toISOString();
-      updatedCount++;
+      // Build set of recorded matches for this category
+      const recorded = new Set();
+      results.forEach((r) => {
+        if (r.category === cat) {
+          recorded.add(`${normalize(r.playerA)}::${normalize(r.playerB)}::${r.round}`);
+        }
+      });
+
+      // If recorded doesn't cover expected -> cannot apply unless force
+      for (const exp of expected) {
+        if (!recorded.has(exp)) {
+          return res.status(400).json({
+            message: `Not all pairings recorded for category ${cat}. Use { force: true } to override.`,
+          });
+        }
+      }
     }
-  });
 
-  await writeJSON("players.json", players);
+    // Apply gains per player (in all ratings? we'll apply to rapid by default — you can adjust)
+    let applied = 0;
+    const now = new Date().toISOString();
 
-  res.json({
-    message: `✅ ${updatedCount} player(s) had rating gains applied and cleared.`,
-  });
+    Object.keys(players).forEach((k) => {
+      const p = players[k];
+      if (!p || !p.recentGain) return;
+      // here we apply to rapid — if you want mode-specific, store a pending per-mode instead
+      p.ratings = p.ratings || {};
+      p.ratings.rapid = (p.ratings.rapid || 0) + p.recentGain;
+      p.recentGain = 0;
+      p.lastGainDate = now;
+      applied++;
+    });
+
+    await writeJSON("players.json", players);
+    res.json({ message: `✅ Applied gains for ${applied} players.` });
+  } catch (err) {
+    console.error("apply-rating-gains error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+/**
+ * POST /admin/clear-points-rounds
+ * Body: { category?: string }
+ * Clears points & totalRounds for players in given category (or all if not provided).
+ */
+router.post("/clear-points-rounds", async (req, res) => {
+  try {
+    const { category } = req.body || {};
+    const players = await readJSON("players.json");
+    Object.keys(players).forEach((k) => {
+      const p = players[k];
+      if (!category || (p.category && normalize(p.category) === normalize(category))) {
+        p.points = 0;
+        p.totalRounds = 0;
+      }
+    });
+    await writeJSON("players.json", players);
+    res.json({ message: `✅ Points and rounds cleared${category ? ` for ${category}` : ""}.` });
+  } catch (err) {
+    console.error("clear-points-rounds error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 // ✅ 7. Update player bio

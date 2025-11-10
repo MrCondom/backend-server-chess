@@ -1,36 +1,70 @@
 {
-  "onengs": {
-    "id": 1762721146351,
-    "fullName": "Jack souless",
-    "username": "onengs",
-    "category": "Heavyweight",
-    "bio": "Killa",
+  "jaxman": {
+    "id": 1762765920904,
+    "fullName": "Jackson Chinedu",
+    "username": "jaxman",
+    "category": "Middleweight",
+    "bio": "Deadpool",
     "ratings": {
       "rapid": 1998,
-      "blitz": 1800,
+      "blitz": 2000,
       "bullet": 2000
     },
-    "createdAt": "2025-11-09T20:45:46.351Z",
-    "recentGain": -2,
-    "lastGainDate": "2025-11-09T21:06:58.933Z",
+    "createdAt": "2025-11-10T09:12:00.904Z",
+    "recentGain": 2,
+    "lastGainDate": "2025-11-10T09:21:16.754Z",
     "points": 0,
-    "totalRounds": 1
+    "totalRounds": 0
   },
   "emmagency": {
-    "id": 1762722222136,
+    "id": 1762765970908,
     "fullName": "Emmanuel Akomas",
     "username": "emmagency",
     "category": "Heavyweight",
-    "bio": "Wickedness is natural",
+    "bio": "Heavyweight dealer",
     "ratings": {
       "rapid": 2001,
       "blitz": 2000,
       "bullet": 2000
     },
-    "createdAt": "2025-11-09T21:03:42.136Z",
-    "recentGain": 1,
-    "lastGainDate": "2025-11-09T21:06:58.933Z",
-    "points": 2,
-    "totalRounds": 1
+    "createdAt": "2025-11-10T09:12:50.908Z",
+    "recentGain": -1,
+    "lastGainDate": "2025-11-10T09:21:16.754Z",
+    "points": 0,
+    "totalRounds": 0
+  },
+  "emerald": {
+    "id": 1762771410045,
+    "fullName": "Emperor okwu",
+    "username": "emerald",
+    "category": "Middleweight",
+    "bio": "Fight to the world",
+    "ratings": {
+      "rapid": 1800,
+      "blitz": 1900,
+      "bullet": 1800
+    },
+    "createdAt": "2025-11-10T10:43:30.045Z",
+    "recentGain": 0,
+    "lastGainDate": null,
+    "points": 0,
+    "totalRounds": 0
+  },
+  "onengs": {
+    "id": 1762771448742,
+    "fullName": "Jack the souless",
+    "username": "onengs",
+    "category": "Middleweight",
+    "bio": "My baby",
+    "ratings": {
+      "rapid": 1900,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-10T10:44:08.742Z",
+    "recentGain": 0,
+    "lastGainDate": null,
+    "points": 0,
+    "totalRounds": 0
   }
 }
