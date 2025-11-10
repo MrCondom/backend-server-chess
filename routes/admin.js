@@ -222,6 +222,7 @@ router.get("/pairings", async (req, res) => {
       const activeRound = rounds[Math.min(info.currentRound - 1, rounds.length - 1)];
 
       result[category] = {
+        rounds,
         visibleRounds,
         activeRound,
         nextRoundAt: info.nextRoundAt,
@@ -550,9 +551,28 @@ router.delete("/delete-result/:index", async (req, res) => {
 //Delete All Results
 router.post("/admin/delete-all-results", async (req, res) => {
   try {
-    // Overwrite results.json with an empty array
-    await writeJSON("results.json", []);
-    res.json({ message: "✅ All results deleted successfully." });
+    const { category } = req.body; // optional
+
+    // Read current results
+    const results = await readJSON("results.json");
+
+    let newResults;
+    if (category) {
+      const cat = category.trim().toLowerCase();
+      // Filter out only that category
+      newResults = results.filter((r) => r.category?.toLowerCase() !== cat);
+    } else {
+      // No category: wipe all
+      newResults = [];
+    }
+
+    await writeJSON("results.json", newResults);
+
+    res.json({
+      message: category
+        ? `✅ Results for category "${category}" deleted successfully.`
+        : "✅ All results deleted successfully.",
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message || "Failed to delete results." });
