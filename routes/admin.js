@@ -549,9 +549,9 @@ router.delete("/delete-result/:index", async (req, res) => {
 });
 
 //Delete All Results
-router.post("/admin/delete-all-results", async (req, res) => {
+router.post("/delete-all-results", async (req, res) => {
   try {
-    const { category } = req.body; // optional
+    const category = req.body.category; // optional
 
     // Read current results
     const results = await readJSON("results.json");
@@ -560,12 +560,15 @@ router.post("/admin/delete-all-results", async (req, res) => {
     if (category) {
       const cat = category.trim().toLowerCase();
       // Filter out only that category
-      newResults = results.filter((r) => r.category?.toLowerCase() !== cat);
+      newResults = results.filter(
+        (r) => r.category && r.category.toLowerCase() !== cat
+      );
     } else {
       // No category: wipe all
       newResults = [];
     }
 
+    // Save updated results
     await writeJSON("results.json", newResults);
 
     res.json({
@@ -574,8 +577,10 @@ router.post("/admin/delete-all-results", async (req, res) => {
         : "✅ All results deleted successfully.",
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: err.message || "Failed to delete results." });
+    console.error("delete-all-results error:", err);
+    res.status(500).json({
+      message: err.message || "Failed to delete results.",
+    });
   }
 });
 

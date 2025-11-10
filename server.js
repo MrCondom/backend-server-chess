@@ -23,14 +23,7 @@ app.get("/", (req, res) => {
   res.send("Chess Rating Backend is running 🏁");
 });
 
-// ✅ Route 2: Leaderboard
-app.get("/leaderboard", async (req, res) => {
-  const players = await readJSON("players.json");
-  const sorted = Object.values(players).sort((a, b) => b.rapid - a.rapid);
-  res.json(sorted);
-});
-
-// ✅ Enhanced Public Leaderboard (User-Facing)
+// 2. ✅ Enhanced Public Leaderboard (User-Facing)
 app.get("/players/all", async (req, res) => {
   const players = await readJSON("players.json");
 
