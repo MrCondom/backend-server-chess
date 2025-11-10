@@ -544,6 +544,18 @@ router.delete("/delete-result/:index", async (req, res) => {
   }
 });
 
+//Delete All Results
+router.post("/admin/delete-all-results", async (req, res) => {
+  try {
+    // Overwrite results.json with an empty array
+    await writeJSON("results.json", []);
+    res.json({ message: "✅ All results deleted successfully." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message || "Failed to delete results." });
+  }
+});
+
 /**
  * GET /admin/results
  */
