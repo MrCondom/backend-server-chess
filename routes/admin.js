@@ -12,7 +12,8 @@ const { calculateRatingChange } = require("../utils/ratingCalculator");
 // File paths
 const dataDir = path.join(__dirname, "../data");
 const logsFile = path.join(dataDir, "admin_logs.json");
-//const playersPath = path.join(dataDir, "players.json");
+const BLOCKED_IPS_FILE = "blocked_ips.json";
+const EXEMPT_IPS = ["192.168.1.117"]; 
 
 
 // 🛡️ ADMIN LOGIN
@@ -43,6 +44,94 @@ router.post("/login", async (req, res) => {
     adminId: `ADMIN_${matchIndex + 1}`,
   });
 });
+
+// 🟢 GET all logs
+router.get("/logs", async (req, res) => {
+  try {
+    const logs = fs.existsSync(LOGS_FILE) ? await readJSON(LOGS_FILE) : [];
+    const blockedIPs = fs.existsSync(BLOCKED_IPS_FILE)
+      ? await readJSON(BLOCKED_IPS_FILE)
+      : [];
+
+    res.json({ logs, blockedIPs });
+  } catch (err) {
+    console.error("fetch logs error:", err);
+    res.status(500).json({ message: "Failed to fetch logs" });
+  }
+});
+
+// 🔴 DELETE all logs except exempt IPs
+router.delete("/logs", async (req, res) => {
+  try {
+    if (fs.existsSync(LOGS_FILE)) {
+      const logs = await readJSON(LOGS_FILE);
+      const filteredLogs = logs.filter((log) => EXEMPT_IPS.includes(log.ip));
+      await writeJSON(LOGS_FILE, filteredLogs);
+    }
+    res.json({ message: "✅ Logs cleared (exempt IPs retained)" });
+  } catch (err) {
+    console.error("delete logs error:", err);
+    res.status(500).json({ message: "Failed to clear logs" });
+  }
+});
+
+// 🚫 BLOCK an IP
+router.post("/block-ip", async (req, res) => {
+  try {
+    const { ip } = req.body;
+    if (!ip) return res.status(400).json({ message: "IP address required" });
+
+    if (EXEMPT_IPS.includes(ip))
+      return res.status(400).json({ message: "Cannot block an exempt IP" });
+
+    const blockedIPs = fs.existsSync(BLOCKED_IPS_FILE)
+      ? await readJSON(BLOCKED_IPS_FILE)
+      : [];
+
+    if (blockedIPs.includes(ip))
+      return res.status(400).json({ message: "IP already blocked" });
+
+    blockedIPs.push(ip);
+    await writeJSON(BLOCKED_IPS_FILE, blockedIPs);
+
+    res.json({ message: `🚫 IP ${ip} blocked successfully` });
+  } catch (err) {
+    console.error("block ip error:", err);
+    res.status(500).json({ message: "Failed to block IP" });
+  }
+});
+
+// ✅ UNBLOCK an IP
+router.post("/unblock-ip", async (req, res) => {
+  try {
+    const { ip } = req.body;
+    if (!ip) return res.status(400).json({ message: "IP address required" });
+
+    const blockedIPs = fs.existsSync(BLOCKED_IPS_FILE)
+      ? await readJSON(BLOCKED_IPS_FILE)
+      : [];
+
+    const updated = blockedIPs.filter((bip) => bip !== ip);
+    await writeJSON(BLOCKED_IPS_FILE, updated);
+
+    res.json({ message: `✅ IP ${ip} unblocked successfully` });
+  } catch (err) {
+    console.error("unblock ip error:", err);
+    res.status(500).json({ message: "Failed to unblock IP" });
+  }
+});
+
+// 🧹 CLEAR ALL BLOCKED IPs
+router.delete("/clear-blocked-ips", async (req, res) => {
+  try {
+    await writeJSON(BLOCKED_IPS_FILE, []);
+    res.json({ message: "🧹 All blocked IPs cleared successfully" });
+  } catch (err) {
+    console.error("clear blocked ips error:", err);
+    res.status(500).json({ message: "Failed to clear blocked IPs" });
+  }
+});
+
 
   // 1. ✅ Add Player (object-based)
   router.post("/add-player", async (req, res) => {
