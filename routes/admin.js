@@ -12,8 +12,8 @@ const { calculateRatingChange } = require("../utils/ratingCalculator");
 // File paths
 const dataDir = path.join(__dirname, "../data");
 const logsFile = path.join(dataDir, "admin_logs.json");
-const BLOCKED_IPS_FILE = "blocked_ips.json";
-const EXEMPT_IPS = ["192.168.1.117"]; 
+const blockedIPsfile = path.join(dataDir,"blocked_ips.json");
+const EXEMPT_IPS = ["192.168.1.117", "::1", "127.0.0.1"]; 
 
 
 // 🛡️ ADMIN LOGIN
@@ -48,9 +48,9 @@ router.post("/login", async (req, res) => {
 // 🟢 GET all logs
 router.get("/logs", async (req, res) => {
   try {
-    const logs = fs.existsSync(LOGS_FILE) ? await readJSON(LOGS_FILE) : [];
-    const blockedIPs = fs.existsSync(BLOCKED_IPS_FILE)
-      ? await readJSON(BLOCKED_IPS_FILE)
+    const logs = fs.existsSync(logsFile) ? await readJSON(logsFile) : [];
+    const blockedIPs = fs.existsSync(blockedIPsfile)
+      ? await readJSON(blockedIPsfile)
       : [];
 
     res.json({ logs, blockedIPs });
@@ -64,9 +64,9 @@ router.get("/logs", async (req, res) => {
 router.delete("/logs", async (req, res) => {
   try {
     if (fs.existsSync(LOGS_FILE)) {
-      const logs = await readJSON(LOGS_FILE);
+      const logs = await readJSON(logsFile);
       const filteredLogs = logs.filter((log) => EXEMPT_IPS.includes(log.ip));
-      await writeJSON(LOGS_FILE, filteredLogs);
+      await writeJSON(logsFile, filteredLogs);
     }
     res.json({ message: "✅ Logs cleared (exempt IPs retained)" });
   } catch (err) {
@@ -84,15 +84,15 @@ router.post("/block-ip", async (req, res) => {
     if (EXEMPT_IPS.includes(ip))
       return res.status(400).json({ message: "Cannot block an exempt IP" });
 
-    const blockedIPs = fs.existsSync(BLOCKED_IPS_FILE)
-      ? await readJSON(BLOCKED_IPS_FILE)
+    const blockedIPs = fs.existsSync(blockedIPsfile)
+      ? await readJSON(blockedIPsfile)
       : [];
 
     if (blockedIPs.includes(ip))
       return res.status(400).json({ message: "IP already blocked" });
 
     blockedIPs.push(ip);
-    await writeJSON(BLOCKED_IPS_FILE, blockedIPs);
+    await writeJSON(blockedIPsfile, blockedIPs);
 
     res.json({ message: `🚫 IP ${ip} blocked successfully` });
   } catch (err) {
@@ -107,12 +107,12 @@ router.post("/unblock-ip", async (req, res) => {
     const { ip } = req.body;
     if (!ip) return res.status(400).json({ message: "IP address required" });
 
-    const blockedIPs = fs.existsSync(BLOCKED_IPS_FILE)
-      ? await readJSON(BLOCKED_IPS_FILE)
+    const blockedIPs = fs.existsSync(blockedIPsfile)
+      ? await readJSON(blockedIPsfile)
       : [];
 
     const updated = blockedIPs.filter((bip) => bip !== ip);
-    await writeJSON(BLOCKED_IPS_FILE, updated);
+    await writeJSON(blockedIPsfile, updated);
 
     res.json({ message: `✅ IP ${ip} unblocked successfully` });
   } catch (err) {
@@ -124,7 +124,7 @@ router.post("/unblock-ip", async (req, res) => {
 // 🧹 CLEAR ALL BLOCKED IPs
 router.delete("/clear-blocked-ips", async (req, res) => {
   try {
-    await writeJSON(BLOCKED_IPS_FILE, []);
+    await writeJSON(blockedIPsfile, []);
     res.json({ message: "🧹 All blocked IPs cleared successfully" });
   } catch (err) {
     console.error("clear blocked ips error:", err);
