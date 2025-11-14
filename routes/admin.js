@@ -48,10 +48,8 @@ router.post("/login", async (req, res) => {
 // 🟢 GET all logs
 router.get("/logs", async (req, res) => {
   try {
-    const logs = fs.existsSync(logsFile) ? await readJSON(logsFile) : [];
-    const blockedIPs = fs.existsSync(blockedIPsfile)
-      ? await readJSON(blockedIPsfile)
-      : [];
+    const logs = await readJSON("admin_logs.json");
+    const blockedIPs = await readJSON("blocked_ips.json");;
 
     res.json({ logs, blockedIPs });
   } catch (err) {
@@ -63,11 +61,10 @@ router.get("/logs", async (req, res) => {
 // 🔴 DELETE all logs except exempt IPs
 router.delete("/logs", async (req, res) => {
   try {
-    if (fs.existsSync(LOGS_FILE)) {
-      const logs = await readJSON(logsFile);
+      const logs = await readJSON("admin_logs.json");
       const filteredLogs = logs.filter((log) => EXEMPT_IPS.includes(log.ip));
-      await writeJSON(logsFile, filteredLogs);
-    }
+      await writeJSON("admin_logs.json", filteredLogs);
+    
     res.json({ message: "✅ Logs cleared (exempt IPs retained)" });
   } catch (err) {
     console.error("delete logs error:", err);
@@ -84,9 +81,7 @@ router.post("/block-ip", async (req, res) => {
     if (EXEMPT_IPS.includes(ip))
       return res.status(400).json({ message: "Cannot block an exempt IP" });
 
-    const blockedIPs = fs.existsSync(blockedIPsfile)
-      ? await readJSON(blockedIPsfile)
-      : [];
+    const blockedIPs = await readJSON(blockedIPsfile);
 
     if (blockedIPs.includes(ip))
       return res.status(400).json({ message: "IP already blocked" });
@@ -107,9 +102,7 @@ router.post("/unblock-ip", async (req, res) => {
     const { ip } = req.body;
     if (!ip) return res.status(400).json({ message: "IP address required" });
 
-    const blockedIPs = fs.existsSync(blockedIPsfile)
-      ? await readJSON(blockedIPsfile)
-      : [];
+    const blockedIPs = await readJSON(blockedIPsfile);
 
     const updated = blockedIPs.filter((bip) => bip !== ip);
     await writeJSON(blockedIPsfile, updated);
@@ -237,7 +230,6 @@ router.post("/add-to-category", async (req, res) => {
     player: players[username],
   });
 });
-
 // ✅ 4. Create pairings (automatic)
 router.post("/create-pairings", async (req, res) => {
   let { category, rounds, intervalHours = 2 } = req.body; // DO NOT default rounds to 5
@@ -688,7 +680,7 @@ router.get("/results", async (req, res) => {
  */
 router.post("/apply-rating-gains", async (req, res) => {
   try {
-    const { category, force = false } = req.body || {};
+    const { category, force = false, mode = "rapid" } = req.body || {};
     const players = await readJSON("players.json");
     const pairings = await readJSON("pairings.json");
     const results = (await readJSON("results.json")) || [];
@@ -734,14 +726,14 @@ router.post("/apply-rating-gains", async (req, res) => {
       if (!p || !p.recentGain) return;
       // here we apply to rapid — if you want mode-specific, store a pending per-mode instead
       p.ratings = p.ratings || {};
-      p.ratings.rapid = (p.ratings.rapid || 0) + p.recentGain;
+      p.ratings[mode] = (p.ratings[mode] || 0) + p.recentGain;
       p.recentGain = 0;
       p.lastGainDate = now;
       applied++;
     });
 
     await writeJSON("players.json", players);
-    res.json({ message: `✅ Applied gains for ${applied} players.` });
+    res.json({ message: `✅ Applied gains for ${applied} players in ${mode} mode` });
   } catch (err) {
     console.error("apply-rating-gains error:", err);
     res.status(500).json({ message: "Internal server error" });

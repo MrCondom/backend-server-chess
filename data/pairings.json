@@ -44,10 +44,39 @@
         "availableAt": "2025-11-11T00:43:45.855Z"
       }
     ],
-    "currentRound": 2,
+    "currentRound": 3,
     "intervalHours": 1,
-    "nextRoundAt": "2025-11-10T23:43:47.186Z",
-    "countdown": 3600,
+    "nextRoundAt": null,
+    "countdown": 0,
+    "completed": true
+  },
+  "middleweight": {
+    "rounds": [
+      {
+        "round": 1,
+        "pairings": [
+          {
+            "white": "bornstarchessman",
+            "black": "warlock"
+          }
+        ],
+        "availableAt": "2025-11-14T00:23:56.886Z"
+      },
+      {
+        "round": 2,
+        "pairings": [
+          {
+            "white": "tomsheriff",
+            "black": "warlock"
+          }
+        ],
+        "availableAt": "2025-11-14T02:23:56.886Z"
+      }
+    ],
+    "currentRound": 2,
+    "intervalHours": 2,
+    "nextRoundAt": "2025-11-14T02:23:57.060Z",
+    "countdown": 7200,
     "completed": false
   }
 }

@@ -4,51 +4,51 @@
     "fullName": "Jack the souless",
     "username": "onengs",
     "category": "heavyweight",
-    "bio": "My baby",
+    "bio": "",
     "ratings": {
-      "rapid": 1898,
+      "rapid": 1897,
       "blitz": 2000,
       "bullet": 2000
     },
     "createdAt": "2025-11-10T10:44:08.742Z",
     "recentGain": 0,
-    "lastGainDate": "2025-11-10T18:50:37.009Z",
-    "points": 0,
-    "totalRounds": 1
+    "lastGainDate": "2025-11-13T22:20:13.958Z",
+    "points": 2,
+    "totalRounds": 3
   },
   "jaxman": {
     "id": 1762800389704,
     "fullName": "Jackson Chinedu",
     "username": "jaxman",
     "category": "heavyweight",
-    "bio": "Guner",
+    "bio": "Mumu",
     "ratings": {
-      "rapid": 2000,
-      "blitz": 1500,
+      "rapid": 1997,
+      "blitz": 1498,
       "bullet": 1600
     },
     "createdAt": "2025-11-10T18:46:29.704Z",
-    "recentGain": -1,
-    "lastGainDate": "2025-11-10T18:51:16.153Z",
+    "recentGain": 0,
+    "lastGainDate": "2025-11-13T23:10:10.657Z",
     "points": 1,
-    "totalRounds": 1
+    "totalRounds": 3
   },
   "emmagency": {
     "id": 1762800438908,
     "fullName": "Emmanuel Akomas",
     "username": "emmagency",
     "category": "heavyweight",
-    "bio": "Silent Hill",
+    "bio": "He is the current heavyweight champion",
     "ratings": {
-      "rapid": 2000,
+      "rapid": 2002,
       "blitz": 2000,
       "bullet": 2000
     },
     "createdAt": "2025-11-10T18:47:18.908Z",
     "recentGain": 0,
-    "lastGainDate": "2025-11-10T18:51:16.153Z",
-    "points": 1,
-    "totalRounds": 1
+    "lastGainDate": "2025-11-13T22:21:42.877Z",
+    "points": 5,
+    "totalRounds": 3
   },
   "pamboy27": {
     "id": 1762800473389,
@@ -57,14 +57,65 @@
     "category": "heavyweight",
     "bio": "My mumu",
     "ratings": {
+      "rapid": 1999,
+      "blitz": 2001,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-10T18:47:53.389Z",
+    "recentGain": 0,
+    "lastGainDate": "2025-11-13T23:10:10.657Z",
+    "points": 4,
+    "totalRounds": 3
+  },
+  "tomsheriff": {
+    "id": 1763068357135,
+    "fullName": "Thomas Sib",
+    "username": "tomsheriff",
+    "category": "middleweight",
+    "bio": "Accident",
+    "ratings": {
+      "rapid": 2100,
+      "blitz": 1800,
+      "bullet": 1800
+    },
+    "createdAt": "2025-11-13T21:12:37.135Z",
+    "recentGain": 0,
+    "lastGainDate": null,
+    "points": 0,
+    "totalRounds": 0
+  },
+  "bornstarchessman": {
+    "id": 1763079582814,
+    "fullName": "Ebenezer onods",
+    "username": "bornstarchessman",
+    "category": "middleweight",
+    "bio": "Silent",
+    "ratings": {
       "rapid": 2000,
       "blitz": 2000,
       "bullet": 2000
     },
-    "createdAt": "2025-11-10T18:47:53.389Z",
-    "recentGain": 1,
-    "lastGainDate": "2025-11-10T18:50:37.009Z",
-    "points": 2,
-    "totalRounds": 1
+    "createdAt": "2025-11-14T00:19:42.814Z",
+    "recentGain": 0,
+    "lastGainDate": null,
+    "points": 0,
+    "totalRounds": 0
+  },
+  "warlock": {
+    "id": 1763079790235,
+    "fullName": "Felix godnews",
+    "username": "warlock",
+    "category": "middleweight",
+    "bio": "My man",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-14T00:23:10.235Z",
+    "recentGain": 0,
+    "lastGainDate": null,
+    "points": 0,
+    "totalRounds": 0
   }
 }
