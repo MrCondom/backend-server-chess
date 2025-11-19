@@ -104,7 +104,8 @@ router.post("/block-ip", async (req, res) => {
     if (EXEMPT_IPS.includes(ip))
       return res.status(400).json({ message: "Cannot block an exempt IP" });
 
-    const blockedIPs = await readJSON(blockedIPsfile);
+    let blockedIPs = await readJSON(blockedIPsfile) || [];
+    if (!Array.isArray(blockedIPs)) blockedIPs=[];
 
     if (blockedIPs.includes(ip))
       return res.status(400).json({ message: "IP already blocked" });
