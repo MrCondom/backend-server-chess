@@ -1,50 +1,50 @@
 [
   {
+    "round": "1",
+    "mode": "rapid",
+    "playerA": "emmagency",
+    "playerB": "davidcoolkeys",
+    "scoreA": 2,
+    "scoreB": 0,
+    "changeA": 1,
+    "changeB": -2,
+    "date": "2025-11-17T22:51:15.589Z",
+    "category": "middleweight"
+  },
+  {
+    "round": "1",
+    "mode": "rapid",
+    "playerA": "bornstarchessman",
+    "playerB": "warlock",
+    "scoreA": 1.5,
+    "scoreB": 0.5,
+    "changeA": 1,
+    "changeB": -2,
+    "date": "2025-11-17T22:37:12.302Z",
+    "category": "middleweight"
+  },
+  {
     "round": "2",
     "mode": "rapid",
-    "playerA": "onengs",
-    "playerB": "emmagency",
+    "playerA": "emmagency",
+    "playerB": "warlock",
+    "scoreA": 2,
+    "scoreB": 0,
+    "changeA": 1,
+    "changeB": -2,
+    "date": "2025-11-19T00:11:43.904Z",
+    "category": "middleweight"
+  },
+  {
+    "round": "2",
+    "mode": "rapid",
+    "playerA": "davidcoolkeys",
+    "playerB": "bornstarchessman",
     "scoreA": 0,
     "scoreB": 2,
     "changeA": -2,
     "changeB": 1,
-    "date": "2025-11-11T23:25:40.162Z",
-    "category": "heavyweight"
-  },
-  {
-    "round": "3",
-    "mode": "blitz",
-    "playerA": "onengs",
-    "playerB": "jaxman",
-    "scoreA": 2,
-    "scoreB": 0,
-    "changeA": 1,
-    "changeB": -2,
-    "date": "2025-11-13T22:19:31.975Z",
-    "category": "heavyweight"
-  },
-  {
-    "round": "3",
-    "mode": "blitz",
-    "playerA": "emmagency",
-    "playerB": "pamboy27",
-    "scoreA": 2,
-    "scoreB": 0,
-    "changeA": 1,
-    "changeB": -2,
-    "date": "2025-11-13T22:21:28.468Z",
-    "category": "heavyweight"
-  },
-  {
-    "round": "2",
-    "mode": "rapid",
-    "playerA": "pamboy27",
-    "playerB": "jaxman",
-    "scoreA": 2,
-    "scoreB": 0,
-    "changeA": 1,
-    "changeB": -2,
-    "date": "2025-11-13T23:09:15.208Z",
-    "category": "heavyweight"
+    "date": "2025-11-19T00:31:19.462Z",
+    "category": "middleweight"
   }
 ]

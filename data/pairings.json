@@ -1,4 +1,55 @@
 {
+  "middleweight": {
+    "rounds": [
+      {
+        "round": 1,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "davidcoolkeys"
+          },
+          {
+            "white": "bornstarchessman",
+            "black": "warlock"
+          }
+        ],
+        "availableAt": "2025-11-17T21:40:59.305Z"
+      },
+      {
+        "round": 2,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "warlock"
+          },
+          {
+            "white": "davidcoolkeys",
+            "black": "bornstarchessman"
+          }
+        ],
+        "availableAt": "2025-11-17T23:40:59.305Z"
+      },
+      {
+        "round": 3,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "bornstarchessman"
+          },
+          {
+            "white": "warlock",
+            "black": "davidcoolkeys"
+          }
+        ],
+        "availableAt": "2025-11-18T01:40:59.305Z"
+      }
+    ],
+    "currentRound": 3,
+    "intervalHours": 2,
+    "nextRoundAt": "2025-11-19T01:14:49.602Z",
+    "countdown": 7200,
+    "completed": false
+  },
   "heavyweight": {
     "rounds": [
       {
@@ -6,28 +57,28 @@
         "pairings": [
           {
             "white": "onengs",
-            "black": "pamboy27"
+            "black": "richieprime"
           },
           {
             "white": "jaxman",
-            "black": "emmagency"
+            "black": "pamboy27"
           }
         ],
-        "availableAt": "2025-11-10T22:43:45.855Z"
+        "availableAt": "2025-11-19T00:10:46.646Z"
       },
       {
         "round": 2,
         "pairings": [
           {
             "white": "onengs",
-            "black": "emmagency"
+            "black": "pamboy27"
           },
           {
-            "white": "pamboy27",
+            "white": "richieprime",
             "black": "jaxman"
           }
         ],
-        "availableAt": "2025-11-10T23:43:45.855Z"
+        "availableAt": "2025-11-19T02:10:46.646Z"
       },
       {
         "round": 3,
@@ -37,45 +88,16 @@
             "black": "jaxman"
           },
           {
-            "white": "emmagency",
-            "black": "pamboy27"
+            "white": "pamboy27",
+            "black": "richieprime"
           }
         ],
-        "availableAt": "2025-11-11T00:43:45.855Z"
-      }
-    ],
-    "currentRound": 3,
-    "intervalHours": 1,
-    "nextRoundAt": null,
-    "countdown": 0,
-    "completed": true
-  },
-  "middleweight": {
-    "rounds": [
-      {
-        "round": 1,
-        "pairings": [
-          {
-            "white": "bornstarchessman",
-            "black": "warlock"
-          }
-        ],
-        "availableAt": "2025-11-14T00:23:56.886Z"
-      },
-      {
-        "round": 2,
-        "pairings": [
-          {
-            "white": "tomsheriff",
-            "black": "warlock"
-          }
-        ],
-        "availableAt": "2025-11-14T02:23:56.886Z"
+        "availableAt": "2025-11-19T04:10:46.646Z"
       }
     ],
     "currentRound": 2,
     "intervalHours": 2,
-    "nextRoundAt": "2025-11-14T02:23:57.060Z",
+    "nextRoundAt": "2025-11-19T02:10:49.962Z",
     "countdown": 7200,
     "completed": false
   }

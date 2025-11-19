@@ -8,20 +8,20 @@
     "ratings": {
       "rapid": 1897,
       "blitz": 2000,
-      "bullet": 2000
+      "bullet": 2100
     },
     "createdAt": "2025-11-10T10:44:08.742Z",
     "recentGain": 0,
     "lastGainDate": "2025-11-13T22:20:13.958Z",
-    "points": 2,
-    "totalRounds": 3
+    "points": 0,
+    "totalRounds": 0
   },
   "jaxman": {
     "id": 1762800389704,
     "fullName": "Jackson Chinedu",
     "username": "jaxman",
     "category": "heavyweight",
-    "bio": "Mumu",
+    "bio": "Mumuboy and a boss",
     "ratings": {
       "rapid": 1997,
       "blitz": 1498,
@@ -30,32 +30,32 @@
     "createdAt": "2025-11-10T18:46:29.704Z",
     "recentGain": 0,
     "lastGainDate": "2025-11-13T23:10:10.657Z",
-    "points": 1,
-    "totalRounds": 3
+    "points": 0,
+    "totalRounds": 0
   },
   "emmagency": {
     "id": 1762800438908,
     "fullName": "Emmanuel Akomas",
     "username": "emmagency",
-    "category": "heavyweight",
-    "bio": "He is the current heavyweight champion",
+    "category": "middleweight",
+    "bio": "He is the current heavyweight champion and a deadly assasin. Yes a killer",
     "ratings": {
       "rapid": 2002,
       "blitz": 2000,
       "bullet": 2000
     },
     "createdAt": "2025-11-10T18:47:18.908Z",
-    "recentGain": 0,
-    "lastGainDate": "2025-11-13T22:21:42.877Z",
-    "points": 5,
-    "totalRounds": 3
+    "recentGain": 2,
+    "lastGainDate": "2025-11-19T00:11:43.904Z",
+    "points": 4,
+    "totalRounds": 2
   },
   "pamboy27": {
     "id": 1762800473389,
     "fullName": "Pamela Ezeh",
     "username": "pamboy27",
     "category": "heavyweight",
-    "bio": "My mumu",
+    "bio": "Stronger than ever",
     "ratings": {
       "rapid": 1999,
       "blitz": 2001,
@@ -64,23 +64,6 @@
     "createdAt": "2025-11-10T18:47:53.389Z",
     "recentGain": 0,
     "lastGainDate": "2025-11-13T23:10:10.657Z",
-    "points": 4,
-    "totalRounds": 3
-  },
-  "tomsheriff": {
-    "id": 1763068357135,
-    "fullName": "Thomas Sib",
-    "username": "tomsheriff",
-    "category": "middleweight",
-    "bio": "Accident",
-    "ratings": {
-      "rapid": 2100,
-      "blitz": 1800,
-      "bullet": 1800
-    },
-    "createdAt": "2025-11-13T21:12:37.135Z",
-    "recentGain": 0,
-    "lastGainDate": null,
     "points": 0,
     "totalRounds": 0
   },
@@ -96,10 +79,10 @@
       "bullet": 2000
     },
     "createdAt": "2025-11-14T00:19:42.814Z",
-    "recentGain": 0,
-    "lastGainDate": null,
-    "points": 0,
-    "totalRounds": 0
+    "recentGain": 2,
+    "lastGainDate": "2025-11-19T00:31:19.462Z",
+    "points": 3.5,
+    "totalRounds": 2
   },
   "warlock": {
     "id": 1763079790235,
@@ -113,6 +96,40 @@
       "bullet": 2000
     },
     "createdAt": "2025-11-14T00:23:10.235Z",
+    "recentGain": -4,
+    "lastGainDate": "2025-11-19T00:11:43.904Z",
+    "points": 0.5,
+    "totalRounds": 2
+  },
+  "davidcoolkeys": {
+    "id": 1763117362576,
+    "fullName": "David Coolkey",
+    "username": "davidcoolkeys",
+    "category": "middleweight",
+    "bio": "Killa",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-14T10:49:22.576Z",
+    "recentGain": -4,
+    "lastGainDate": "2025-11-19T00:31:19.462Z",
+    "points": 0,
+    "totalRounds": 2
+  },
+  "richieprime": {
+    "id": 1763202002902,
+    "fullName": "Richard pepper",
+    "username": "richieprime",
+    "category": "heavyweight",
+    "bio": "Hunt",
+    "ratings": {
+      "rapid": 2000,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2025-11-15T10:20:02.902Z",
     "recentGain": 0,
     "lastGainDate": null,
     "points": 0,

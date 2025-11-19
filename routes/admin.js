@@ -14,8 +14,29 @@ const dataDir = path.join(__dirname, "../data");
 const logsFile = path.join(dataDir, "admin_logs.json");
 const blockedIPsfile = path.join(dataDir,"blocked_ips.json");
 const EXEMPT_IPS = ["192.168.1.117", "::1", "127.0.0.1"]; 
+function normalizeIP(ip) {
+  return ip.replace("::ffff:","");
+}
 
+// 🔒 Middleware: Block requests from blocked IPs
+router.use(async (req, res, next) => {
+  try {
+    const rawIP = req.ip;
+    const ip = normalizeIP(rawIP);
 
+    const blockedIPs = await readJSON("blocked_ips.json");
+
+    if (blockedIPs.includes(ip)) {
+      return res.status(403).json("Your IP has been blocked.");
+    }
+
+    req.cleanedIP = ip;
+    next();
+  } catch (err) {
+    console.error("IP check error:", err);
+    next(); // Allow request if checking fails
+  }
+});
 // 🛡️ ADMIN LOGIN
 router.post("/login", async (req, res) => {
   const { password } = req.body;
@@ -27,7 +48,7 @@ router.post("/login", async (req, res) => {
 
   const matchIndex = validPasswords.indexOf(password);
   if (matchIndex === -1) {
-    return res.status(401).json({ error: "Unauthorized access" });
+    return res.status(401).send("Unauthorized Access" );
   }
 
   // Log admin usage
@@ -35,7 +56,7 @@ router.post("/login", async (req, res) => {
   logs.push({
     adminId: `ADMIN_${matchIndex + 1}`,
     usedAt: new Date().toISOString(),
-    ip: req.ip,
+    ip: req.cleanedIP,
   });
   await writeJSON("admin_logs.json", logs);
 
@@ -75,8 +96,10 @@ router.delete("/logs", async (req, res) => {
 // 🚫 BLOCK an IP
 router.post("/block-ip", async (req, res) => {
   try {
-    const { ip } = req.body;
+    let { ip } = req.body;
+    
     if (!ip) return res.status(400).json({ message: "IP address required" });
+    ip = normalizeIP(ip);
 
     if (EXEMPT_IPS.includes(ip))
       return res.status(400).json({ message: "Cannot block an exempt IP" });
@@ -99,8 +122,9 @@ router.post("/block-ip", async (req, res) => {
 // ✅ UNBLOCK an IP
 router.post("/unblock-ip", async (req, res) => {
   try {
-    const { ip } = req.body;
+    let { ip } = req.body;
     if (!ip) return res.status(400).json({ message: "IP address required" });
+    ip = normalizeIP(ip);
 
     const blockedIPs = await readJSON(blockedIPsfile);
 
@@ -484,7 +508,7 @@ router.put("/edit-result/:index", async (req, res) => {
     const results = (await readJSON("results.json")) || [];
 
     if (isNaN(idx) || idx < 0 || idx >= results.length) {
-      return res.status(400).json({ message: "Invalid result index" });
+      return res.status(400).send("Invalid result index" );
     }
 
     const old = results[idx];
@@ -511,10 +535,10 @@ router.put("/edit-result/:index", async (req, res) => {
     )?.category;
 
     if (!playerCat || !pairings[playerCat]) {
-      return res.status(404).json({ message: "No valid category found for this new match." });
+      return res.status(404).send("No valid category found for this new match." );
     }
     if (!pairingExists(pairings, playerCat, round, white, black)) {
-      return res.status(400).json({ message: `No such pairing found for Round ${round}.` });
+      return res.status(400).send(`No such pairing found for Round ${round}.` );
     }
 
     // prevent duplicate (other than this index)
@@ -524,12 +548,12 @@ router.put("/edit-result/:index", async (req, res) => {
     const reversed = results.some((r, i) => i !== idx &&
       normalize(r.playerA) === normalize(black) && normalize(r.playerB) === normalize(white) && Number(r.round) === Number(round)
     );
-    if (duplicate || reversed) return res.status(400).json({ message: "This match (or its reverse) is already recorded elsewhere." });
+    if (duplicate || reversed) return res.status(400).send("This match (or its reverse) is already recorded elsewhere.");
 
     // find new keys
     const playerAKey = findPlayerKeyByName(players, white);
     const playerBKey = findPlayerKeyByName(players, black);
-    if (!playerAKey || !playerBKey) return res.status(404).json({ message: "One or both players not found for new result." });
+    if (!playerAKey || !playerBKey) return res.status(404).send("One or both players not found for new result." );
 
     const playerA = players[playerAKey];
     const playerB = players[playerBKey];
@@ -819,7 +843,7 @@ router.get("/players/all", async (req, res) => {
 
 // ✅ 9. Leaderboard Table
 router.post("/generateTable", async (req, res) => {
-  const { category, mode } = req.body;
+  const { category, mode, month, year } = req.body;
   if (!category || !mode) {
     return res.status(400).json({ error: "Category and mode are required" });
   }
@@ -864,6 +888,8 @@ router.post("/generateTable", async (req, res) => {
     category,
     mode,
     generatedAt: new Date(),
+    month: month || null,
+    year: year || null,
     table: table.map(({ numericAccuracy, ...rest }) => rest),
   });
 
