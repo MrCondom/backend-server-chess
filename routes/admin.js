@@ -27,7 +27,7 @@ router.use(async (req, res, next) => {
     const blockedIPs = await readJSON("blocked_ips.json");
 
     if (blockedIPs.includes(ip)) {
-      return res.status(403).json("Your IP has been blocked.");
+      return res.status(403).json({ message: "Your IP has been blocked."});
     }
 
     req.cleanedIP = ip;
@@ -48,7 +48,7 @@ router.post("/login", async (req, res) => {
 
   const matchIndex = validPasswords.indexOf(password);
   if (matchIndex === -1) {
-    return res.status(401).send("Unauthorized Access" );
+    return res.status(401).json({message:"Unauthorized Access"});
   }
 
   // Log admin usage
