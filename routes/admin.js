@@ -8,6 +8,7 @@ const { readJSON, writeJSON } = require("../utils/fileHandler");
 const { createPairings } = require("../utils/pairingGenerator");
 const { calculateAccuracy } = require("../utils/accuracyCalculator");
 const { calculateRatingChange } = require("../utils/ratingCalculator");
+const {getWinStreak, getLossStreak, getWinMultiplier, getLossMultiplier} = require ("../utils/streak");
 
 // File paths
 const dataDir = path.join(__dirname, "../data");
@@ -104,14 +105,14 @@ router.post("/block-ip", async (req, res) => {
     if (EXEMPT_IPS.includes(ip))
       return res.status(400).json({ message: "Cannot block an exempt IP" });
 
-    let blockedIPs = await readJSON(blockedIPsfile) || [];
+    let blockedIPs = await readJSON("blocked_ips.json") || [];
     if (!Array.isArray(blockedIPs)) blockedIPs=[];
 
     if (blockedIPs.includes(ip))
       return res.status(400).json({ message: "IP already blocked" });
 
     blockedIPs.push(ip);
-    await writeJSON(blockedIPsfile, blockedIPs);
+    await writeJSON("blocked_ips.json", blockedIPs);
 
     res.json({ message: `🚫 IP ${ip} blocked successfully` });
   } catch (err) {
@@ -127,10 +128,10 @@ router.post("/unblock-ip", async (req, res) => {
     if (!ip) return res.status(400).json({ message: "IP address required" });
     ip = normalizeIP(ip);
 
-    const blockedIPs = await readJSON(blockedIPsfile);
+    const blockedIPs = await readJSON("blocked_ips.json");
 
     const updated = blockedIPs.filter((bip) => bip !== ip);
-    await writeJSON(blockedIPsfile, updated);
+    await writeJSON("blocked_ips.json", updated);
 
     res.json({ message: `✅ IP ${ip} unblocked successfully` });
   } catch (err) {
@@ -142,7 +143,7 @@ router.post("/unblock-ip", async (req, res) => {
 // 🧹 CLEAR ALL BLOCKED IPs
 router.delete("/clear-blocked-ips", async (req, res) => {
   try {
-    await writeJSON(blockedIPsfile, []);
+    await writeJSON("blocked_ips.json", []);
     res.json({ message: "🧹 All blocked IPs cleared successfully" });
   } catch (err) {
     console.error("clear blocked ips error:", err);
@@ -453,7 +454,33 @@ router.post("/record-result", async (req, res) => {
     // calculate rating change but DO NOT mutate real rating
     const ratingA = playerA.ratings?.[selectedMode] ?? 0;
     const ratingB = playerB.ratings?.[selectedMode] ?? 0;
-    const { changeA, changeB } = calculateRatingChange(ratingA, ratingB, scoreA, scoreB);
+    // 🔹 compute streaks BEFORE pushing this result
+const winStreakA = getWinStreak(results, playerA.username, selectedMode, playerCat);
+const lossStreakA = getLossStreak(results, playerA.username, selectedMode, playerCat);
+
+const winStreakB = getWinStreak(results, playerB.username, selectedMode, playerCat);
+const lossStreakB = getLossStreak(results, playerB.username, selectedMode, playerCat);
+
+// 🔹 get multipliers
+const winMultA = getWinMultiplier(winStreakA);
+const lossMultA = getLossMultiplier(lossStreakA);
+
+const winMultB = getWinMultiplier(winStreakB);
+const lossMultB = getLossMultiplier(lossStreakB);
+
+// 🔹 base rating change
+let { changeA, changeB } =
+  calculateRatingChange(ratingA, ratingB, scoreA, scoreB);
+
+// 🔹 apply multipliers ONLY to gains
+if (changeA > 0) {
+  changeA = Math.round(changeA * winMultA * lossMultA);
+}
+
+if (changeB > 0) {
+  changeB = Math.round(changeB * winMultB * lossMultB);
+}
+
 
     // apply to recentGain only
     playerA.recentGain = (playerA.recentGain || 0) + changeA;

@@ -2,49 +2,37 @@
   {
     "round": "1",
     "mode": "rapid",
-    "playerA": "emmagency",
-    "playerB": "davidcoolkeys",
-    "scoreA": 2,
-    "scoreB": 0,
-    "changeA": 1,
-    "changeB": -2,
-    "date": "2025-11-17T22:51:15.589Z",
-    "category": "middleweight"
-  },
-  {
-    "round": "1",
-    "mode": "rapid",
-    "playerA": "bornstarchessman",
-    "playerB": "warlock",
-    "scoreA": 1.5,
-    "scoreB": 0.5,
-    "changeA": 1,
-    "changeB": -2,
-    "date": "2025-11-17T22:37:12.302Z",
-    "category": "middleweight"
-  },
-  {
-    "round": "2",
-    "mode": "rapid",
-    "playerA": "emmagency",
-    "playerB": "warlock",
-    "scoreA": 2,
-    "scoreB": 0,
-    "changeA": 1,
-    "changeB": -2,
-    "date": "2025-11-19T00:11:43.904Z",
-    "category": "middleweight"
-  },
-  {
-    "round": "2",
-    "mode": "rapid",
-    "playerA": "davidcoolkeys",
-    "playerB": "bornstarchessman",
+    "playerA": "onengs",
+    "playerB": "richieprime",
     "scoreA": 0,
     "scoreB": 2,
     "changeA": -2,
     "changeB": 1,
-    "date": "2025-11-19T00:31:19.462Z",
-    "category": "middleweight"
+    "date": "2026-01-09T19:49:07.379Z",
+    "category": "heavyweight"
+  },
+  {
+    "round": "2",
+    "mode": "rapid",
+    "playerA": "richieprime",
+    "playerB": "jaxman",
+    "scoreA": 2,
+    "scoreB": 0,
+    "changeA": 1,
+    "changeB": -2,
+    "date": "2026-01-09T19:49:49.408Z",
+    "category": "heavyweight"
+  },
+  {
+    "round": "3",
+    "mode": "rapid",
+    "playerA": "pamboy27",
+    "playerB": "richieprime",
+    "scoreA": 0,
+    "scoreB": 2,
+    "changeA": -2,
+    "changeB": 1,
+    "date": "2026-01-09T19:50:53.122Z",
+    "category": "heavyweight"
   }
 ]

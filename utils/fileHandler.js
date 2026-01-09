@@ -37,6 +37,7 @@ async function writeJSON(file, data) {
     await fs.writeJSON(full, data, { spaces: 2 });
   } catch (err) {
     console.error("writeJSON error:", full, err);
+    throw err;
   }
 }
 

@@ -1,0 +1,33 @@
+{
+  "category": "Middleweight",
+  "mode": "rapid",
+  "generatedAt": "2026-01-09T01:50:41.588Z",
+  "month": "January",
+  "year": "2026",
+  "table": [
+    {
+      "username": "emmagency",
+      "totalRounds": 3,
+      "totalPoints": 5,
+      "accuracy": "83.4%"
+    },
+    {
+      "username": "bornstarchessman",
+      "totalRounds": 3,
+      "totalPoints": 4.5,
+      "accuracy": "75.0%"
+    },
+    {
+      "username": "warlock",
+      "totalRounds": 2,
+      "totalPoints": 0.5,
+      "accuracy": "12.5%"
+    },
+    {
+      "username": "davidcoolkeys",
+      "totalRounds": 2,
+      "totalPoints": 0,
+      "accuracy": "0.0%"
+    }
+  ]
+}

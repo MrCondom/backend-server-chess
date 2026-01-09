@@ -11,10 +11,10 @@
       "bullet": 2100
     },
     "createdAt": "2025-11-10T10:44:08.742Z",
-    "recentGain": 0,
-    "lastGainDate": "2025-11-13T22:20:13.958Z",
+    "recentGain": -2,
+    "lastGainDate": "2026-01-09T19:49:07.379Z",
     "points": 0,
-    "totalRounds": 0
+    "totalRounds": 1
   },
   "jaxman": {
     "id": 1762800389704,
@@ -28,10 +28,10 @@
       "bullet": 1600
     },
     "createdAt": "2025-11-10T18:46:29.704Z",
-    "recentGain": 0,
-    "lastGainDate": "2025-11-13T23:10:10.657Z",
+    "recentGain": -2,
+    "lastGainDate": "2026-01-09T19:49:49.408Z",
     "points": 0,
-    "totalRounds": 0
+    "totalRounds": 1
   },
   "emmagency": {
     "id": 1762800438908,
@@ -45,10 +45,10 @@
       "bullet": 2000
     },
     "createdAt": "2025-11-10T18:47:18.908Z",
-    "recentGain": 2,
-    "lastGainDate": "2025-11-19T00:11:43.904Z",
-    "points": 4,
-    "totalRounds": 2
+    "recentGain": 1,
+    "lastGainDate": "2026-01-09T02:06:18.034Z",
+    "points": 5,
+    "totalRounds": 3
   },
   "pamboy27": {
     "id": 1762800473389,
@@ -62,10 +62,10 @@
       "bullet": 2000
     },
     "createdAt": "2025-11-10T18:47:53.389Z",
-    "recentGain": 0,
-    "lastGainDate": "2025-11-13T23:10:10.657Z",
+    "recentGain": -2,
+    "lastGainDate": "2026-01-09T19:50:53.122Z",
     "points": 0,
-    "totalRounds": 0
+    "totalRounds": 1
   },
   "bornstarchessman": {
     "id": 1763079582814,
@@ -79,10 +79,10 @@
       "bullet": 2000
     },
     "createdAt": "2025-11-14T00:19:42.814Z",
-    "recentGain": 2,
-    "lastGainDate": "2025-11-19T00:31:19.462Z",
-    "points": 3.5,
-    "totalRounds": 2
+    "recentGain": 3,
+    "lastGainDate": "2026-01-09T02:28:30.897Z",
+    "points": 4.5,
+    "totalRounds": 3
   },
   "warlock": {
     "id": 1763079790235,
@@ -97,7 +97,7 @@
     },
     "createdAt": "2025-11-14T00:23:10.235Z",
     "recentGain": -4,
-    "lastGainDate": "2025-11-19T00:11:43.904Z",
+    "lastGainDate": "2026-01-09T02:28:30.897Z",
     "points": 0.5,
     "totalRounds": 2
   },
@@ -114,7 +114,7 @@
     },
     "createdAt": "2025-11-14T10:49:22.576Z",
     "recentGain": -4,
-    "lastGainDate": "2025-11-19T00:31:19.462Z",
+    "lastGainDate": "2026-01-09T02:06:18.034Z",
     "points": 0,
     "totalRounds": 2
   },
@@ -130,9 +130,9 @@
       "bullet": 2000
     },
     "createdAt": "2025-11-15T10:20:02.902Z",
-    "recentGain": 0,
-    "lastGainDate": null,
-    "points": 0,
-    "totalRounds": 0
+    "recentGain": 3,
+    "lastGainDate": "2026-01-09T19:50:53.122Z",
+    "points": 6,
+    "totalRounds": 3
   }
 }
