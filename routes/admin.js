@@ -454,12 +454,27 @@ router.post("/record-result", async (req, res) => {
     // calculate rating change but DO NOT mutate real rating
     const ratingA = playerA.ratings?.[selectedMode] ?? 0;
     const ratingB = playerB.ratings?.[selectedMode] ?? 0;
-    // 🔹 compute streaks BEFORE pushing this result
-const winStreakA = getWinStreak(results, playerA.username, selectedMode, playerCat);
-const lossStreakA = getLossStreak(results, playerA.username, selectedMode, playerCat);
+  
+// 🔹 compute streaks BEFORE this edited result is applied
+let winStreakA = getWinStreak(results, playerA.username, selectedMode, playerCat);
+let lossStreakA = getLossStreak(results, playerA.username, selectedMode, playerCat);
 
-const winStreakB = getWinStreak(results, playerB.username, selectedMode, playerCat);
-const lossStreakB = getLossStreak(results, playerB.username, selectedMode, playerCat);
+let winStreakB = getWinStreak(results, playerB.username, selectedMode, playerCat);
+let lossStreakB = getLossStreak(results, playerB.username, selectedMode, playerCat);
+
+// 🔹 Count this result IN ADVANCE
+if (scoreA > scoreB) {
+  winStreakA++;
+} else if (scoreA < scoreB) {
+  lossStreakA++;
+}
+
+if (scoreB > scoreA) {
+  winStreakB++;
+} else if (scoreB < scoreA) {
+  lossStreakB++;
+}
+
 
 // 🔹 get multipliers
 const winMultA = getWinMultiplier(winStreakA);
@@ -469,16 +484,14 @@ const winMultB = getWinMultiplier(winStreakB);
 const lossMultB = getLossMultiplier(lossStreakB);
 
 // 🔹 base rating change
-let { changeA, changeB } =
-  calculateRatingChange(ratingA, ratingB, scoreA, scoreB);
+let { changeA, changeB } = calculateRatingChange(ratingA, ratingB, scoreA, scoreB);
 
-// 🔹 apply multipliers ONLY to gains
+// 🔹 Apply only to gains (not losses)
 if (changeA > 0) {
-  changeA = Math.round(changeA * winMultA * lossMultA);
+  changeA = Math.round(changeA * getWinMultiplier(winStreakA) * getLossMultiplier(lossStreakA));
 }
-
 if (changeB > 0) {
-  changeB = Math.round(changeB * winMultB * lossMultB);
+  changeB = Math.round(changeB * getWinMultiplier(winStreakB) * getLossMultiplier(lossStreakB));
 }
 
 

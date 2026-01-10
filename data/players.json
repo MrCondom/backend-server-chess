@@ -1,38 +1,4 @@
 {
-  "onengs": {
-    "id": 1762771448742,
-    "fullName": "Jack the souless",
-    "username": "onengs",
-    "category": "heavyweight",
-    "bio": "",
-    "ratings": {
-      "rapid": 1897,
-      "blitz": 2000,
-      "bullet": 2100
-    },
-    "createdAt": "2025-11-10T10:44:08.742Z",
-    "recentGain": -2,
-    "lastGainDate": "2026-01-09T20:09:58.449Z",
-    "points": 0,
-    "totalRounds": 1
-  },
-  "jaxman": {
-    "id": 1762800389704,
-    "fullName": "Jackson Chinedu",
-    "username": "jaxman",
-    "category": "heavyweight",
-    "bio": "Mumuboy and a boss",
-    "ratings": {
-      "rapid": 1997,
-      "blitz": 1498,
-      "bullet": 1600
-    },
-    "createdAt": "2025-11-10T18:46:29.704Z",
-    "recentGain": -2,
-    "lastGainDate": "2026-01-09T20:10:51.916Z",
-    "points": 0,
-    "totalRounds": 1
-  },
   "emmagency": {
     "id": 1762800438908,
     "fullName": "Emmanuel Akomas",
@@ -40,32 +6,15 @@
     "category": "middleweight",
     "bio": "He is the current heavyweight champion and a deadly assasin. Yes a killer",
     "ratings": {
-      "rapid": 2002,
+      "rapid": 2003,
       "blitz": 2000,
       "bullet": 2000
     },
     "createdAt": "2025-11-10T18:47:18.908Z",
-    "recentGain": 1,
-    "lastGainDate": "2026-01-09T02:06:18.034Z",
-    "points": 5,
-    "totalRounds": 3
-  },
-  "pamboy27": {
-    "id": 1762800473389,
-    "fullName": "Pamela Ezeh",
-    "username": "pamboy27",
-    "category": "heavyweight",
-    "bio": "Stronger than ever",
-    "ratings": {
-      "rapid": 1999,
-      "blitz": 2001,
-      "bullet": 2000
-    },
-    "createdAt": "2025-11-10T18:47:53.389Z",
-    "recentGain": -2,
-    "lastGainDate": "2026-01-09T20:11:45.456Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-01-09T21:43:42.196Z",
     "points": 0,
-    "totalRounds": 1
+    "totalRounds": 0
   },
   "bornstarchessman": {
     "id": 1763079582814,
@@ -74,15 +23,15 @@
     "category": "middleweight",
     "bio": "Silent",
     "ratings": {
-      "rapid": 2000,
+      "rapid": 2003,
       "blitz": 2000,
       "bullet": 2000
     },
     "createdAt": "2025-11-14T00:19:42.814Z",
-    "recentGain": 3,
-    "lastGainDate": "2026-01-09T02:28:30.897Z",
-    "points": 4.5,
-    "totalRounds": 3
+    "recentGain": 0,
+    "lastGainDate": "2026-01-09T21:43:42.196Z",
+    "points": 0,
+    "totalRounds": 0
   },
   "warlock": {
     "id": 1763079790235,
@@ -91,15 +40,15 @@
     "category": "middleweight",
     "bio": "My man",
     "ratings": {
-      "rapid": 2000,
+      "rapid": 1996,
       "blitz": 2000,
       "bullet": 2000
     },
     "createdAt": "2025-11-14T00:23:10.235Z",
-    "recentGain": -4,
-    "lastGainDate": "2026-01-09T02:28:30.897Z",
-    "points": 0.5,
-    "totalRounds": 2
+    "recentGain": 0,
+    "lastGainDate": "2026-01-09T21:43:42.196Z",
+    "points": 0,
+    "totalRounds": 0
   },
   "davidcoolkeys": {
     "id": 1763117362576,
@@ -108,31 +57,48 @@
     "category": "middleweight",
     "bio": "Killa",
     "ratings": {
-      "rapid": 2000,
+      "rapid": 1996,
       "blitz": 2000,
       "bullet": 2000
     },
     "createdAt": "2025-11-14T10:49:22.576Z",
-    "recentGain": -4,
-    "lastGainDate": "2026-01-09T02:06:18.034Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-01-09T21:43:42.196Z",
     "points": 0,
-    "totalRounds": 2
+    "totalRounds": 0
   },
-  "richieprime": {
-    "id": 1763202002902,
-    "fullName": "Richard pepper",
-    "username": "richieprime",
+  "jaxman": {
+    "id": 1767993797888,
+    "fullName": "Jackson Chinedu",
+    "username": "jaxman",
     "category": "heavyweight",
-    "bio": "Hunt",
+    "bio": "Killa",
     "ratings": {
-      "rapid": 2000,
+      "rapid": 2003,
       "blitz": 2000,
       "bullet": 2000
     },
-    "createdAt": "2025-11-15T10:20:02.902Z",
-    "recentGain": 3,
-    "lastGainDate": "2026-01-09T20:11:45.456Z",
+    "createdAt": "2026-01-09T21:23:17.888Z",
+    "recentGain": 4,
+    "lastGainDate": "2026-01-10T22:30:31.697Z",
     "points": 6,
+    "totalRounds": 3
+  },
+  "onengs": {
+    "id": 1767993834101,
+    "fullName": "Jack The Souless",
+    "username": "onengs",
+    "category": "heavyweight",
+    "bio": "Big boy",
+    "ratings": {
+      "rapid": 1994,
+      "blitz": 2000,
+      "bullet": 2000
+    },
+    "createdAt": "2026-01-09T21:23:54.101Z",
+    "recentGain": -6,
+    "lastGainDate": "2026-01-10T22:30:31.697Z",
+    "points": 0,
     "totalRounds": 3
   }
 }
