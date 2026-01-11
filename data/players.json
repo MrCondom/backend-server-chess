@@ -15,5 +15,22 @@
     "lastGainDate": null,
     "points": 0,
     "totalRounds": 0
+  },
+  "emmagency": {
+    "id": 1768137642349,
+    "fullName": "Emmanuel Akomas",
+    "username": "emmagency",
+    "category": "heavyweight",
+    "bio": "Current heavyweight champion.",
+    "ratings": {
+      "rapid": 1900,
+      "blitz": 1900,
+      "bullet": 1900
+    },
+    "createdAt": "2026-01-11T13:20:42.349Z",
+    "recentGain": 0,
+    "lastGainDate": null,
+    "points": 0,
+    "totalRounds": 0
   }
 }
