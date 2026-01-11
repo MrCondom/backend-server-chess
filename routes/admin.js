@@ -488,11 +488,17 @@ let { changeA, changeB } = calculateRatingChange(ratingA, ratingB, scoreA, score
 
 // 🔹 Apply only to gains (not losses)
 if (changeA > 0) {
-  changeA = Math.round(changeA * getWinMultiplier(winStreakA) * getLossMultiplier(lossStreakA));
+  changeA = Math.round(changeA * winMultA * lossMultA);
+} else if (changeA < 0) {
+  changeA = Math.round(changeA * lossMultA);
 }
+
 if (changeB > 0) {
-  changeB = Math.round(changeB * getWinMultiplier(winStreakB) * getLossMultiplier(lossStreakB));
+  changeB = Math.round(changeB * winMultB * lossMultB);
+} else if (changeB < 0) {
+  changeB = Math.round(changeB * lossMultB);
 }
+
 
 
     // apply to recentGain only
