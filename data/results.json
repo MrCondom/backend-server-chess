@@ -1,0 +1,74 @@
+[
+  {
+    "round": "1",
+    "mode": "rapid",
+    "playerA": "tamuno_imiegbam_002",
+    "playerB": "ramsey365",
+    "scoreA": 1,
+    "scoreB": 1,
+    "changeA": 0,
+    "changeB": 0,
+    "date": "2026-01-16T12:16:24.179Z",
+    "category": "lightweight"
+  },
+  {
+    "round": "1",
+    "mode": "rapid",
+    "playerA": "edd_casper",
+    "playerB": "maestrothagoat001",
+    "scoreA": 2,
+    "scoreB": 0,
+    "changeA": 1,
+    "changeB": -2,
+    "date": "2026-01-16T21:14:37.582Z",
+    "category": "lightweight"
+  },
+  {
+    "round": "1",
+    "mode": "rapid",
+    "playerA": "fergifork",
+    "playerB": "franklin_eke",
+    "scoreA": 2,
+    "scoreB": 0,
+    "changeA": 1,
+    "changeB": -2,
+    "date": "2026-01-16T21:18:35.811Z",
+    "category": "lightweight"
+  },
+  {
+    "round": "2",
+    "mode": "rapid",
+    "playerA": "edd_casper",
+    "playerB": "fergifork",
+    "scoreA": 0,
+    "scoreB": 2,
+    "changeA": -2,
+    "changeB": 1,
+    "date": "2026-01-17T18:20:18.604Z",
+    "category": "lightweight"
+  },
+  {
+    "round": "2",
+    "mode": "rapid",
+    "playerA": "tamuno_imiegbam_002",
+    "playerB": "franklin_eke",
+    "scoreA": 1,
+    "scoreB": 1,
+    "changeA": 0,
+    "changeB": 0,
+    "date": "2026-01-17T19:33:57.953Z",
+    "category": "lightweight"
+  },
+  {
+    "round": "2",
+    "mode": "rapid",
+    "playerA": "debbie0o",
+    "playerB": "ramsey365",
+    "scoreA": 2,
+    "scoreB": 0,
+    "changeA": 1,
+    "changeB": -2,
+    "date": "2026-01-17T23:31:48.004Z",
+    "category": "lightweight"
+  }
+]

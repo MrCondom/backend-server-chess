@@ -1,0 +1,137 @@
+{
+  "lightweight": {
+    "rounds": [
+      {
+        "round": 1,
+        "pairings": [
+          {
+            "white": "tamuno_imiegbam_002",
+            "black": "ramsey365"
+          },
+          {
+            "white": "edd_casper",
+            "black": "maestrothagoat001"
+          },
+          {
+            "white": "fergifork",
+            "black": "franklin_eke"
+          }
+        ],
+        "availableAt": "2026-01-15T23:00:01.215Z"
+      },
+      {
+        "round": 2,
+        "pairings": [
+          {
+            "white": "debbie0o",
+            "black": "ramsey365"
+          },
+          {
+            "white": "tamuno_imiegbam_002",
+            "black": "franklin_eke"
+          },
+          {
+            "white": "edd_casper",
+            "black": "fergifork"
+          }
+        ],
+        "availableAt": "2026-01-16T23:00:01.215Z"
+      },
+      {
+        "round": 3,
+        "pairings": [
+          {
+            "white": "debbie0o",
+            "black": "maestrothagoat001"
+          },
+          {
+            "white": "ramsey365",
+            "black": "franklin_eke"
+          },
+          {
+            "white": "tamuno_imiegbam_002",
+            "black": "edd_casper"
+          }
+        ],
+        "availableAt": "2026-01-17T23:00:01.215Z"
+      },
+      {
+        "round": 4,
+        "pairings": [
+          {
+            "white": "debbie0o",
+            "black": "franklin_eke"
+          },
+          {
+            "white": "maestrothagoat001",
+            "black": "fergifork"
+          },
+          {
+            "white": "ramsey365",
+            "black": "edd_casper"
+          }
+        ],
+        "availableAt": "2026-01-18T23:00:01.215Z"
+      },
+      {
+        "round": 5,
+        "pairings": [
+          {
+            "white": "debbie0o",
+            "black": "fergifork"
+          },
+          {
+            "white": "franklin_eke",
+            "black": "edd_casper"
+          },
+          {
+            "white": "maestrothagoat001",
+            "black": "tamuno_imiegbam_002"
+          }
+        ],
+        "availableAt": "2026-01-19T23:00:01.215Z"
+      },
+      {
+        "round": 6,
+        "pairings": [
+          {
+            "white": "debbie0o",
+            "black": "edd_casper"
+          },
+          {
+            "white": "fergifork",
+            "black": "tamuno_imiegbam_002"
+          },
+          {
+            "white": "maestrothagoat001",
+            "black": "ramsey365"
+          }
+        ],
+        "availableAt": "2026-01-20T23:00:01.215Z"
+      },
+      {
+        "round": 7,
+        "pairings": [
+          {
+            "white": "debbie0o",
+            "black": "tamuno_imiegbam_002"
+          },
+          {
+            "white": "fergifork",
+            "black": "ramsey365"
+          },
+          {
+            "white": "franklin_eke",
+            "black": "maestrothagoat001"
+          }
+        ],
+        "availableAt": "2026-01-21T23:00:01.215Z"
+      }
+    ],
+    "currentRound": 3,
+    "intervalHours": 24,
+    "nextRoundAt": "2026-01-18T23:30:44.992Z",
+    "countdown": 86400,
+    "completed": false
+  }
+}

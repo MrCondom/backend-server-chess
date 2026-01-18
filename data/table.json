@@ -1,0 +1,51 @@
+{
+  "category": "Lightweight",
+  "mode": "rapid",
+  "generatedAt": "2026-01-17T23:32:20.822Z",
+  "month": "January",
+  "year": "2026",
+  "table": [
+    {
+      "username": "fergifork",
+      "totalRounds": 2,
+      "totalPoints": 4,
+      "accuracy": "73.9%"
+    },
+    {
+      "username": "debbie0o",
+      "totalRounds": 1,
+      "totalPoints": 2,
+      "accuracy": "73.9%"
+    },
+    {
+      "username": "tamuno_imiegbam_002",
+      "totalRounds": 2,
+      "totalPoints": 2,
+      "accuracy": "37.0%"
+    },
+    {
+      "username": "edd_casper",
+      "totalRounds": 2,
+      "totalPoints": 2,
+      "accuracy": "37.0%"
+    },
+    {
+      "username": "franklin_eke",
+      "totalRounds": 2,
+      "totalPoints": 1,
+      "accuracy": "18.5%"
+    },
+    {
+      "username": "ramsey365",
+      "totalRounds": 2,
+      "totalPoints": 1,
+      "accuracy": "18.5%"
+    },
+    {
+      "username": "maestrothagoat001",
+      "totalRounds": 1,
+      "totalPoints": 0,
+      "accuracy": "0.0%"
+    }
+  ]
+}
