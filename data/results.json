@@ -1,0 +1,50 @@
+[
+  {
+    "round": "1",
+    "mode": "rapid",
+    "playerA": "warlock24",
+    "playerB": "aminigo01",
+    "scoreA": 1,
+    "scoreB": 1,
+    "changeA": 0,
+    "changeB": 0,
+    "date": "2026-01-28T08:53:56.779Z",
+    "category": "middleweight"
+  },
+  {
+    "round": "1",
+    "mode": "rapid",
+    "playerA": "gboy4life",
+    "playerB": "veecent",
+    "scoreA": 2,
+    "scoreB": 0,
+    "changeA": 1,
+    "changeB": -2,
+    "date": "2026-01-28T08:55:35.057Z",
+    "category": "middleweight"
+  },
+  {
+    "round": "1",
+    "mode": "rapid",
+    "playerA": "the-olympus",
+    "playerB": "emark",
+    "scoreA": 2,
+    "scoreB": 0,
+    "changeA": 1,
+    "changeB": -2,
+    "date": "2026-01-28T08:58:20.965Z",
+    "category": "middleweight"
+  },
+  {
+    "round": "1",
+    "mode": "rapid",
+    "playerA": "professor-praise",
+    "playerB": "mr9iceguy",
+    "scoreA": 1,
+    "scoreB": 1,
+    "changeA": 0,
+    "changeB": 0,
+    "date": "2026-01-28T09:01:24.967Z",
+    "category": "middleweight"
+  }
+]
