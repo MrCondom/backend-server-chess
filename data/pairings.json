@@ -1,0 +1,187 @@
+{
+  "middleweight": {
+    "rounds": [
+      {
+        "round": 1,
+        "pairings": [
+          {
+            "white": "the-olympus",
+            "black": "emark"
+          },
+          {
+            "white": "warlock24",
+            "black": "aminigo01"
+          },
+          {
+            "white": "gboy4life",
+            "black": "veecent"
+          },
+          {
+            "white": "professor-praise",
+            "black": "mr9iceguy"
+          }
+        ],
+        "availableAt": "2026-01-27T11:44:16.325Z"
+      },
+      {
+        "round": 2,
+        "pairings": [
+          {
+            "white": "Tom_sheriff",
+            "black": "emark"
+          },
+          {
+            "white": "the-olympus",
+            "black": "veecent"
+          },
+          {
+            "white": "warlock24",
+            "black": "mr9iceguy"
+          },
+          {
+            "white": "gboy4life",
+            "black": "professor-praise"
+          }
+        ],
+        "availableAt": "2026-01-28T11:44:16.325Z"
+      },
+      {
+        "round": 3,
+        "pairings": [
+          {
+            "white": "Tom_sheriff",
+            "black": "aminigo01"
+          },
+          {
+            "white": "emark",
+            "black": "veecent"
+          },
+          {
+            "white": "the-olympus",
+            "black": "professor-praise"
+          },
+          {
+            "white": "warlock24",
+            "black": "gboy4life"
+          }
+        ],
+        "availableAt": "2026-01-29T11:44:16.325Z"
+      },
+      {
+        "round": 4,
+        "pairings": [
+          {
+            "white": "Tom_sheriff",
+            "black": "veecent"
+          },
+          {
+            "white": "aminigo01",
+            "black": "mr9iceguy"
+          },
+          {
+            "white": "emark",
+            "black": "professor-praise"
+          },
+          {
+            "white": "the-olympus",
+            "black": "warlock24"
+          }
+        ],
+        "availableAt": "2026-01-30T11:44:16.325Z"
+      },
+      {
+        "round": 5,
+        "pairings": [
+          {
+            "white": "Tom_sheriff",
+            "black": "mr9iceguy"
+          },
+          {
+            "white": "veecent",
+            "black": "professor-praise"
+          },
+          {
+            "white": "aminigo01",
+            "black": "gboy4life"
+          },
+          {
+            "white": "emark",
+            "black": "warlock24"
+          }
+        ],
+        "availableAt": "2026-01-31T11:44:16.325Z"
+      },
+      {
+        "round": 6,
+        "pairings": [
+          {
+            "white": "Tom_sheriff",
+            "black": "professor-praise"
+          },
+          {
+            "white": "mr9iceguy",
+            "black": "gboy4life"
+          },
+          {
+            "white": "veecent",
+            "black": "warlock24"
+          },
+          {
+            "white": "aminigo01",
+            "black": "the-olympus"
+          }
+        ],
+        "availableAt": "2026-02-01T11:44:16.325Z"
+      },
+      {
+        "round": 7,
+        "pairings": [
+          {
+            "white": "Tom_sheriff",
+            "black": "gboy4life"
+          },
+          {
+            "white": "professor-praise",
+            "black": "warlock24"
+          },
+          {
+            "white": "mr9iceguy",
+            "black": "the-olympus"
+          },
+          {
+            "white": "aminigo01",
+            "black": "emark"
+          }
+        ],
+        "availableAt": "2026-02-02T11:44:16.325Z"
+      },
+      {
+        "round": 8,
+        "pairings": [
+          {
+            "white": "Tom_sheriff",
+            "black": "warlock24"
+          },
+          {
+            "white": "gboy4life",
+            "black": "the-olympus"
+          },
+          {
+            "white": "mr9iceguy",
+            "black": "emark"
+          },
+          {
+            "white": "veecent",
+            "black": "aminigo01"
+          }
+        ],
+        "availableAt": "2026-02-03T11:44:16.325Z"
+      }
+    ],
+    "currentRound": 5,
+    "intervalHours": 24,
+    "nextRoundAt": "2026-02-05T04:00:53.087Z",
+    "countdown": 86400,
+    "completed": false
+  }
+}
