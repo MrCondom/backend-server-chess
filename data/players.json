@@ -57,13 +57,13 @@
     "category": "middleweight",
     "bio": "Current Team Captain.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1783,
       "blitz": 1800,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T14:21:57.167Z",
-    "recentGain": -17,
-    "lastGainDate": "2026-02-04T03:46:31.406Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 1.5,
     "totalRounds": 7
   },
@@ -74,13 +74,13 @@
     "category": "middleweight",
     "bio": "Uses The Hungarian Opening",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1799,
       "blitz": 1804,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T15:10:27.328Z",
-    "recentGain": -1,
-    "lastGainDate": "2026-02-03T21:44:24.653Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 8,
     "totalRounds": 7
   },
@@ -108,13 +108,13 @@
     "category": "middleweight",
     "bio": "AKA Thelastwarlock. Former Team Captain.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1798,
       "blitz": 1788,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T15:15:04.221Z",
-    "recentGain": -2,
-    "lastGainDate": "2026-02-04T03:46:31.406Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 8.5,
     "totalRounds": 8
   },
@@ -125,13 +125,13 @@
     "category": "middleweight",
     "bio": "The First Team Captain.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1803,
       "blitz": 1800,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T15:16:31.789Z",
-    "recentGain": 3,
-    "lastGainDate": "2026-02-03T21:44:24.653Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 11.5,
     "totalRounds": 7
   },
@@ -142,13 +142,13 @@
     "category": "middleweight",
     "bio": "AKA GM Iyaye.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1798,
       "blitz": 1812,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T15:19:25.991Z",
-    "recentGain": -2,
-    "lastGainDate": "2026-02-03T04:03:01.921Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 7,
     "totalRounds": 7
   },
@@ -174,15 +174,15 @@
     "fullName": "Raphael Boma Sam",
     "username": "mr9iceguy",
     "category": "middleweight",
-    "bio": "Mostly Plays The London Attack.",
+    "bio": "Mostly Plays The London Attack.. He's Currently The Middleweight Champion.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1811,
       "blitz": 1800,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T15:24:11.147Z",
-    "recentGain": 11,
-    "lastGainDate": "2026-02-03T21:43:59.800Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 12.5,
     "totalRounds": 7
   },
@@ -227,13 +227,13 @@
     "category": "middleweight",
     "bio": "A Chess Player.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1798,
       "blitz": 1800,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T15:30:06.305Z",
-    "recentGain": -2,
-    "lastGainDate": "2026-02-04T03:47:07.896Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 7,
     "totalRounds": 7
   },
@@ -414,13 +414,13 @@
     "category": "middleweight",
     "bio": "A Chess Player.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1786,
       "blitz": 1800,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T16:10:18.834Z",
-    "recentGain": -14,
-    "lastGainDate": "2026-02-04T03:47:07.896Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 2.5,
     "totalRounds": 7
   },
@@ -584,13 +584,13 @@
     "category": "middleweight",
     "bio": "A Chess Player.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1796,
       "blitz": 1800,
       "bullet": 1800
     },
     "createdAt": "2026-01-27T11:34:56.989Z",
-    "recentGain": -4,
-    "lastGainDate": "2026-02-03T21:43:59.800Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 5.5,
     "totalRounds": 7
   },
