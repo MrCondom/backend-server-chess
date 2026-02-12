@@ -1,0 +1,165 @@
+{
+  "heavyweight": {
+    "rounds": [
+      {
+        "round": 1,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "Jax_man"
+          },
+          {
+            "white": "richie_prime",
+            "black": "mad_prince01"
+          },
+          {
+            "white": "pamboy27",
+            "black": "onengs1"
+          },
+          {
+            "white": "don-pedro_t",
+            "black": "bornstarchessman"
+          }
+        ],
+        "availableAt": "2026-02-09T22:31:57.495Z"
+      },
+      {
+        "round": 2,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "mad_prince01"
+          },
+          {
+            "white": "Jax_man",
+            "black": "onengs1"
+          },
+          {
+            "white": "richie_prime",
+            "black": "bornstarchessman"
+          },
+          {
+            "white": "pamboy27",
+            "black": "don-pedro_t"
+          }
+        ],
+        "availableAt": "2026-02-10T22:31:57.495Z"
+      },
+      {
+        "round": 3,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "onengs1"
+          },
+          {
+            "white": "mad_prince01",
+            "black": "bornstarchessman"
+          },
+          {
+            "white": "Jax_man",
+            "black": "don-pedro_t"
+          },
+          {
+            "white": "richie_prime",
+            "black": "pamboy27"
+          }
+        ],
+        "availableAt": "2026-02-11T22:31:57.495Z"
+      },
+      {
+        "round": 4,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "bornstarchessman"
+          },
+          {
+            "white": "onengs1",
+            "black": "don-pedro_t"
+          },
+          {
+            "white": "mad_prince01",
+            "black": "pamboy27"
+          },
+          {
+            "white": "Jax_man",
+            "black": "richie_prime"
+          }
+        ],
+        "availableAt": "2026-02-12T22:31:57.495Z"
+      },
+      {
+        "round": 5,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "don-pedro_t"
+          },
+          {
+            "white": "bornstarchessman",
+            "black": "pamboy27"
+          },
+          {
+            "white": "onengs1",
+            "black": "richie_prime"
+          },
+          {
+            "white": "mad_prince01",
+            "black": "Jax_man"
+          }
+        ],
+        "availableAt": "2026-02-13T22:31:57.495Z"
+      },
+      {
+        "round": 6,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "pamboy27"
+          },
+          {
+            "white": "don-pedro_t",
+            "black": "richie_prime"
+          },
+          {
+            "white": "bornstarchessman",
+            "black": "Jax_man"
+          },
+          {
+            "white": "onengs1",
+            "black": "mad_prince01"
+          }
+        ],
+        "availableAt": "2026-02-14T22:31:57.495Z"
+      },
+      {
+        "round": 7,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "richie_prime"
+          },
+          {
+            "white": "pamboy27",
+            "black": "Jax_man"
+          },
+          {
+            "white": "don-pedro_t",
+            "black": "mad_prince01"
+          },
+          {
+            "white": "bornstarchessman",
+            "black": "onengs1"
+          }
+        ],
+        "availableAt": "2026-02-15T22:31:57.495Z"
+      }
+    ],
+    "currentRound": 3,
+    "intervalHours": 24,
+    "nextRoundAt": "2026-02-12T10:00:46.896Z",
+    "countdown": 86400,
+    "completed": false
+  }
+}
