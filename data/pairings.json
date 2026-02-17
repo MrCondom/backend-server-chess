@@ -1,1 +1,41 @@
-{}
+{
+  "cagematch: heavyweightchampionship": {
+    "rounds": [
+      {
+        "round": 1,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "pamboy27"
+          }
+        ],
+        "availableAt": "2026-02-17T12:52:39.832Z"
+      },
+      {
+        "round": 2,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "pamboy27"
+          }
+        ],
+        "availableAt": "2026-02-17T13:52:39.832Z"
+      },
+      {
+        "round": 3,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "pamboy27"
+          }
+        ],
+        "availableAt": "2026-02-17T14:52:39.832Z"
+      }
+    ],
+    "currentRound": 2,
+    "intervalHours": 1,
+    "nextRoundAt": "2026-02-17T13:52:40.165Z",
+    "countdown": 3600,
+    "completed": false
+  }
+}

@@ -1,54 +1,37 @@
 {
-  "jaxman": {
-    "id": 1768091132878,
-    "fullName": "Jackson Chinedu",
-    "username": "jaxman",
-    "category": "heavyweight",
-    "bio": "The Developer. Always Uses The Queens Gambit.",
-    "ratings": {
-      "rapid": 1900,
-      "blitz": 1900,
-      "bullet": 1900
-    },
-    "createdAt": "2026-01-11T00:25:32.878Z",
-    "recentGain": 0,
-    "lastGainDate": null,
-    "points": 0,
-    "totalRounds": 0
-  },
   "emmagency": {
     "id": 1768137642349,
     "fullName": "Emmanuel Akomas",
     "username": "emmagency",
     "category": "heavyweight",
-    "bio": "Current Heavyweight Champion And Streamer.",
+    "bio": "Reigning Heavyweight Champion And Streamer. 6x Champion Who  Defeated @pamboy27 In The 2026 February Cage Match Edition.",
     "ratings": {
-      "rapid": 1900,
+      "rapid": 1904,
       "blitz": 1897,
       "bullet": 1900
     },
     "createdAt": "2026-01-11T13:20:42.349Z",
     "recentGain": 0,
-    "lastGainDate": "2026-01-12T21:51:35.541Z",
-    "points": 1,
+    "lastGainDate": "2026-02-17T16:08:59.997Z",
+    "points": 2,
     "totalRounds": 3
   },
   "richie_prime": {
     "id": 1768229846140,
     "fullName": "Richard Tonye Pepple",
     "username": "richie_prime",
-    "category": "heavyweight",
+    "category": "middleweight",
     "bio": "AKA Big Kala. Mostly Opens With Nf3. Former Captain Of The Team.",
     "ratings": {
-      "rapid": 1900,
+      "rapid": 1872,
       "blitz": 1900,
       "bullet": 1900
     },
     "createdAt": "2026-01-12T14:57:26.140Z",
     "recentGain": 0,
-    "lastGainDate": "2026-01-12T19:33:55.377Z",
-    "points": 3,
-    "totalRounds": 3
+    "lastGainDate": "2026-02-17T11:53:35.360Z",
+    "points": 0,
+    "totalRounds": 0
   },
   "pamboy27": {
     "id": 1768230178556,
@@ -57,30 +40,30 @@
     "category": "heavyweight",
     "bio": "Current Team Coach. AKA Mella_zero",
     "ratings": {
-      "rapid": 1900,
+      "rapid": 1903,
       "blitz": 1900,
       "bullet": 1900
     },
     "createdAt": "2026-01-12T15:02:58.556Z",
     "recentGain": 0,
-    "lastGainDate": "2026-01-12T21:19:53.998Z",
-    "points": 2,
+    "lastGainDate": "2026-02-17T16:08:59.997Z",
+    "points": 1,
     "totalRounds": 3
   },
   "tom_sheriff": {
     "id": 1768227717167,
     "fullName": "Tom Sheriff Prosper",
     "username": "Tom_sheriff",
-    "category": "middleweight",
+    "category": "lightweight",
     "bio": "Current Team Captain.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1783,
       "blitz": 1800,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T14:21:57.167Z",
     "recentGain": 0,
-    "lastGainDate": null,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 0,
     "totalRounds": 0
   },
@@ -91,15 +74,15 @@
     "category": "middleweight",
     "bio": "Uses The Hungarian Opening",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1799,
       "blitz": 1804,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T15:10:27.328Z",
     "recentGain": 0,
-    "lastGainDate": "2026-01-12T21:51:35.541Z",
-    "points": 3,
-    "totalRounds": 3
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
+    "points": 0,
+    "totalRounds": 0
   },
   "don-pedro_t": {
     "id": 1768230771343,
@@ -108,47 +91,47 @@
     "category": "heavyweight",
     "bio": "Really Good In Closed Positions.",
     "ratings": {
-      "rapid": 1900,
+      "rapid": 1901,
       "blitz": 1897,
       "bullet": 1900
     },
     "createdAt": "2026-01-12T15:12:51.343Z",
     "recentGain": 0,
-    "lastGainDate": "2026-01-12T21:51:35.541Z",
-    "points": 1,
-    "totalRounds": 3
+    "lastGainDate": "2026-02-17T11:53:35.360Z",
+    "points": 0,
+    "totalRounds": 0
   },
   "warlock24": {
     "id": 1768230904221,
     "fullName": "Bobmanuel Malanta Felix",
     "username": "warlock24",
-    "category": "middleweight",
+    "category": "heavyweight",
     "bio": "AKA Thelastwarlock. Former Team Captain.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1798,
       "blitz": 1788,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T15:15:04.221Z",
     "recentGain": 0,
-    "lastGainDate": "2026-01-12T21:51:35.541Z",
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 0,
-    "totalRounds": 3
+    "totalRounds": 0
   },
   "gboy4life": {
     "id": 1768230991789,
     "fullName": "Godswill Richmond Ekineh",
     "username": "gboy4life",
-    "category": "middleweight",
+    "category": "heavyweight",
     "bio": "The First Team Captain.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1803,
       "blitz": 1800,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T15:16:31.789Z",
     "recentGain": 0,
-    "lastGainDate": null,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 0,
     "totalRounds": 0
   },
@@ -159,30 +142,13 @@
     "category": "middleweight",
     "bio": "AKA GM Iyaye.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1798,
       "blitz": 1812,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T15:19:25.991Z",
     "recentGain": 0,
-    "lastGainDate": "2026-01-12T21:51:35.541Z",
-    "points": 3,
-    "totalRounds": 3
-  },
-  "brightkingsleyd": {
-    "id": 1768231243148,
-    "fullName": "Bright Kingsley",
-    "username": "brightkingsleyd",
-    "category": "lightweight",
-    "bio": "A Chess Player",
-    "ratings": {
-      "rapid": 1700,
-      "blitz": 1700,
-      "bullet": 1700
-    },
-    "createdAt": "2026-01-12T15:20:43.148Z",
-    "recentGain": 0,
-    "lastGainDate": null,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 0,
     "totalRounds": 0
   },
@@ -207,16 +173,16 @@
     "id": 1768231451147,
     "fullName": "Raphael Boma Sam",
     "username": "mr9iceguy",
-    "category": "middleweight",
-    "bio": "Mostly Plays The London Attack.",
+    "category": "heavyweight",
+    "bio": "Mostly Plays The London Attack.. He's Currently The Middleweight Champion.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1811,
       "blitz": 1800,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T15:24:11.147Z",
     "recentGain": 0,
-    "lastGainDate": null,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 0,
     "totalRounds": 0
   },
@@ -241,7 +207,7 @@
     "id": 1768231632558,
     "fullName": "Precious Sampson Gudi",
     "username": "black_sampson",
-    "category": "lightweight",
+    "category": "unavailable",
     "bio": "A Chess Player.",
     "ratings": {
       "rapid": 1700,
@@ -261,13 +227,13 @@
     "category": "middleweight",
     "bio": "A Chess Player.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1798,
       "blitz": 1800,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T15:30:06.305Z",
     "recentGain": 0,
-    "lastGainDate": null,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 0,
     "totalRounds": 0
   },
@@ -275,7 +241,7 @@
     "id": 1768231874755,
     "fullName": "Precious Dango",
     "username": "raychester",
-    "category": "lightweight",
+    "category": "unavailable",
     "bio": "A Chess Player.",
     "ratings": {
       "rapid": 1700,
@@ -292,7 +258,7 @@
     "id": 1768232022488,
     "fullName": "Ngodigha Ayebawanemi Daniel",
     "username": "ngodigha25",
-    "category": "lightweight",
+    "category": "unavailable",
     "bio": "A Chess Player.",
     "ratings": {
       "rapid": 1700,
@@ -312,13 +278,13 @@
     "category": "heavyweight",
     "bio": "Excels In Closed Positions.",
     "ratings": {
-      "rapid": 1900,
+      "rapid": 1902,
       "blitz": 1900,
       "bullet": 1900
     },
     "createdAt": "2026-01-12T15:35:28.746Z",
     "recentGain": 0,
-    "lastGainDate": null,
+    "lastGainDate": "2026-02-17T11:53:35.360Z",
     "points": 0,
     "totalRounds": 0
   },
@@ -326,7 +292,7 @@
     "id": 1768232207432,
     "fullName": "Wosu Jennifer Chioma",
     "username": "wosuszn",
-    "category": "lightweight",
+    "category": "unavailable",
     "bio": "A Chess Player.",
     "ratings": {
       "rapid": 1700,
@@ -343,7 +309,7 @@
     "id": 1768232273278,
     "fullName": "Evidence Agi",
     "username": "evidence_agi",
-    "category": "lightweight",
+    "category": "unavailable",
     "bio": "A Chess Player.",
     "ratings": {
       "rapid": 1700,
@@ -363,13 +329,13 @@
     "category": "lightweight",
     "bio": "A Chess Player.",
     "ratings": {
-      "rapid": 1700,
+      "rapid": 1696,
       "blitz": 1700,
       "bullet": 1700
     },
     "createdAt": "2026-01-12T15:39:11.905Z",
     "recentGain": 0,
-    "lastGainDate": null,
+    "lastGainDate": "2026-01-27T10:51:18.513Z",
     "points": 0,
     "totalRounds": 0
   },
@@ -380,13 +346,13 @@
     "category": "lightweight",
     "bio": "A Chess Player.",
     "ratings": {
-      "rapid": 1700,
+      "rapid": 1697,
       "blitz": 1700,
       "bullet": 1700
     },
     "createdAt": "2026-01-12T15:40:34.495Z",
     "recentGain": 0,
-    "lastGainDate": null,
+    "lastGainDate": "2026-01-27T10:51:18.513Z",
     "points": 0,
     "totalRounds": 0
   },
@@ -422,39 +388,39 @@
     "recentGain": 0,
     "lastGainDate": "2026-01-12T21:51:35.541Z",
     "points": 0,
-    "totalRounds": 3
+    "totalRounds": 0
   },
   "onengs1": {
     "id": 1768232840834,
     "fullName": "Jack Onengiyeofori",
     "username": "onengs1",
-    "category": "heavyweight",
+    "category": "middleweight",
     "bio": "AKA Jack The Souless.",
     "ratings": {
-      "rapid": 1900,
+      "rapid": 1891,
       "blitz": 1888,
       "bullet": 1900
     },
     "createdAt": "2026-01-12T15:47:20.834Z",
     "recentGain": 0,
-    "lastGainDate": "2026-01-12T21:51:35.541Z",
+    "lastGainDate": "2026-02-17T11:53:35.360Z",
     "points": 0,
-    "totalRounds": 3
+    "totalRounds": 0
   },
   "aminigo01": {
     "id": 1768234218834,
     "fullName": "Emmanuel Aminigo",
     "username": "aminigo01",
-    "category": "middleweight",
+    "category": "lightweight",
     "bio": "A Chess Player.",
     "ratings": {
-      "rapid": 1800,
+      "rapid": 1786,
       "blitz": 1800,
       "bullet": 1800
     },
     "createdAt": "2026-01-12T16:10:18.834Z",
     "recentGain": 0,
-    "lastGainDate": null,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 0,
     "totalRounds": 0
   },
@@ -462,16 +428,16 @@
     "id": 1768234482819,
     "fullName": "Chizobam Edward Ogbueri",
     "username": "edd_casper",
-    "category": "lightweight",
+    "category": "middleweight",
     "bio": "AKA OddEdd",
     "ratings": {
-      "rapid": 1700,
+      "rapid": 1702,
       "blitz": 1700,
       "bullet": 1700
     },
     "createdAt": "2026-01-12T16:14:42.819Z",
     "recentGain": 0,
-    "lastGainDate": null,
+    "lastGainDate": "2026-01-27T10:51:18.513Z",
     "points": 0,
     "totalRounds": 0
   },
@@ -479,18 +445,18 @@
     "id": 1768240566679,
     "fullName": "Omo-Uwaifo Ferguson Osaze",
     "username": "fergifork",
-    "category": "lightweight",
-    "bio": "A Chess Player.",
+    "category": "middleweight",
+    "bio": "Current Lightweight Champion.",
     "ratings": {
-      "rapid": 1700,
+      "rapid": 1706,
       "blitz": 1712,
       "bullet": 1700
     },
     "createdAt": "2026-01-12T17:56:06.679Z",
     "recentGain": 0,
-    "lastGainDate": "2026-01-12T21:51:35.541Z",
-    "points": 3,
-    "totalRounds": 3
+    "lastGainDate": "2026-01-27T10:51:18.513Z",
+    "points": 0,
+    "totalRounds": 0
   },
   "franklin_eke": {
     "id": 1768248432967,
@@ -499,30 +465,13 @@
     "category": "lightweight",
     "bio": "A Chess Player.",
     "ratings": {
-      "rapid": 1700,
+      "rapid": 1699,
       "blitz": 1700,
       "bullet": 1700
     },
     "createdAt": "2026-01-12T20:07:12.967Z",
     "recentGain": 0,
-    "lastGainDate": null,
-    "points": 0,
-    "totalRounds": 0
-  },
-  "maestrothagoat001": {
-    "id": 1768252145330,
-    "fullName": "Ikia Boma",
-    "username": "maestrothagoat001",
-    "category": "lightweight",
-    "bio": "AKA Bomaski8sav3",
-    "ratings": {
-      "rapid": 1700,
-      "blitz": 1700,
-      "bullet": 1700
-    },
-    "createdAt": "2026-01-12T21:09:05.330Z",
-    "recentGain": 0,
-    "lastGainDate": null,
+    "lastGainDate": "2026-01-27T10:51:18.513Z",
     "points": 0,
     "totalRounds": 0
   },
@@ -533,13 +482,13 @@
     "category": "heavyweight",
     "bio": "Mostly Opens With C4.",
     "ratings": {
-      "rapid": 1900,
+      "rapid": 1898,
       "blitz": 1900,
       "bullet": 1900
     },
     "createdAt": "2026-01-13T05:38:07.952Z",
     "recentGain": 0,
-    "lastGainDate": null,
+    "lastGainDate": "2026-02-17T11:53:35.360Z",
     "points": 0,
     "totalRounds": 0
   },
@@ -564,7 +513,7 @@
     "id": 1768326960659,
     "fullName": "Cookey David Dagogo",
     "username": "davicoolkeys",
-    "category": "lightweight",
+    "category": "unavailable",
     "bio": "A Chess Player",
     "ratings": {
       "rapid": 1700,
@@ -581,7 +530,7 @@
     "id": 1768327070322,
     "fullName": "Destiny Oyinkro Gordon",
     "username": "newbiedestiny",
-    "category": "lightweight",
+    "category": "unavailable",
     "bio": "A Chess Player.",
     "ratings": {
       "rapid": 1700,
@@ -601,13 +550,98 @@
     "category": "lightweight",
     "bio": "A Chess Player.",
     "ratings": {
-      "rapid": 1700,
+      "rapid": 1698,
       "blitz": 1700,
       "bullet": 1700
     },
     "createdAt": "2026-01-14T08:14:55.016Z",
     "recentGain": 0,
+    "lastGainDate": "2026-01-27T10:51:18.513Z",
+    "points": 0,
+    "totalRounds": 0
+  },
+  "jax_man": {
+    "id": 1768091132878,
+    "fullName": "Jackson Chinedu",
+    "username": "Jax_man",
+    "category": "middleweight",
+    "bio": "The Developer. Always Uses The Queens Gambit.",
+    "ratings": {
+      "rapid": 1896,
+      "blitz": 1900,
+      "bullet": 1900
+    },
+    "createdAt": "2026-01-11T00:25:32.878Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-02-17T11:53:35.360Z",
+    "points": 0,
+    "totalRounds": 0
+  },
+  "bomaski8sav3": {
+    "id": 1768252145330,
+    "fullName": "Ikia Boma",
+    "username": "Bomaski8sav3",
+    "category": "lightweight",
+    "bio": "AKA Maestrothagoat001",
+    "ratings": {
+      "rapid": 1678,
+      "blitz": 1700,
+      "bullet": 1700
+    },
+    "createdAt": "2026-01-12T21:09:05.330Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-01-27T10:51:18.513Z",
+    "points": 0,
+    "totalRounds": 0
+  },
+  "funnyfunnymoves": {
+    "id": 1770113100627,
+    "fullName": "Longjohn Ferdinald",
+    "username": "funnyfunnymoves",
+    "category": "unavailable",
+    "bio": "A Chess Player.",
+    "ratings": {
+      "rapid": 1700,
+      "blitz": 1700,
+      "bullet": 1700
+    },
+    "createdAt": "2026-02-03T10:05:00.627Z",
+    "recentGain": 0,
     "lastGainDate": null,
+    "points": 0,
+    "totalRounds": 0
+  },
+  "brightkingsleyd": {
+    "id": 1770113300983,
+    "fullName": "Bright Kingsley",
+    "username": "brightkingsleyd",
+    "category": "unavailable",
+    "bio": "A Chess Player",
+    "ratings": {
+      "rapid": 1700,
+      "blitz": 1700,
+      "bullet": 1700
+    },
+    "createdAt": "2026-02-03T10:08:20.983Z",
+    "recentGain": 0,
+    "lastGainDate": null,
+    "points": 0,
+    "totalRounds": 0
+  },
+  "emark911": {
+    "id": 1769513696989,
+    "fullName": "Emmanuel Osiagor",
+    "username": "Emark911",
+    "category": "middleweight",
+    "bio": "A Chess Player.",
+    "ratings": {
+      "rapid": 1796,
+      "blitz": 1800,
+      "bullet": 1800
+    },
+    "createdAt": "2026-01-27T11:34:56.989Z",
+    "recentGain": 0,
+    "lastGainDate": "2026-02-06T03:51:32.223Z",
     "points": 0,
     "totalRounds": 0
   }

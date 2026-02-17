@@ -1,0 +1,57 @@
+{
+  "category": "Heavyweight",
+  "mode": "rapid",
+  "generatedAt": "2026-02-17T08:45:03.423Z",
+  "month": "February",
+  "year": "2026",
+  "table": [
+    {
+      "username": "emmagency",
+      "totalRounds": 7,
+      "totalPoints": 11,
+      "accuracy": "64.9%"
+    },
+    {
+      "username": "pamboy27",
+      "totalRounds": 7,
+      "totalPoints": 11,
+      "accuracy": "64.9%"
+    },
+    {
+      "username": "don-pedro_t",
+      "totalRounds": 7,
+      "totalPoints": 8,
+      "accuracy": "47.2%"
+    },
+    {
+      "username": "bornstarchessman",
+      "totalRounds": 7,
+      "totalPoints": 8,
+      "accuracy": "47.2%"
+    },
+    {
+      "username": "mad_prince01",
+      "totalRounds": 7,
+      "totalPoints": 7,
+      "accuracy": "41.3%"
+    },
+    {
+      "username": "Jax_man",
+      "totalRounds": 7,
+      "totalPoints": 6,
+      "accuracy": "35.4%"
+    },
+    {
+      "username": "onengs1",
+      "totalRounds": 7,
+      "totalPoints": 3,
+      "accuracy": "17.7%"
+    },
+    {
+      "username": "richie_prime",
+      "totalRounds": 7,
+      "totalPoints": 0,
+      "accuracy": "0.0%"
+    }
+  ]
+}

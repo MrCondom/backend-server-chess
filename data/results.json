@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "round": "1",
+    "mode": "rapid",
+    "playerA": "emmagency",
+    "playerB": "pamboy27",
+    "scoreA": 1,
+    "scoreB": 0,
+    "changeA": 1,
+    "changeB": -2,
+    "date": "2026-02-17T15:18:10.261Z",
+    "category": "cagematch: heavyweightchampionship"
+  },
+  {
+    "round": "2",
+    "mode": "rapid",
+    "playerA": "emmagency",
+    "playerB": "pamboy27",
+    "scoreA": 0,
+    "scoreB": 1,
+    "changeA": -3,
+    "changeB": 3,
+    "date": "2026-02-17T15:37:54.747Z",
+    "category": "cagematch: heavyweightchampionship"
+  },
+  {
+    "round": "3",
+    "mode": "rapid",
+    "playerA": "emmagency",
+    "playerB": "pamboy27",
+    "scoreA": 1,
+    "scoreB": 0,
+    "changeA": 1,
+    "changeB": -2,
+    "date": "2026-02-17T16:07:44.705Z",
+    "category": "cagematch: heavyweightchampionship"
+  }
+]
