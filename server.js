@@ -69,18 +69,40 @@ app.get("/players/all", async (req, res) => {
     });
   });
 
-  const orderedGrouped = {};
+  // ✅ Define preferred order
+const categoryOrder = [
+  "heavyweight",
+  "middleweight",
+  "lightweight",
+];
 
-  const sortedCategories = Object.keys(grouped).sort((a, b) => {
-    if (a.toLowerCase() === "unavailable") return 1;
-    if (b.toLowerCase() === "unavailable") return -1;
+const orderedGrouped = {};
 
-    return a.localeCompare(b);
-  });
-  sortedCategories.forEach((cat) => {
+// 1️⃣ Add preferred categories first
+categoryOrder.forEach((cat) => {
+  if (grouped[cat]) {
     orderedGrouped[cat] = grouped[cat];
-  });
-  res.json(orderedGrouped);
+  }
+});
+
+// 2️⃣ Add any other categories except unavailable
+Object.keys(grouped).forEach((cat) => {
+  if (
+    !categoryOrder.includes(cat) &&
+    cat !== "unavailable"
+  ) {
+    orderedGrouped[cat] = grouped[cat];
+  }
+});
+
+// 3️⃣ Add unavailable LAST
+if (grouped["unavailable"]) {
+  orderedGrouped["unavailable"] = grouped["unavailable"];
+}
+
+// ✅ Send ordered result
+res.json(orderedGrouped);
+
 });
 
 app.use("/admin", adminRoutes);
