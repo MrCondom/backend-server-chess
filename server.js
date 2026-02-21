@@ -31,7 +31,7 @@ app.get("/players/all", async (req, res) => {
   const now = new Date();
 
   Object.values(players).forEach((p) => {
-    const category = p.category || "Unassigned";
+    const category = (p.category || "Unavailable").toLowerCase();
     if (!grouped[category]) grouped[category] = [];
 
     // ✅ Determine gain visibility and status
@@ -69,7 +69,18 @@ app.get("/players/all", async (req, res) => {
     });
   });
 
-  res.json(grouped);
+  const orderedGrouped = {};
+
+  const sortedCategories = Object.keys(grouped).sort((a, b) => {
+    if (a.toLowerCase() === "unavailable") return 1;
+    if (b.toLowerCase() === "unavailable") return -1;
+
+    return a.localeCompare(b);
+  });
+  sortedCategories.forEach((cat) => {
+    orderedGrouped[cat] = grouped[cat];
+  });
+  res.json(orderedGrouped);
 });
 
 app.use("/admin", adminRoutes);

@@ -160,7 +160,7 @@ router.delete("/clear-blocked-ips", async (req, res) => {
     // ✂️ Trim and clean all string inputs
     const cleanFullName = fullName?.trim();
     const cleanUsername = username?.trim().toLowerCase(); // Key consistency
-    const cleanCategory = (category?.trim() || "Uncategorized").toLowerCase();
+    const cleanCategory = category && category.trim().length > 0 ? category.trim().toLowerCase() : "unavailable";
     const cleanBio = bio?.trim() || "";
 
     const cleanRapid = Number(rapid);
@@ -861,7 +861,7 @@ router.get("/players/all", async (req, res) => {
   const grouped = {};
 
   Object.values(players).forEach((p) => {
-    const category = p.category || "Unassigned";
+    const category = (p.category || "Unavailable").toLowerCase();
     if (!grouped[category]) grouped[category] = [];
     grouped[category].push(p);
   });
@@ -883,7 +883,18 @@ router.get("/players/all", async (req, res) => {
     });
   });
 
-  res.json(grouped);
+  const orderedGrouped = {};
+
+  const sortedCategories = Object.keys(grouped).sort((a, b) => {
+    if (a.toLowerCase() === "unavailable") return 1;
+    if (b.toLowerCase() === "unavailable") return -1;
+
+    return a.localeCompare(b);
+  });
+  sortedCategories.forEach((cat) => {
+    orderedGrouped[cat] = grouped[cat];
+  });
+  res.json(orderedGrouped);
 });
 
 
@@ -1026,6 +1037,32 @@ router.post("/edit-player", async (req, res) => {
     player,
   });
 });
+
+//11.Get  Announcement
+router.get("/announcement", async (req, res) =>{
+ const news = await readJSON("news.json");
+
+ res.json({
+  message: news.message || "",
+ });
+});
+
+//Update announcement
+router.post("/update-announcement", async (req, res) => {
+  const message =(req.body.message || "").trim();
+
+  const news = {
+    message: message,
+  };
+
+  await writeJSON("news.json", news);
+
+  res.json({
+    message: "Announcement Updated Successfully",
+    data: news,
+  });
+});
+
 
 // ✅ Export router
 module.exports = router;

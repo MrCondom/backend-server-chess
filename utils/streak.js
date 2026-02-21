@@ -69,8 +69,8 @@ function getLossStreak(results, username, mode, category) {
  * Win streak bonus
  */
 function getWinMultiplier(winStreak) {
-  if (winStreak >= 6) return 3;
-  if (winStreak >= 3) return 2;
+  if (winStreak >= 6) return 5;
+  if (winStreak >= 3) return 3;
   return 1;
 }
 
