@@ -1,0 +1,21 @@
+{
+  "category": "BulletChampionship1",
+  "mode": "bullet",
+  "generatedAt": "2026-02-26T21:04:49.195Z",
+  "month": "February",
+  "year": "2026",
+  "table": [
+    {
+      "username": "pamboy27",
+      "totalRounds": 21,
+      "totalPoints": 15,
+      "accuracy": "35.3%"
+    },
+    {
+      "username": "emmagency",
+      "totalRounds": 21,
+      "totalPoints": 6,
+      "accuracy": "13.9%"
+    }
+  ]
+}
