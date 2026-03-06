@@ -1,0 +1,45 @@
+{
+  "category": "Lightweight",
+  "mode": "rapid",
+  "generatedAt": "2026-03-06T23:18:56.135Z",
+  "month": "March",
+  "year": "2026",
+  "table": [
+    {
+      "username": "aminigo01",
+      "totalRounds": 4,
+      "totalPoints": 7,
+      "accuracy": "78.1%"
+    },
+    {
+      "username": "tamuno_imiegbam_002",
+      "totalRounds": 4,
+      "totalPoints": 6,
+      "accuracy": "63.6%"
+    },
+    {
+      "username": "franklin_eke",
+      "totalRounds": 4,
+      "totalPoints": 5,
+      "accuracy": "53.1%"
+    },
+    {
+      "username": "evidence_agi",
+      "totalRounds": 4,
+      "totalPoints": 3.5,
+      "accuracy": "37.2%"
+    },
+    {
+      "username": "deehors_21",
+      "totalRounds": 4,
+      "totalPoints": 2.5,
+      "accuracy": "26.6%"
+    },
+    {
+      "username": "Tom_sheriff",
+      "totalRounds": 4,
+      "totalPoints": 0,
+      "accuracy": "0.0%"
+    }
+  ]
+}

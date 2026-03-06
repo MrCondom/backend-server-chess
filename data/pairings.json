@@ -1,0 +1,101 @@
+{
+  "lightweight": {
+    "rounds": [
+      {
+        "round": 1,
+        "pairings": [
+          {
+            "white": "Tom_sheriff",
+            "black": "deehors_21"
+          },
+          {
+            "white": "evidence_agi",
+            "black": "franklin_eke"
+          },
+          {
+            "white": "tamuno_imiegbam_002",
+            "black": "aminigo01"
+          }
+        ],
+        "availableAt": "2026-03-02T22:48:05.556Z"
+      },
+      {
+        "round": 2,
+        "pairings": [
+          {
+            "white": "Tom_sheriff",
+            "black": "franklin_eke"
+          },
+          {
+            "white": "deehors_21",
+            "black": "aminigo01"
+          },
+          {
+            "white": "evidence_agi",
+            "black": "tamuno_imiegbam_002"
+          }
+        ],
+        "availableAt": "2026-03-03T22:48:05.556Z"
+      },
+      {
+        "round": 3,
+        "pairings": [
+          {
+            "white": "Tom_sheriff",
+            "black": "aminigo01"
+          },
+          {
+            "white": "franklin_eke",
+            "black": "tamuno_imiegbam_002"
+          },
+          {
+            "white": "deehors_21",
+            "black": "evidence_agi"
+          }
+        ],
+        "availableAt": "2026-03-04T22:48:05.556Z"
+      },
+      {
+        "round": 4,
+        "pairings": [
+          {
+            "white": "Tom_sheriff",
+            "black": "tamuno_imiegbam_002"
+          },
+          {
+            "white": "aminigo01",
+            "black": "evidence_agi"
+          },
+          {
+            "white": "franklin_eke",
+            "black": "deehors_21"
+          }
+        ],
+        "availableAt": "2026-03-05T22:48:05.556Z"
+      },
+      {
+        "round": 5,
+        "pairings": [
+          {
+            "white": "Tom_sheriff",
+            "black": "evidence_agi"
+          },
+          {
+            "white": "tamuno_imiegbam_002",
+            "black": "deehors_21"
+          },
+          {
+            "white": "aminigo01",
+            "black": "franklin_eke"
+          }
+        ],
+        "availableAt": "2026-03-06T22:48:05.556Z"
+      }
+    ],
+    "currentRound": 4,
+    "intervalHours": 24,
+    "nextRoundAt": "2026-03-07T06:52:50.600Z",
+    "countdown": 86400,
+    "completed": false
+  }
+}
