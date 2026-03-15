@@ -1,0 +1,51 @@
+{
+  "category": "Middleweight",
+  "mode": "rapid",
+  "generatedAt": "2026-03-15T21:08:36.394Z",
+  "month": "March",
+  "year": "2026",
+  "table": [
+    {
+      "username": "onengs1",
+      "totalRounds": 4,
+      "totalPoints": 7,
+      "accuracy": "82.7%"
+    },
+    {
+      "username": "professor-praise",
+      "totalRounds": 4,
+      "totalPoints": 6,
+      "accuracy": "67.4%"
+    },
+    {
+      "username": "fergifork",
+      "totalRounds": 5,
+      "totalPoints": 6,
+      "accuracy": "51.2%"
+    },
+    {
+      "username": "Jax_man",
+      "totalRounds": 4,
+      "totalPoints": 5,
+      "accuracy": "59.3%"
+    },
+    {
+      "username": "Emark911",
+      "totalRounds": 4,
+      "totalPoints": 4,
+      "accuracy": "44.9%"
+    },
+    {
+      "username": "the-olympus",
+      "totalRounds": 4,
+      "totalPoints": 2,
+      "accuracy": "22.5%"
+    },
+    {
+      "username": "veecent",
+      "totalRounds": 5,
+      "totalPoints": 0,
+      "accuracy": "0.0%"
+    }
+  ]
+}

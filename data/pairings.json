@@ -1,0 +1,137 @@
+{
+  "middleweight": {
+    "rounds": [
+      {
+        "round": 1,
+        "pairings": [
+          {
+            "white": "professor-praise",
+            "black": "Emark911"
+          },
+          {
+            "white": "veecent",
+            "black": "Jax_man"
+          },
+          {
+            "white": "onengs1",
+            "black": "fergifork"
+          }
+        ],
+        "availableAt": "2026-03-10T22:59:51.753Z"
+      },
+      {
+        "round": 2,
+        "pairings": [
+          {
+            "white": "the-olympus",
+            "black": "Emark911"
+          },
+          {
+            "white": "professor-praise",
+            "black": "fergifork"
+          },
+          {
+            "white": "veecent",
+            "black": "onengs1"
+          }
+        ],
+        "availableAt": "2026-03-11T22:59:51.753Z"
+      },
+      {
+        "round": 3,
+        "pairings": [
+          {
+            "white": "the-olympus",
+            "black": "Jax_man"
+          },
+          {
+            "white": "Emark911",
+            "black": "fergifork"
+          },
+          {
+            "white": "professor-praise",
+            "black": "veecent"
+          }
+        ],
+        "availableAt": "2026-03-12T22:59:51.753Z"
+      },
+      {
+        "round": 4,
+        "pairings": [
+          {
+            "white": "the-olympus",
+            "black": "fergifork"
+          },
+          {
+            "white": "Jax_man",
+            "black": "onengs1"
+          },
+          {
+            "white": "Emark911",
+            "black": "veecent"
+          }
+        ],
+        "availableAt": "2026-03-13T22:59:51.753Z"
+      },
+      {
+        "round": 5,
+        "pairings": [
+          {
+            "white": "the-olympus",
+            "black": "onengs1"
+          },
+          {
+            "white": "fergifork",
+            "black": "veecent"
+          },
+          {
+            "white": "Jax_man",
+            "black": "professor-praise"
+          }
+        ],
+        "availableAt": "2026-03-14T22:59:51.753Z"
+      },
+      {
+        "round": 6,
+        "pairings": [
+          {
+            "white": "the-olympus",
+            "black": "veecent"
+          },
+          {
+            "white": "onengs1",
+            "black": "professor-praise"
+          },
+          {
+            "white": "Jax_man",
+            "black": "Emark911"
+          }
+        ],
+        "availableAt": "2026-03-15T22:59:51.753Z"
+      },
+      {
+        "round": 7,
+        "pairings": [
+          {
+            "white": "the-olympus",
+            "black": "professor-praise"
+          },
+          {
+            "white": "onengs1",
+            "black": "Emark911"
+          },
+          {
+            "white": "fergifork",
+            "black": "Jax_man"
+          }
+        ],
+        "availableAt": "2026-03-16T22:59:51.753Z"
+      }
+    ],
+    "currentRound": 3,
+    "intervalHours": 24,
+    "nextRoundAt": "2026-03-14T20:09:34.487Z",
+    "countdown": 86400,
+    "completed": false
+  }
+}
