@@ -1,0 +1,101 @@
+{
+  "heavyweight": {
+    "rounds": [
+      {
+        "round": 1,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "mad_prince01"
+          },
+          {
+            "white": "warlock24",
+            "black": "bornstarchessman"
+          },
+          {
+            "white": "gboy4life",
+            "black": "mr9iceguy"
+          }
+        ],
+        "availableAt": "2026-03-25T22:36:22.414Z"
+      },
+      {
+        "round": 2,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "bornstarchessman"
+          },
+          {
+            "white": "mad_prince01",
+            "black": "mr9iceguy"
+          },
+          {
+            "white": "warlock24",
+            "black": "gboy4life"
+          }
+        ],
+        "availableAt": "2026-03-26T22:36:22.414Z"
+      },
+      {
+        "round": 3,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "mr9iceguy"
+          },
+          {
+            "white": "bornstarchessman",
+            "black": "gboy4life"
+          },
+          {
+            "white": "mad_prince01",
+            "black": "warlock24"
+          }
+        ],
+        "availableAt": "2026-03-27T22:36:22.414Z"
+      },
+      {
+        "round": 4,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "gboy4life"
+          },
+          {
+            "white": "mr9iceguy",
+            "black": "warlock24"
+          },
+          {
+            "white": "bornstarchessman",
+            "black": "mad_prince01"
+          }
+        ],
+        "availableAt": "2026-03-28T22:36:22.414Z"
+      },
+      {
+        "round": 5,
+        "pairings": [
+          {
+            "white": "emmagency",
+            "black": "warlock24"
+          },
+          {
+            "white": "gboy4life",
+            "black": "mad_prince01"
+          },
+          {
+            "white": "mr9iceguy",
+            "black": "bornstarchessman"
+          }
+        ],
+        "availableAt": "2026-03-29T22:36:22.414Z"
+      }
+    ],
+    "currentRound": 3,
+    "intervalHours": 24,
+    "nextRoundAt": "2026-04-02T11:14:05.322Z",
+    "countdown": 86400,
+    "completed": false
+  }
+}
